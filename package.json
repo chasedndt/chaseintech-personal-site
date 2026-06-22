@@ -1,0 +1,16 @@
+{
+  "name": "chaseintech-personal-site",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ChaseInTech personal developer/founder website and public builder router.",
+  "scripts": {
+    "check": "node -e \"console.log('chaseintech-personal-site scaffold OK')\""
+  },
+  "keywords": [
+    "chaseintech",
+    "personal-site",
+    "developer-website",
+    "builder-router"
+  ],
+  "license": "UNLICENSED"
+}
