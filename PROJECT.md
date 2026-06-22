@@ -15,8 +15,10 @@ The ChaseInTech personal developer/founder website: a public builder home base a
 ## Repository status
 
 - Local repo path: `/mnt/c/Users/chaseos/Documents/Projects/chaseintech-personal-site`
-- GitHub remote: not connected yet
-- Intended remote: ChaseInTech / Chase-owned GitHub repo, exact owner/name pending explicit approval
+- Intended GitHub remote: `chasedndt/chaseintech-personal-site`
+- Intended visibility: public
+- Local `origin`: `git@github.com:chasedndt/chaseintech-personal-site.git`
+- Remote creation status: pending GitHub API/auth token or manual GitHub repo creation; SSH authentication is valid, but GitHub does not create repositories through `git push`.
 
 ## Discord lane linkage
 
