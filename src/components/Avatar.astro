@@ -1,0 +1,74 @@
+---
+// Personal identity marker (§17).
+//
+// PLACEHOLDER: the operator's pixel avatar was not supplied as a file, and the
+// one in the legacy screenshot cannot be lifted from a third-party page. This
+// renders an original pixel-styled ChaseInTech mark instead.
+//
+// To swap in the real avatar: drop the file at `public/images/avatar.png` and
+// set `AVATAR_SRC` below. Everything else (framing, ring, sizing) stays.
+const AVATAR_SRC = null;
+
+interface Props {
+  size?: number;
+  ring?: boolean;
+}
+const { size = 84, ring = true } = Astro.props;
+---
+
+<div
+  class:list={["avatar", ring && "avatar--ring"]}
+  style={`--avatar-size:${size}px`}
+>
+  {
+    AVATAR_SRC ? (
+      <img src={AVATAR_SRC} alt="ChaseInTech avatar" width={size} height={size} />
+    ) : (
+      <svg
+        viewBox="0 0 16 16"
+        role="img"
+        aria-label="ChaseInTech"
+        shape-rendering="crispEdges"
+      >
+        <rect width="16" height="16" fill="#0d2429" />
+        <g fill="#39dec9">
+          <rect x="5" y="3" width="6" height="2" />
+          <rect x="3" y="5" width="2" height="6" />
+          <rect x="5" y="11" width="6" height="2" />
+        </g>
+        <g fill="#8d7cf3">
+          <rect x="11" y="5" width="2" height="2" />
+          <rect x="11" y="9" width="2" height="2" />
+        </g>
+        <g fill="#f2f0e8" opacity="0.9">
+          <rect x="7" y="7" width="2" height="2" />
+        </g>
+      </svg>
+    )
+  }
+</div>
+
+<style>
+  .avatar {
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--cit-bg-elevated);
+    display: grid;
+    place-items: center;
+  }
+  .avatar--ring {
+    box-shadow:
+      0 0 0 1px var(--cit-border-strong),
+      0 0 0 4px rgba(57, 222, 201, 0.12);
+  }
+  .avatar :global(svg),
+  .avatar :global(img) {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+</style>

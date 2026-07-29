@@ -1,0 +1,161 @@
+---
+// Original atmospheric scene (§16.1) — authored as inline SVG, not a licensed
+// or copied image. Stepped ridgelines give the pixel-art character of the
+// legacy landing page at a fraction of the payload of a raster background.
+// Motion is CSS-only and fully disabled under prefers-reduced-motion (§16.4).
+---
+
+<div class="scene" aria-hidden="true">
+  <svg
+    class="scene-svg"
+    viewBox="0 0 1440 900"
+    preserveAspectRatio="xMidYMid slice"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#0a181d" />
+        <stop offset="55%" stop-color="#091419" />
+        <stop offset="100%" stop-color="#071014" />
+      </linearGradient>
+      <linearGradient id="ridgeFar" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#12262b" />
+        <stop offset="100%" stop-color="#0c1b20" />
+      </linearGradient>
+      <linearGradient id="ridgeMid" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#102227" />
+        <stop offset="100%" stop-color="#0a171b" />
+      </linearGradient>
+      <linearGradient id="ridgeNear" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#0b191d" />
+        <stop offset="100%" stop-color="#071114" />
+      </linearGradient>
+      <radialGradient id="glow" cx="0.5" cy="0.42" r="0.42">
+        <stop offset="0%" stop-color="#39dec9" stop-opacity="0.14" />
+        <stop offset="100%" stop-color="#39dec9" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+
+    <rect width="1440" height="900" fill="url(#sky)" />
+    <ellipse cx="720" cy="380" rx="620" ry="360" fill="url(#glow)" />
+
+    <!-- Far stepped ridge -->
+    <path
+      fill="url(#ridgeFar)"
+      d="M0 470 h60 v-30 h60 v-40 h60 v-35 h60 v45 h60 v-60 h60 v-30 h60 v50 h60 v40 h60 v-55 h60 v-45 h60 v65 h60 v35 h60 v-30 h60 v-50 h60 v40 h60 v55 h60 v-35 h60 v45 h60 v30 h60 V900 H0 Z"
+    />
+
+    <!-- Mid stepped ridge -->
+    <path
+      fill="url(#ridgeMid)"
+      d="M0 600 h80 v-45 h80 v-55 h80 v40 h80 v-70 h80 v55 h80 v45 h80 v-60 h80 v-40 h80 v75 h80 v40 h80 v-50 h80 v60 h80 v35 h80 v-45 h80 v55 h80 v40 h80 V900 H0 Z"
+    />
+
+    <!-- Near ridge with blocky treeline -->
+    <path
+      fill="url(#ridgeNear)"
+      d="M0 730 h100 v-40 h100 v50 h100 v-65 h100 v45 h100 v-35 h100 v60 h100 v-50 h100 v40 h100 v-30 h100 v55 h100 v-45 h100 v50 h140 V900 H0 Z"
+    />
+
+    <!-- Pixel treeline silhouettes -->
+    <g fill="#050f12">
+      <rect x="60" y="700" width="14" height="60" />
+      <rect x="54" y="712" width="26" height="10" />
+      <rect x="150" y="716" width="12" height="46" />
+      <rect x="290" y="690" width="16" height="72" />
+      <rect x="284" y="704" width="28" height="10" />
+      <rect x="420" y="722" width="12" height="44" />
+      <rect x="560" y="700" width="15" height="66" />
+      <rect x="554" y="714" width="27" height="10" />
+      <rect x="700" y="726" width="12" height="42" />
+      <rect x="850" y="704" width="15" height="64" />
+      <rect x="844" y="718" width="27" height="10" />
+      <rect x="990" y="730" width="12" height="40" />
+      <rect x="1130" y="702" width="16" height="68" />
+      <rect x="1124" y="716" width="28" height="10" />
+      <rect x="1280" y="726" width="12" height="44" />
+      <rect x="1380" y="708" width="14" height="60" />
+    </g>
+
+    <!-- Ambient fog bands -->
+    <rect x="0" y="612" width="1440" height="26" fill="#0d1e23" opacity="0.5" />
+    <rect x="0" y="742" width="1440" height="30" fill="#0a181c" opacity="0.55" />
+  </svg>
+
+  <div class="rain rain-back"></div>
+  <div class="rain rain-front"></div>
+  <div class="readability-overlay"></div>
+</div>
+
+<style>
+  .scene {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .scene-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Lightweight CSS rain (§16.3) — no canvas, no library. */
+  .rain {
+    position: absolute;
+    inset: -20% 0 -20% 0;
+    pointer-events: none;
+    background-repeat: repeat;
+  }
+  .rain-back {
+    opacity: 0.16;
+    background-image: repeating-linear-gradient(
+      104deg,
+      transparent 0 38px,
+      rgba(160, 220, 226, 0.85) 38px 40px,
+      transparent 40px 78px
+    );
+    background-size: 340px 340px;
+    animation: rainFall 1.5s linear infinite;
+  }
+  .rain-front {
+    opacity: 0.1;
+    background-image: repeating-linear-gradient(
+      100deg,
+      transparent 0 62px,
+      rgba(190, 235, 240, 0.9) 62px 65px,
+      transparent 65px 130px
+    );
+    background-size: 500px 500px;
+    animation: rainFall 0.95s linear infinite;
+  }
+
+  @keyframes rainFall {
+    from {
+      transform: translate3d(0, -340px, 0);
+    }
+    to {
+      transform: translate3d(0, 340px, 0);
+    }
+  }
+
+  /* Dark readability overlay (§16.2) — text contrast is not negotiable. */
+  .readability-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        ellipse at 50% 45%,
+        rgba(7, 16, 20, 0.35) 0%,
+        rgba(7, 16, 20, 0.72) 62%,
+        rgba(7, 16, 20, 0.94) 100%
+      ),
+      linear-gradient(to bottom, rgba(7, 16, 20, 0) 62%, var(--cit-bg-deep) 100%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rain {
+      animation: none;
+    }
+  }
+</style>

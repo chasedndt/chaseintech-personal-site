@@ -1,0 +1,116 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Avatar from "../components/Avatar.astro";
+import SocialIconRow from "../components/SocialIconRow.astro";
+import WorkWithMeCTA from "../components/WorkWithMeCTA.astro";
+import { site } from "../data/site.js";
+---
+
+<Layout
+  title={`About — ${site.brand}`}
+  description="Chase is a London-based AI engineer, founder and creator building agentic systems, full-stack products and the infrastructure behind them."
+>
+  <div class="container page">
+    <header class="head">
+      <Avatar size={88} />
+      <div>
+        <p class="section-label">About</p>
+        <h1>Chase</h1>
+        <p class="location">{site.location}</p>
+      </div>
+    </header>
+
+    <div class="prose">
+      <p class="lede">
+        I'm an AI engineer, founder and creator. I build agentic systems,
+        full-stack products, and the governance infrastructure that makes it
+        safe to let software act on your behalf.
+      </p>
+
+      <section>
+        <h2>What I'm building</h2>
+        <p>
+          ChaseOS is the frontier project: a human-AI operating system for
+          running real projects with agents that draft, implement and test
+          freely, but cannot deploy, spend or publish without a person saying
+          yes. Chaser Agent is the harness that came out of it.
+        </p>
+        <p>
+          Around those sit full-stack products, trading and data engineering
+          research, security architecture and creative tooling — all listed
+          honestly on the <a href="/projects">projects page</a>.
+        </p>
+      </section>
+
+      <section>
+        <h2>How I work</h2>
+        <p>
+          Proof over slogans. Every project on this site carries its real
+          status, and the things a system deliberately cannot do are documented
+          alongside the things it can. A prototype is called a prototype.
+        </p>
+        <p>
+          I build in public, which means the failures and corrections show up in
+          the <a href="/build-log">build log</a> next to the wins.
+        </p>
+      </section>
+
+      <section>
+        <h2>Elsewhere</h2>
+        <SocialIconRow />
+      </section>
+    </div>
+  </div>
+
+  <WorkWithMeCTA />
+</Layout>
+
+<style>
+  .page {
+    max-width: 760px;
+    padding: 4rem 1.5rem 3rem;
+  }
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    flex-wrap: wrap;
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    margin-top: 0.4rem;
+  }
+  .location {
+    color: var(--cit-text-muted);
+    font-family: var(--cit-font-mono);
+    font-size: 0.78rem;
+    margin-top: 0.4rem;
+  }
+  .prose {
+    margin-top: 2.5rem;
+    display: grid;
+    gap: 2.2rem;
+  }
+  .lede {
+    font-size: 1.15rem;
+    color: var(--cit-text-primary);
+  }
+  .prose h2 {
+    font-size: 0.78rem;
+    font-family: var(--cit-font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cit-accent-teal);
+    margin-bottom: 0.9rem;
+  }
+  .prose p {
+    color: var(--cit-text-secondary);
+    line-height: 1.75;
+  }
+  .prose p + p {
+    margin-top: 1rem;
+  }
+  .prose a {
+    color: var(--cit-accent-teal);
+  }
+</style>

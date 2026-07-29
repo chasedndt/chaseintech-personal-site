@@ -1,0 +1,101 @@
+---
+import { site, email, emailOperational } from "../data/site.js";
+import SocialIconRow from "./SocialIconRow.astro";
+import Avatar from "./Avatar.astro";
+
+const year = 2026;
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="identity">
+      <Avatar size={40} ring={false} />
+      <div>
+        <p class="name">{site.brand}</p>
+        <p class="meta">{site.location}</p>
+        <p class="signature">{site.signature}</p>
+      </div>
+    </div>
+
+    <div class="links">
+      <SocialIconRow size="sm" />
+      {
+        emailOperational && (
+          <a class="email" href={`mailto:${email}`} data-analytics="email_click">
+            {email}
+          </a>
+        )
+      }
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <p>© {year} {site.brand}</p>
+    <a href="/privacy">Privacy</a>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--cit-border);
+    padding: 3rem 0 2rem;
+    margin-top: 4rem;
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .identity {
+    display: flex;
+    gap: 0.9rem;
+    align-items: center;
+  }
+  .name {
+    font-weight: 700;
+  }
+  .meta,
+  .signature {
+    color: var(--cit-text-muted);
+    font-size: 0.85rem;
+  }
+  .signature {
+    color: var(--cit-accent-teal);
+    font-family: var(--cit-font-mono);
+    font-size: 0.78rem;
+  }
+  .links {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: start;
+  }
+  .email {
+    font-family: var(--cit-font-mono);
+    font-size: 0.82rem;
+    color: var(--cit-text-secondary);
+    text-decoration: none;
+  }
+  .email:hover {
+    color: var(--cit-accent-teal);
+  }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--cit-border);
+    color: var(--cit-text-muted);
+    font-size: 0.8rem;
+  }
+  .footer-bottom a {
+    color: var(--cit-text-muted);
+    text-decoration: none;
+  }
+  .footer-bottom a:hover {
+    color: var(--cit-accent-teal);
+  }
+</style>

@@ -1,144 +1,218 @@
-// Status vocabulary: "live" | "local" | "architecture" | "rd" | "archive"
-// live        = deployed/public-facing and verified
-// local       = works locally with proof, not deployed
-// architecture = designed, not yet implemented
-// rd          = experiments/evidence, not a production product
-// archive     = older project retained for progression/context
+// Structured project content (§32.1).
+// Status vocabulary is fixed (§23.2) and must stay truthful — a prototype is
+// never described as a production product.
 
 export const statusLabels = {
-  live: "Live public",
-  local: "Local working",
-  architecture: "Architecture",
-  rd: "R&D",
-  archive: "Archive",
+  live: "Live",
+  development: "In Development",
+  oss: "Open Source",
+  research: "Research",
+  prototype: "Prototype",
+  archived: "Archived",
+  private: "Private",
+};
+
+export const categories = {
+  agentic: "Agentic AI and Infrastructure",
+  fullstack: "Full-Stack Products",
+  automation: "Automation and Business Systems",
+  trading: "Trading and Data Engineering",
+  security: "Cybersecurity Research",
+  creative: "Creative Tooling",
 };
 
 export const projects = [
   {
-    id: "chaseos",
+    slug: "chaseos",
     name: "ChaseOS",
-    lane: "Operating system / control plane",
-    status: "local",
-    tagline: "Flagship local-first AI operating system for builders.",
-    description:
-      "Local-first AI operating system for builders running real projects with governed agents, memory, approvals, and workflow infrastructure.",
-    repoUrl: "https://github.com/chasedndt/ChaseOS-Core",
+    frontier: true,
+    featured: true,
+    category: categories.agentic,
+    status: "development",
+    role: "Founder and Systems Builder",
+    summary:
+      "A human-AI operating system and governance layer for orchestrating agents, projects, knowledge, approvals and persistent digital workflows.",
+    outcome:
+      "Local-first control plane that lets one builder run many agents across real projects without giving up review, memory or approval boundaries.",
+    technologies: ["Python", "SQLite", "Agent orchestration", "MCP", "Discord control plane"],
+    repositoryUrl: "https://github.com/chasedndt/ChaseOS-Core",
+    liveUrl: "https://chaseos.ai",
+    systemAreas: [
+      "Studio",
+      "Governance and approvals",
+      "Runtime orchestration",
+      "Hermes and peer runtimes",
+      "Chaser Agent",
+      "Knowledge graph",
+      "Memory",
+      "Agent bus",
+      "MCP and tools",
+      "Projects and workflows",
+    ],
     boundary:
-      "Not claiming: production SaaS deployment, unbounded agent execution, or a managed public agent service.",
-    detail: {
-      label: "Control-plane infrastructure",
-      body:
-        "ChaseOS agent harnesses run their day-to-day review and approval loop over Discord-based control-plane lanes — one lane per active project, used for status receipts and human review gates rather than public chat.",
-    },
+      "Not claiming production SaaS deployment, unbounded agent execution, or a managed public agent service.",
+    relatedVideos: [],
+    relatedBuildLogs: ["chaseos-control-plane-boundaries"],
   },
   {
-    id: "chaseos-web",
-    name: "ChaseOS Web",
-    lane: "Operating system / public site",
-    status: "local",
-    tagline: "Public product website and front door for chaseos.ai.",
-    description:
-      "Cloudflare-ready public website with a Vite/React shell, implemented public routes, a D1-backed waitlist path, and Early Access boundaries.",
-    repoUrl: null,
-    boundary:
-      "Not claiming: a public installer, live marketplace transactions, or a managed-agent service.",
-  },
-  {
-    id: "chaser-agent",
+    slug: "chaser-agent",
     name: "Chaser Agent",
-    lane: "Runtime / agent product",
-    status: "local",
-    tagline: "Governed, review-first source-intelligence agent harness.",
-    description:
-      "Review-first Source Card Harness V0 that separates source claims, evidence snippets, uncertainty, action candidates, and memory candidates for human review — extracted from ChaseOS principles.",
-    repoUrl: "https://github.com/chasedndt/Chaser-Agent",
+    featured: true,
+    category: categories.agentic,
+    status: "oss",
+    role: "Architect and Engineer",
+    summary:
+      "A governed, review-first source-intelligence agent harness extracted from ChaseOS principles.",
+    outcome:
+      "Source Card Harness V0 separates source claims, evidence, uncertainty, action candidates and memory candidates so a human reviews before anything is trusted.",
+    technologies: ["Python", "Deterministic review artifacts", "Evidence modelling"],
+    repositoryUrl: "https://github.com/chasedndt/Chaser-Agent",
+    liveUrl: null,
     boundary:
-      "Not claiming: a production autonomous agent, live provider routing, or a browser-control adapter.",
+      "Not claiming a production autonomous agent, live provider routing, or a browser-control adapter.",
+    relatedVideos: [],
+    relatedBuildLogs: ["chaser-agent-source-card-harness"],
   },
   {
-    id: "strikezone-crypto",
-    name: "StrikeZone Crypto",
-    lane: "Trading R&D / signal infrastructure",
-    status: "rd",
-    tagline: "Trading-systems R&D workspace and signal infrastructure.",
-    description:
-      "Structured R&D workspace covering strategy/indicator development, Discord signal-delivery infrastructure, and reproducible experiment logs.",
-    repoUrl: null,
+    slug: "chaseos-web",
+    name: "ChaseOS Web",
+    featured: true,
+    category: categories.fullstack,
+    status: "live",
+    role: "Full-Stack Developer",
+    summary: "The public product website and front door for chaseos.ai.",
+    outcome:
+      "Cloudflare-deployed public site with a Vite/React shell, implemented route map, D1-backed waitlist path and Early Access boundaries.",
+    technologies: ["Vite", "React", "Cloudflare Pages", "Pages Functions", "D1"],
+    repositoryUrl: null,
+    liveUrl: "https://chaseos.ai",
     boundary:
-      "Not claiming: live trade execution, financial performance guarantees, or a production signal subscription service.",
+      "Not claiming a public installer, live marketplace transactions, or a managed-agent service.",
+    relatedVideos: [],
+    relatedBuildLogs: [],
+  },
+  {
+    slug: "strikezone-crypto",
+    name: "StrikeZone Crypto",
+    featured: true,
+    category: categories.trading,
+    status: "research",
+    role: "Systems Designer and Researcher",
+    summary:
+      "A structured trading-systems R&D workspace and signal-delivery infrastructure.",
+    outcome:
+      "Reproducible experiment discipline across indicator development, market-intelligence workflows and Discord signal delivery.",
+    technologies: ["Pine Script", "Python", "Discord infrastructure", "ChaseOS workflow pack"],
+    repositoryUrl: null,
+    liveUrl: null,
+    boundary:
+      "No live trade execution, no financial performance guarantees, and no production signal subscription service.",
     subProjects: [
       {
-        id: "tradesync",
         name: "TradeSync",
-        tagline:
+        summary:
           "AI-powered crypto trading engine for signal scoring and on-chain execution research.",
-        status: "rd",
-        repoUrl: "https://github.com/chasedndt/TradeSync",
+        status: "research",
+        repositoryUrl: "https://github.com/chasedndt/TradeSync",
       },
       {
-        id: "pinescript-indicators",
         name: "Pine Script indicators",
-        tagline: "Strategy and indicator development for the StrikeZone Crypto system.",
-        status: "rd",
-        repoUrl:
+        summary:
+          "Strategy and indicator development for the StrikeZone Crypto system.",
+        status: "research",
+        repositoryUrl:
           "https://github.com/chasedndt/Strikezone-Crypto-Pinescript-V6-Indicators",
       },
       {
-        id: "chaseos-workflow",
-        name: "StrikeZone Market Intelligence (ChaseOS workflow pack)",
-        tagline:
-          "Daily BTC/ETH/SOL market-intelligence workflow built on ChaseOS: governed evidence acquisition, Director Thesis drafting, and publication with fetch-back proof. No trade execution.",
-        status: "rd",
-        repoUrl: null,
+        name: "StrikeZone Market Intelligence",
+        summary:
+          "A ChaseOS workflow pack running governed daily market intelligence: evidence acquisition, thesis drafting and publication with fetch-back proof. No trade execution.",
+        status: "research",
+        repositoryUrl: null,
       },
     ],
+    relatedVideos: [],
+    relatedBuildLogs: ["strikezone-market-intelligence-pack"],
   },
   {
-    id: "hypelist",
+    slug: "hypelist",
     name: "Hypelist",
-    lane: "Commerce / inventory product",
-    status: "local",
-    tagline: "Full-stack inventory and marketplace product.",
-    description:
-      "React frontend with a Flask backend and Firebase/SQLite modes for inventory and marketplace workflows.",
-    repoUrl: "https://github.com/chasedndt/Hypelist",
+    featured: true,
+    category: categories.fullstack,
+    status: "development",
+    role: "Full-Stack Developer",
+    summary: "A full-stack inventory and marketplace product.",
+    outcome:
+      "React frontend with a Flask backend and Firebase/SQLite modes covering inventory, admin and marketplace workflows.",
+    technologies: ["React", "Flask", "Firebase", "SQLite"],
+    repositoryUrl: "https://github.com/chasedndt/Hypelist",
+    liveUrl: null,
     boundary:
-      "Not claiming: a production commerce site, live Stripe billing, or live customer/admin operations ahead of a repo-hygiene review.",
+      "Not claiming a production commerce site, live billing, or live customer operations ahead of a repo-hygiene review.",
+    relatedVideos: [],
+    relatedBuildLogs: [],
   },
   {
-    id: "greytheory-ai",
+    slug: "greytheory-ai",
     name: "GreyTheory AI",
-    lane: "Security research architecture",
-    status: "architecture",
-    tagline: "Proof-first, AI-assisted bug bounty architecture.",
-    description:
-      "Modular AI-assisted bug bounty operating-system architecture with deterministic validation, a confidence taxonomy, and human review gates.",
-    repoUrl: "https://github.com/chasedndt/GreyTheory-Research",
+    featured: true,
+    category: categories.security,
+    status: "research",
+    role: "Security Architect",
+    summary: "A proof-first, AI-assisted bug bounty architecture.",
+    outcome:
+      "Modular architecture pairing deterministic validation with a confidence taxonomy and mandatory human review gates.",
+    technologies: ["Architecture", "Deterministic validation", "Confidence taxonomy"],
+    repositoryUrl: "https://github.com/chasedndt/GreyTheory-Research",
+    liveUrl: null,
     boundary:
-      "Not claiming: a live scanner, autonomous exploit engine, or validated bug bounty findings.",
+      "Architecture and pre-implementation only. No live scanner, no autonomous exploit engine, no validated findings.",
+    relatedVideos: [],
+    relatedBuildLogs: [],
   },
   {
-    id: "toolshape-studio",
+    slug: "toolshape-studio",
     name: "Toolshape Studio",
-    lane: "Creative tooling product",
-    status: "local",
-    tagline: "Visual-design and video-editing app with an agent control plane.",
-    description:
-      "Unified scene/timeline editor with typed edit operations, undo/redo, media probing, and a scalable React editor shell — milestones 1 through 5 verified locally.",
-    repoUrl: "https://github.com/chasedndt/toolshape-studio",
+    featured: false,
+    category: categories.creative,
+    status: "development",
+    role: "Architect and Engineer",
+    summary:
+      "A visual-design and video-editing application with a semantic agent control plane.",
+    outcome:
+      "Unified scene/timeline project with typed edit operations, revision enforcement, undo/redo, SQLite restart recovery and verified render output.",
+    technologies: ["TypeScript", "React", "SQLite", "Media pipelines"],
+    repositoryUrl: "https://github.com/chasedndt/toolshape-studio",
+    liveUrl: null,
     boundary:
-      "Not claiming: a shipped native app, signed packaging, or full feature parity — the native shell and several features remain deferred.",
+      "Milestones 1–5 verified locally. Native shell, signed packaging and broad feature parity remain deferred.",
+    relatedVideos: [],
+    relatedBuildLogs: [],
   },
   {
-    id: "toolshape-voice",
+    slug: "toolshape-voice",
     name: "Toolshape Voice",
-    lane: "Creative tooling product",
-    status: "local",
-    tagline: "Local-first Windows dictation and writing-intelligence app.",
-    description:
-      "System-wide dictation with Dictionary, Snippets, Voice Styles, and Transforms, an agent-first Voice Hub, and a packaged Electron desktop build.",
-    repoUrl: "https://github.com/chasedndt/toolshape-voice",
+    featured: false,
+    category: categories.creative,
+    status: "development",
+    role: "Architect and Engineer",
+    summary:
+      "A local-first Windows dictation and writing-intelligence application.",
+    outcome:
+      "System-wide dictation with Dictionary, Snippets, Voice Styles and Transforms, an agent-first Voice Hub and a packaged desktop build.",
+    technologies: ["TypeScript", "Electron", "SQLite", "Windows speech APIs"],
+    repositoryUrl: "https://github.com/chasedndt/toolshape-voice",
+    liveUrl: null,
     boundary:
-      "Not claiming: production Tauri/signed packaging, cloud distribution, or a benchmark-selected transcription provider — those remain not built.",
+      "Not claiming production signed packaging, cloud distribution, or a benchmark-selected transcription provider.",
+    relatedVideos: [],
+    relatedBuildLogs: [],
   },
 ];
+
+export const frontierProject = projects.find((p) => p.frontier);
+export const featuredProjects = projects.filter((p) => p.featured && !p.frontier);
+
+export function getProject(slug) {
+  return projects.find((p) => p.slug === slug);
+}

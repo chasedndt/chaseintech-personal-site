@@ -1,0 +1,97 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { videos } from "../../data/videos.js";
+import { site, activeSocials } from "../../data/site.js";
+
+const x = activeSocials.find((s) => s.id === "x");
+---
+
+<Layout
+  title={`Videos — ${site.brand}`}
+  description="Build sessions, technical walkthroughs and project demonstrations from ChaseInTech."
+>
+  <div class="container page-head">
+    <p class="section-label">Watch the build</p>
+    <h1>Videos</h1>
+    <p class="intro">
+      Build sessions and technical walkthroughs covering the systems in the
+      portfolio.
+    </p>
+  </div>
+
+  <div class="container">
+    {
+      videos.length > 0 ? (
+        <ul class="grid">
+          {videos.map((video) => (
+            <li>
+              <a href={`/videos/${video.slug}`} data-analytics="video_open">
+                <h2>{video.title}</h2>
+                <p>{video.summary}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div class="empty">
+          <h2>The library is being set up</h2>
+          <p>
+            Videos are published to YouTube first and mirrored here with the
+            related projects and build logs attached. Nothing is listed yet
+            because no channel URL has been wired up — this page will populate
+            itself the moment it is.
+          </p>
+          {x && (
+            <a
+              class="btn btn-secondary"
+              href={x.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-analytics="x_click"
+            >
+              Follow on X for build updates ↗
+            </a>
+          )}
+        </div>
+      )
+    }
+  </div>
+</Layout>
+
+<style>
+  .page-head {
+    padding: 4rem 0 2.5rem;
+  }
+  h1 {
+    font-size: clamp(2.1rem, 5vw, 3rem);
+    margin-top: 0.6rem;
+  }
+  .intro {
+    color: var(--cit-text-secondary);
+    max-width: 60ch;
+    margin-top: 1rem;
+  }
+  .empty {
+    border: 1px dashed var(--cit-border);
+    border-radius: var(--cit-radius);
+    padding: 2.5rem;
+    margin-bottom: 3rem;
+    max-width: 640px;
+  }
+  .empty h2 {
+    font-size: 1.2rem;
+  }
+  .empty p {
+    color: var(--cit-text-secondary);
+    margin: 0.9rem 0 1.6rem;
+    font-size: 0.95rem;
+  }
+  .grid {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 3rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: 1.25rem;
+  }
+</style>

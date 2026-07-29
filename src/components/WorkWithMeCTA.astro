@@ -1,0 +1,64 @@
+---
+import { email, emailOperational } from "../data/site.js";
+---
+
+<section class="cta" aria-labelledby="cta-title">
+  <div class="container cta-inner">
+    <p class="section-label">Building something ambitious?</p>
+    <h2 id="cta-title">
+      I take on a small number of projects at a time.
+    </h2>
+    <p class="body">
+      Available for selected agentic AI, automation, full-stack product and
+      technical architecture work.
+    </p>
+    <div class="actions">
+      <a class="btn btn-primary" href="/work-with-me" data-analytics="work_with_me_click">
+        Work with me
+      </a>
+      {
+        emailOperational && (
+          <a class="btn btn-secondary" href={`mailto:${email}`} data-analytics="email_click">
+            {email}
+          </a>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    padding: 4.5rem 0;
+    border-top: 1px solid var(--cit-border);
+    border-bottom: 1px solid var(--cit-border);
+    background:
+      radial-gradient(ellipse at 50% 120%, rgba(57, 222, 201, 0.08), transparent 60%);
+  }
+  .cta-inner {
+    max-width: 720px;
+  }
+  h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+    margin-top: 0.7rem;
+  }
+  .body {
+    color: var(--cit-text-secondary);
+    margin-top: 1rem;
+    max-width: 52ch;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 1.9rem;
+  }
+  @media (max-width: 640px) {
+    .cta {
+      padding: 3rem 0;
+    }
+    .actions .btn {
+      width: 100%;
+    }
+  }
+</style>

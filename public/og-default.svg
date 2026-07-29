@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a181d"/>
+      <stop offset="100%" stop-color="#071014"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.28" cy="0.35" r="0.6">
+      <stop offset="0%" stop-color="#39dec9" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#39dec9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Stepped ridgeline, matching the site hero -->
+  <path fill="#0c1b20" d="M0 470 h60 v-30 h60 v-40 h60 v-35 h60 v45 h60 v-60 h60 v-30 h60 v50 h60 v40 h60 v-55 h60 v-45 h60 v65 h60 v35 h60 v-30 h60 v-50 h60 v40 h60 v55 h60 v-35 h60 v45 h60 v30 h60 V630 H0 Z"/>
+  <path fill="#081418" d="M0 545 h80 v-45 h80 v40 h80 v-55 h80 v45 h80 v-35 h80 v50 h80 v-40 h80 v35 h80 v-30 h80 v45 h80 v-40 h80 v50 h160 V630 H0 Z"/>
+
+  <!-- Avatar mark -->
+  <g transform="translate(80,150)">
+    <rect width="96" height="96" rx="48" fill="#0d2429"/>
+    <g transform="translate(24,24) scale(3)" shape-rendering="crispEdges">
+      <rect x="1" y="0" width="6" height="2" fill="#39dec9"/>
+      <rect x="-1" y="2" width="2" height="6" fill="#39dec9"/>
+      <rect x="1" y="8" width="6" height="2" fill="#39dec9"/>
+      <rect x="7" y="2" width="2" height="2" fill="#8d7cf3"/>
+      <rect x="7" y="6" width="2" height="2" fill="#8d7cf3"/>
+    </g>
+  </g>
+
+  <text x="80" y="330" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="26" letter-spacing="6" fill="#39dec9">LONDON · AGENTIC AI · SOFTWARE · CREATOR</text>
+  <text x="80" y="420" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="86" font-weight="700" fill="#f2f0e8">ChaseInTech</text>
+  <text x="80" y="478" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="30" fill="#39dec9">Builder mode, everywhere.</text>
+  <text x="80" y="546" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="27" fill="#a8b5b8">AI engineer, founder and systems builder</text>
+  <text x="80" y="590" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="24" fill="#78898f">chaseintech.com</text>
+</svg>

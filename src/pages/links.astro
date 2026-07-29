@@ -1,0 +1,167 @@
+---
+// /links — the legacy Carrd experience preserved most directly (§26).
+// Compact vertical card, large tappable destination buttons, no builder
+// branding. This is the ONLY route where equal-width stacked buttons are
+// the correct pattern.
+import AmbientHeroScene from "../components/AmbientHeroScene.astro";
+import Avatar from "../components/Avatar.astro";
+import SocialIconRow from "../components/SocialIconRow.astro";
+import { site, socials, email, emailOperational } from "../data/site.js";
+import { featuredVideo } from "../data/videos.js";
+import "../styles/global.css";
+
+const find = (id) => socials.find((s) => s.id === id);
+const x = find("x");
+const youtube = find("youtube");
+const github = find("github");
+
+const buttons = [
+  { label: "Portfolio Home", href: "/", icon: "home" },
+  { label: "Explore ChaseOS", href: "/projects/chaseos", icon: "spark", event: "hero_chaseos_click" },
+  featuredVideo && {
+    label: "Latest Video",
+    href: `/videos/${featuredVideo.slug}`,
+    icon: "play",
+    event: "video_open",
+  },
+  { label: "View Projects", href: "/projects", icon: "folder", event: "hero_projects_click" },
+  github && { label: "GitHub / Builds", href: github.url, icon: "github", external: true, event: github.event },
+  x && { label: "Follow on X", href: x.url, icon: "x", external: true, event: x.event },
+  youtube?.url && {
+    label: "Watch on YouTube",
+    href: youtube.url,
+    icon: "youtube",
+    external: true,
+    event: youtube.event,
+  },
+  emailOperational && {
+    label: "Email Chase",
+    href: `mailto:${email}`,
+    icon: "mail",
+    event: "email_click",
+  },
+].filter(Boolean);
+
+const canonical = new URL("/links", site.url).href;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{`Links — ${site.brand}`}</title>
+    <meta
+      name="description"
+      content="ChaseInTech links: portfolio, ChaseOS, projects, GitHub and social."
+    />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={`Links — ${site.brand}`} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL("/og-default.svg", site.url).href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <main class="links-page">
+      <AmbientHeroScene />
+
+      <div class="card">
+        <div class="card-head">
+          <Avatar size={72} />
+          <SocialIconRow size="sm" align="center" />
+        </div>
+
+        <p class="eyebrow">London · Agentic AI · Software · Creator</p>
+        <h1>{site.brand}</h1>
+        <p class="signature">{site.signature}</p>
+
+        <nav class="buttons" aria-label="Destinations">
+          {
+            buttons.map((button) => (
+              <a
+                href={button.href}
+                data-analytics={button.event}
+                {...(button.external
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+              >
+                <span>{button.label}</span>
+                {button.external && <span class="ext" aria-hidden="true">↗</span>}
+              </a>
+            ))
+          }
+        </nav>
+      </div>
+    </main>
+  </body>
+</html>
+
+<style>
+  .links-page {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    padding: 3rem 1.25rem;
+    isolation: isolate;
+  }
+  .card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 440px;
+    background: var(--cit-glass);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius-lg);
+    padding: 1.75rem;
+    text-align: center;
+    box-shadow: 0 24px 70px -30px rgba(0, 0, 0, 0.9);
+  }
+  .card-head {
+    display: grid;
+    justify-items: center;
+    gap: 1rem;
+    padding-bottom: 1.4rem;
+    margin-bottom: 1.4rem;
+    border-bottom: 1px solid var(--cit-border);
+  }
+  h1 {
+    font-size: 2.1rem;
+    margin-top: 0.5rem;
+  }
+  .signature {
+    color: var(--cit-accent-teal);
+    font-family: var(--cit-font-mono);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+  .buttons {
+    display: grid;
+    gap: 0.65rem;
+    margin-top: 1.8rem;
+  }
+  .buttons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 52px;
+    padding: 0.85rem 1rem;
+    border-radius: var(--cit-radius-sm);
+    border: 1px solid var(--cit-border-strong);
+    background: rgba(13, 23, 27, 0.75);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: border-color 0.18s ease, background-color 0.18s ease;
+  }
+  .buttons a:hover {
+    border-color: var(--cit-accent-teal);
+    background: rgba(57, 222, 201, 0.1);
+  }
+  .ext {
+    color: var(--cit-text-muted);
+    font-size: 0.8rem;
+  }
+</style>

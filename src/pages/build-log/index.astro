@@ -1,0 +1,109 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { publishedBuildLogs } from "../../data/build-logs.js";
+import { site } from "../../data/site.js";
+---
+
+<Layout
+  title={`Build Log — ${site.brand}`}
+  description="Engineering build logs: architecture, requirements, trade-offs, testing, failures and corrections from real projects."
+>
+  <div class="container page-head">
+    <p class="section-label">Engineering build log</p>
+    <h1>How the decisions actually got made</h1>
+    <p class="intro">
+      Written from the repositories rather than from memory. Entries cover
+      architecture, constraints, trade-offs and the corrections that followed
+      when something turned out to be wrong.
+    </p>
+  </div>
+
+  <div class="container">
+    <ul class="entries">
+      {
+        publishedBuildLogs.map((entry) => (
+          <li>
+            <a href={`/build-log/${entry.slug}`} data-analytics="build_log_open">
+              <p class="date">
+                <time datetime={entry.publishedAt}>{entry.publishedAt}</time>
+              </p>
+              <h2>{entry.title}</h2>
+              <p class="summary">{entry.summary}</p>
+              <ul class="tags">
+                {entry.tags.map((tag) => (
+                  <li>{tag}</li>
+                ))}
+              </ul>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Layout>
+
+<style>
+  .page-head {
+    padding: 4rem 0 2.5rem;
+  }
+  h1 {
+    font-size: clamp(2.1rem, 5vw, 3rem);
+    margin-top: 0.6rem;
+    max-width: 20ch;
+  }
+  .intro {
+    color: var(--cit-text-secondary);
+    max-width: 62ch;
+    margin-top: 1rem;
+  }
+  .entries {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 3rem;
+    display: grid;
+    gap: 1rem;
+  }
+  .entries > li > a {
+    display: block;
+    text-decoration: none;
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius);
+    padding: 1.6rem;
+    background: var(--cit-bg-surface);
+    transition: border-color 0.2s ease;
+  }
+  .entries > li > a:hover {
+    border-color: var(--cit-accent-teal);
+  }
+  .date {
+    font-family: var(--cit-font-mono);
+    font-size: 0.72rem;
+    color: var(--cit-text-muted);
+  }
+  h2 {
+    font-size: 1.25rem;
+    margin-top: 0.5rem;
+  }
+  .summary {
+    color: var(--cit-text-secondary);
+    font-size: 0.93rem;
+    margin-top: 0.6rem;
+    max-width: 70ch;
+  }
+  .tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 1rem 0 0;
+    padding: 0;
+  }
+  .tags li {
+    font-family: var(--cit-font-mono);
+    font-size: 0.68rem;
+    color: var(--cit-text-muted);
+    border: 1px solid var(--cit-border);
+    border-radius: 999px;
+    padding: 0.15rem 0.5rem;
+  }
+</style>

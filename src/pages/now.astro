@@ -1,0 +1,83 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { site } from "../data/site.js";
+
+const lastUpdated = "29 July 2026";
+---
+
+<Layout
+  title={`Now — ${site.brand}`}
+  description="What Chase is focused on right now."
+>
+  <div class="container page">
+    <p class="section-label">Now</p>
+    <h1>What I'm focused on</h1>
+    <p class="updated">Last updated {lastUpdated}</p>
+
+    <ul class="items">
+      <li>
+        <h2>Building ChaseOS</h2>
+        <p>
+          The frontier project — governance, runtime orchestration and the
+          control-plane boundaries that keep agent work reviewable.
+        </p>
+      </li>
+      <li>
+        <h2>Developing Chaser Agent</h2>
+        <p>
+          Source Card Harness V0 is complete. Next up is an evaluation harness
+          to test whether the structure actually improves reviewer decisions.
+        </p>
+      </li>
+      <li>
+        <h2>Publishing ChaseInTech content</h2>
+        <p>
+          Setting up the video library and writing build logs from real
+          repository history rather than retrospective summaries.
+        </p>
+      </li>
+      <li>
+        <h2>Availability</h2>
+        <p>
+          Open to a small number of selected projects. See
+          <a href="/work-with-me">work with me</a>.
+        </p>
+      </li>
+    </ul>
+  </div>
+</Layout>
+
+<style>
+  .page {
+    max-width: 700px;
+    padding: 4rem 1.5rem 3rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 2.7rem);
+    margin-top: 0.6rem;
+  }
+  .updated {
+    font-family: var(--cit-font-mono);
+    font-size: 0.75rem;
+    color: var(--cit-text-muted);
+    margin-top: 0.8rem;
+  }
+  .items {
+    list-style: none;
+    margin: 2.5rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1.8rem;
+  }
+  .items h2 {
+    font-size: 1.05rem;
+  }
+  .items p {
+    color: var(--cit-text-secondary);
+    margin-top: 0.5rem;
+    line-height: 1.7;
+  }
+  .items a {
+    color: var(--cit-accent-teal);
+  }
+</style>

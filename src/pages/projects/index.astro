@@ -1,0 +1,111 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import StatusBadge from "../../components/StatusBadge.astro";
+import { projects, frontierProject, categories } from "../../data/projects.js";
+import { site } from "../../data/site.js";
+
+const grouped = Object.values(categories)
+  .map((category) => ({
+    category,
+    items: projects.filter((p) => p.category === category && !p.frontier),
+  }))
+  .filter((group) => group.items.length > 0);
+---
+
+<Layout
+  title={`Projects — ${site.brand}`}
+  description="The full project portfolio: agentic AI infrastructure, full-stack products, trading and data engineering, security research and creative tooling."
+>
+  <div class="container page-head">
+    <p class="section-label">Portfolio</p>
+    <h1>Projects</h1>
+    <p class="intro">
+      Every project below is labelled with its real current state. Research and
+      prototypes are named as such — nothing here is described as a production
+      product unless it is one.
+    </p>
+  </div>
+
+  <div class="container">
+    <a class="frontier-row" href={`/projects/${frontierProject.slug}`}>
+      <div>
+        <p class="section-label">Current frontier project</p>
+        <h2>{frontierProject.name}</h2>
+        <p class="frontier-summary">{frontierProject.summary}</p>
+      </div>
+      <StatusBadge status={frontierProject.status} />
+    </a>
+  </div>
+
+  {
+    grouped.map((group) => (
+      <section class="group container">
+        <h2 class="group-title">{group.category}</h2>
+        <div class="grid">
+          {group.items.map((project) => (
+            <ProjectCard project={project} />
+          ))}
+        </div>
+      </section>
+    ))
+  }
+</Layout>
+
+<style>
+  .page-head {
+    padding: 4rem 0 2.5rem;
+  }
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    margin-top: 0.6rem;
+  }
+  .intro {
+    color: var(--cit-text-secondary);
+    max-width: 62ch;
+    margin-top: 1rem;
+  }
+  .frontier-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    text-decoration: none;
+    border: 1px solid var(--cit-border-strong);
+    border-radius: var(--cit-radius);
+    padding: 1.6rem;
+    background:
+      radial-gradient(ellipse at 0% 0%, rgba(57, 222, 201, 0.08), transparent 65%),
+      var(--cit-bg-surface);
+    transition: border-color 0.2s ease;
+  }
+  .frontier-row:hover {
+    border-color: var(--cit-accent-teal);
+  }
+  .frontier-row h2 {
+    font-size: 1.6rem;
+    margin-top: 0.5rem;
+  }
+  .frontier-summary {
+    color: var(--cit-text-secondary);
+    font-size: 0.92rem;
+    margin-top: 0.6rem;
+    max-width: 62ch;
+  }
+  .group {
+    margin-top: 3.5rem;
+  }
+  .group-title {
+    font-size: 1.15rem;
+    color: var(--cit-text-secondary);
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--cit-border);
+    margin-bottom: 1.5rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: 1.25rem;
+  }
+</style>

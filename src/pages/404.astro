@@ -1,0 +1,40 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { site } from "../data/site.js";
+---
+
+<Layout title={`Not found — ${site.brand}`} description="Page not found.">
+  <div class="container page">
+    <p class="section-label">404</p>
+    <h1>That route doesn't exist</h1>
+    <p class="body">
+      The page you were looking for isn't here. It may have moved, or the link
+      may be wrong.
+    </p>
+    <div class="actions">
+      <a class="btn btn-primary" href="/">Back to home</a>
+      <a class="btn btn-secondary" href="/projects">View projects</a>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page {
+    max-width: 600px;
+    padding: 6rem 1.5rem 5rem;
+  }
+  h1 {
+    font-size: clamp(1.9rem, 5vw, 2.6rem);
+    margin-top: 0.6rem;
+  }
+  .body {
+    color: var(--cit-text-secondary);
+    margin-top: 1rem;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 2rem;
+  }
+</style>

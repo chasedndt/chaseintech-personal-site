@@ -1,55 +1,192 @@
+/* ChaseInTech design tokens — CHASEINTECH-VISUAL-UX-002 §18 */
 :root {
-  --bg: #0b0d12;
-  --bg-elevated: #12151c;
-  --border: #23272f;
-  --text: #e8eaed;
-  --text-muted: #9aa1ac;
-  --accent: #5eead4;
-  --accent-soft: rgba(94, 234, 212, 0.12);
-  --status-live: #4ade80;
-  --status-local: #5eead4;
-  --status-arch: #93c5fd;
-  --status-rd: #fbbf24;
-  --status-archive: #6b7280;
-  --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  /* Core palette */
+  --cit-bg-deep: #071014;
+  --cit-bg-surface: #0d171b;
+  --cit-bg-elevated: #132126;
+  --cit-text-primary: #f2f0e8;
+  --cit-text-secondary: #a8b5b8;
+  --cit-text-muted: #78898f;
+  --cit-accent-teal: #39dec9;
+  --cit-accent-teal-strong: #19c8bb;
+  --cit-accent-violet: #8d7cf3;
+  --cit-border: rgba(180, 210, 214, 0.16);
+  --cit-border-strong: rgba(180, 210, 214, 0.28);
+  --cit-glass: rgba(11, 21, 24, 0.68);
+  --cit-focus: #7df3e7;
+
+  /* Status colours */
+  --cit-status-live: #4ade80;
+  --cit-status-dev: #39dec9;
+  --cit-status-oss: #8d7cf3;
+  --cit-status-research: #fbbf24;
+  --cit-status-prototype: #93c5fd;
+  --cit-status-archived: #7c8b91;
+  --cit-status-private: #9aa1ac;
+
+  /* Type */
+  --cit-font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --cit-font-mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  /* Layout */
+  --cit-container: 1140px;
+  --cit-container-narrow: 760px;
+  --cit-radius-sm: 6px;
+  --cit-radius: 12px;
+  --cit-radius-lg: 18px;
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-body);
-  line-height: 1.5;
+  background: var(--cit-bg-deep);
+  color: var(--cit-text-primary);
+  font-family: var(--cit-font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  max-width: 100%;
   overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.15;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+p {
+  margin: 0;
 }
 
 a {
   color: inherit;
 }
 
-h1,
-h2,
-h3 {
-  line-height: 1.15;
-  margin: 0;
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Accessible focus — never removed, only styled (§36) */
+:focus-visible {
+  outline: 2px solid var(--cit-focus);
+  outline-offset: 3px;
+  border-radius: var(--cit-radius-sm);
 }
 
 .container {
   width: 100%;
-  max-width: 1080px;
+  max-width: var(--cit-container);
   margin: 0 auto;
   padding: 0 1.5rem;
+}
+
+.container-narrow {
+  max-width: var(--cit-container-narrow);
+}
+
+/* Monospace eyebrow label (§19) */
+.eyebrow {
+  font-family: var(--cit-font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cit-accent-teal);
+  margin: 0;
+}
+
+.section-label {
+  font-family: var(--cit-font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cit-text-muted);
+  margin: 0;
+}
+
+/* Skip link (§36) */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  background: var(--cit-accent-teal);
+  color: #04181a;
+  padding: 0.7rem 1.2rem;
+  font-weight: 600;
+  border-radius: 0 0 var(--cit-radius-sm) 0;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+/* Buttons (§35.1) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--cit-radius-sm);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1px solid transparent;
+  transition: background-color 0.18s ease, border-color 0.18s ease,
+    transform 0.18s ease;
+}
+.btn-primary {
+  background: var(--cit-accent-teal);
+  color: #04181a;
+  box-shadow: 0 0 24px -8px var(--cit-accent-teal);
+}
+.btn-primary:hover {
+  background: var(--cit-accent-teal-strong);
+}
+.btn-secondary {
+  border-color: var(--cit-border-strong);
+  color: var(--cit-text-primary);
+  background: rgba(255, 255, 255, 0.03);
+}
+.btn-secondary:hover {
+  border-color: var(--cit-accent-teal);
+  background: rgba(57, 222, 201, 0.08);
+}
+.btn-quiet {
+  color: var(--cit-text-secondary);
+  padding: 0.5rem 0;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--cit-border-strong);
+}
+.btn-quiet:hover {
+  color: var(--cit-accent-teal);
+  text-decoration-color: var(--cit-accent-teal);
+}
+
+.text-link {
+  color: var(--cit-accent-teal);
+  text-decoration: none;
+  font-family: var(--cit-font-mono);
+  font-size: 0.85rem;
+}
+.text-link:hover {
+  text-decoration: underline;
 }
 
 @media (max-width: 480px) {
@@ -58,10 +195,16 @@ h3 {
   }
 }
 
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
+/* Reduced motion (§16.4) — experience stays complete without animation */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

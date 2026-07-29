@@ -1,0 +1,151 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { site, email, emailOperational } from "../data/site.js";
+
+const services = [
+  {
+    title: "Agentic AI systems",
+    body: "Multi-agent orchestration, approval boundaries, memory and knowledge design — systems that stay reviewable as they scale.",
+  },
+  {
+    title: "Agent harness and runtime engineering",
+    body: "Harnesses, evaluation loops and review artifacts that make agent output verifiable rather than merely plausible.",
+  },
+  {
+    title: "AI-enabled full-stack products",
+    body: "End-to-end product work where the AI layer has to survive contact with real users and real data.",
+  },
+  {
+    title: "Automation and integrations",
+    body: "Workflow automation across the tools a business already runs, with failure modes designed in rather than discovered.",
+  },
+  {
+    title: "Technical architecture",
+    body: "Architecture and system design for teams who need a defensible plan before committing engineering budget.",
+  },
+  {
+    title: "Product and system audits",
+    body: "An independent read on an existing system: what is solid, what is fragile, and what to do about it.",
+  },
+];
+---
+
+<Layout
+  title={`Work With Me — ${site.brand}`}
+  description="Available for selected agentic AI, automation, full-stack product and technical architecture projects."
+>
+  <div class="container page-head">
+    <p class="section-label">Work with me</p>
+    <h1>Building something ambitious?</h1>
+    <p class="intro">
+      I take on a small number of projects at a time so each one gets real
+      attention. If your problem looks like one of these, tell me about it.
+    </p>
+  </div>
+
+  <div class="container">
+    <ul class="services">
+      {
+        services.map((service) => (
+          <li>
+            <h2>{service.title}</h2>
+            <p>{service.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <section class="enquiry">
+      <h2>Make an enquiry</h2>
+      {
+        emailOperational ? (
+          <>
+            <p>
+              Email me directly with what you're building, the problem you're
+              trying to solve, your timeline and rough budget band. The more
+              specific the message, the faster I can tell you whether I'm the
+              right person for it.
+            </p>
+            <a
+              class="btn btn-primary"
+              href={`mailto:${email}?subject=Project%20enquiry`}
+              data-analytics="inquiry_started"
+            >
+              {email}
+            </a>
+            <p class="note">
+              I read everything. I reply to the enquiries I can genuinely help
+              with.
+            </p>
+          </>
+        ) : (
+          <p>
+            The enquiry route is being set up. Check back shortly.
+          </p>
+        )
+      }
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .page-head {
+    padding: 4rem 0 2.5rem;
+  }
+  h1 {
+    font-size: clamp(2.1rem, 5vw, 3rem);
+    margin-top: 0.6rem;
+    max-width: 18ch;
+  }
+  .intro {
+    color: var(--cit-text-secondary);
+    max-width: 60ch;
+    margin-top: 1rem;
+  }
+  .services {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+    gap: 1.1rem;
+  }
+  .services li {
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius);
+    padding: 1.4rem;
+    background: var(--cit-bg-surface);
+  }
+  .services h2 {
+    font-size: 1.02rem;
+  }
+  .services p {
+    color: var(--cit-text-secondary);
+    font-size: 0.9rem;
+    margin-top: 0.6rem;
+  }
+  .enquiry {
+    margin: 3.5rem 0 4rem;
+    padding: 2rem;
+    border: 1px solid var(--cit-border-strong);
+    border-radius: var(--cit-radius);
+    background:
+      radial-gradient(ellipse at 0% 0%, rgba(57, 222, 201, 0.08), transparent 60%),
+      var(--cit-bg-surface);
+    max-width: 680px;
+  }
+  .enquiry h2 {
+    font-size: 1.3rem;
+  }
+  .enquiry p {
+    color: var(--cit-text-secondary);
+    margin: 0.9rem 0 1.5rem;
+    max-width: 58ch;
+  }
+  .note {
+    font-size: 0.85rem;
+    color: var(--cit-text-muted);
+    margin-top: 1.2rem !important;
+    margin-bottom: 0 !important;
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { site, email, emailOperational } from "../data/site.js";
+---
+
+<Layout
+  title={`Privacy — ${site.brand}`}
+  description="How this site handles data."
+>
+  <div class="container page">
+    <p class="section-label">Privacy</p>
+    <h1>How this site handles data</h1>
+
+    <section>
+      <h2>What this site collects</h2>
+      <p>
+        This is a static site. It does not use tracking cookies, does not run
+        third-party advertising, and does not build a profile of you.
+      </p>
+    </section>
+
+    <section>
+      <h2>Analytics</h2>
+      <p>
+        Aggregate, privacy-preserving analytics may be used to understand which
+        pages and links are useful. No personal profiles are created and no data
+        is sold or shared with advertisers.
+      </p>
+    </section>
+
+    <section>
+      <h2>Email</h2>
+      <p>
+        If you email me, I hold that message so I can reply to it. I do not add
+        you to a mailing list and I do not pass your details to anyone else.
+      </p>
+    </section>
+
+    <section>
+      <h2>External links</h2>
+      <p>
+        Links to GitHub, X, YouTube and other services take you to those
+        platforms, which apply their own privacy policies.
+      </p>
+    </section>
+
+    {
+      emailOperational && (
+        <section>
+          <h2>Questions</h2>
+          <p>
+            Email <a href={`mailto:${email}`}>{email}</a>.
+          </p>
+        </section>
+      )
+    }
+  </div>
+</Layout>
+
+<style>
+  .page {
+    max-width: 680px;
+    padding: 4rem 1.5rem 3rem;
+  }
+  h1 {
+    font-size: clamp(1.9rem, 4.5vw, 2.5rem);
+    margin-top: 0.6rem;
+  }
+  section {
+    margin-top: 2.2rem;
+  }
+  h2 {
+    font-size: 0.78rem;
+    font-family: var(--cit-font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cit-accent-teal);
+    margin-bottom: 0.8rem;
+  }
+  p {
+    color: var(--cit-text-secondary);
+    line-height: 1.75;
+  }
+  a {
+    color: var(--cit-accent-teal);
+  }
+</style>

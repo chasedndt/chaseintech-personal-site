@@ -1,27 +1,61 @@
 ---
 import "../styles/global.css";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { site } from "../data/site.js";
 
 interface Props {
   title?: string;
   description?: string;
+  /** Set on the homepage so the hero can sit under a transparent header. */
+  bare?: boolean;
 }
 
 const {
-  title = "ChaseInTech | Builder home base",
-  description = "ChaseInTech — builder home base and project router for ChaseOS, Chaser Agent, StrikeZone Crypto, Hypelist, GreyTheory AI, and Toolshape Studio.",
+  title = site.title,
+  description = site.description,
+  bare = false,
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImage = new URL("/og-default.svg", site.url).href;
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.brand} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
   </head>
   <body>
-    <slot />
+    <a class="skip-link" href="#main">Skip to content</a>
+    <SiteHeader />
+    <main id="main" class:list={[bare && "is-bare"]}>
+      <slot />
+    </main>
+    <SiteFooter />
   </body>
 </html>
+
+<style>
+  /* The homepage hero starts at the very top; the sticky header overlays it. */
+  main.is-bare {
+    margin-top: -66px;
+  }
+</style>

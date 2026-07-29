@@ -1,144 +1,399 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import AmbientHeroScene from "../components/AmbientHeroScene.astro";
+import Avatar from "../components/Avatar.astro";
+import SocialIconRow from "../components/SocialIconRow.astro";
+import FrontierProjectFeature from "../components/FrontierProjectFeature.astro";
+import SectionHeading from "../components/SectionHeading.astro";
 import ProjectCard from "../components/ProjectCard.astro";
-import { projects } from "../data/projects.js";
+import WorkWithMeCTA from "../components/WorkWithMeCTA.astro";
+import { site } from "../data/site.js";
+import { featuredProjects, frontierProject } from "../data/projects.js";
+import { featuredVideo, recentVideos } from "../data/videos.js";
+import { publishedBuildLogs } from "../data/build-logs.js";
+
+const latestLogs = publishedBuildLogs.slice(0, 2);
 ---
 
-<Layout>
+<Layout bare>
+  <!-- Atmospheric personal hero (§13) -->
   <section class="hero">
+    <AmbientHeroScene />
+
+    <div class="container hero-inner">
+      <div class="identity-card">
+        <div class="card-top">
+          <Avatar size={76} />
+          <SocialIconRow size="sm" />
+        </div>
+
+        <p class="eyebrow">London · Agentic AI · Software · Creator</p>
+        <h1>{site.brand}</h1>
+        <p class="signature">{site.signature}</p>
+
+        <p class="bio">
+          I'm Chase, a London-based AI engineer, founder and creator building
+          agentic systems, full-stack products and the infrastructure behind
+          them.
+        </p>
+
+        <a class="frontier-status" href={`/projects/${frontierProject.slug}`}>
+          <span class="status-dot" aria-hidden="true"></span>
+          <span class="status-label">Current frontier project</span>
+          <span class="status-value">{frontierProject.name}</span>
+        </a>
+
+        <div class="hero-actions">
+          <a
+            class="btn btn-primary"
+            href={`/projects/${frontierProject.slug}`}
+            data-analytics="hero_chaseos_click"
+          >
+            Explore ChaseOS
+          </a>
+          <a class="btn btn-secondary" href="/projects" data-analytics="hero_projects_click">
+            View Projects
+          </a>
+        </div>
+
+        <a class="btn-quiet work-link" href="/work-with-me" data-analytics="work_with_me_click">
+          Work with me
+        </a>
+      </div>
+    </div>
+
+    <a class="scroll-cue" href="#frontier" aria-label="Scroll to content">
+      <span aria-hidden="true"></span>
+    </a>
+  </section>
+
+  <div id="frontier">
+    <FrontierProjectFeature />
+  </div>
+
+  <!-- Watch the Build (§21) -->
+  <section class="band">
     <div class="container">
-      <p class="eyebrow">ChaseInTech</p>
-      <h1>Building governed AI systems, in the open.</h1>
-      <p class="hero-sub">
-        This is the builder home base for ChaseInTech — the router into ChaseOS and
-        the systems that run around it: agents, trading R&D, commerce, security
-        research, and creative tooling. Every project below is labeled with its
-        real current state, not aspirational copy.
-      </p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="#systems">See what I'm building</a>
-        <a class="btn btn-secondary" href="#contact">Work with me</a>
+      <SectionHeading
+        label="Watch the build"
+        title="Latest from ChaseInTech"
+        intro="Build sessions, technical walkthroughs and work-in-progress from the systems on this page."
+        href="/videos"
+        linkLabel="All videos"
+      />
+
+      {
+        featuredVideo ? (
+          <div class="video-grid">
+            <a class="video video--featured" href={`/videos/${featuredVideo.slug}`} data-analytics="video_open">
+              <span class="video-title">{featuredVideo.title}</span>
+            </a>
+            {recentVideos.map((v) => (
+              <a class="video" href={`/videos/${v.slug}`} data-analytics="video_open">
+                <span class="video-title">{v.title}</span>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <p class="empty-state">
+            <span>Video library is being set up. Follow along on </span>
+            <a class="text-link" href="https://x.com/ChaserCrypto_" target="_blank" rel="noopener noreferrer" data-analytics="x_click">X</a>
+            <span> in the meantime.</span>
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- Selected projects (§23) -->
+  <section class="band band--alt">
+    <div class="container">
+      <SectionHeading
+        label="Selected projects"
+        title="Systems I've designed and shipped"
+        intro="A curated set — the full portfolio, including archived and research work, lives on the projects page."
+        href="/projects"
+        linkLabel="All projects"
+      />
+      <div class="project-grid">
+        {featuredProjects.map((project) => <ProjectCard project={project} />)}
       </div>
     </div>
   </section>
 
-  <section class="systems" id="systems">
+  <!-- Engineering build log (§25) -->
+  <section class="band">
     <div class="container">
-      <h2>Current systems</h2>
-      <p class="section-sub">
-        Status labels: <strong>Live public</strong> (deployed &amp; verified),
-        <strong>Local working</strong> (works locally, not deployed),
-        <strong>Architecture</strong> (designed, pre-implementation),
-        <strong>R&amp;D</strong> (experiments, not a product), <strong>Archive</strong>
-        (older, kept for context).
-      </p>
-      <div class="grid">
-        {projects.map((project) => <ProjectCard project={project} />)}
-      </div>
+      <SectionHeading
+        label="Engineering build log"
+        title="How the decisions actually got made"
+        intro="Architecture, trade-offs, failures and corrections — written from the repositories rather than from memory."
+        href="/build-log"
+        linkLabel="All entries"
+      />
+      <ul class="log-list">
+        {
+          latestLogs.map((entry) => (
+            <li>
+              <a href={`/build-log/${entry.slug}`} data-analytics="build_log_open">
+                <h3>{entry.title}</h3>
+                <p>{entry.summary}</p>
+                <ul class="tags">
+                  {entry.tags.map((tag) => (
+                    <li>{tag}</li>
+                  ))}
+                </ul>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
-  <section class="contact" id="contact">
-    <div class="container contact-inner">
-      <h2>Work with me</h2>
-      <p>
-        Following along, hiring, or want to build something together? Reach out by
-        <a href="mailto:isilaenquiries@gmail.com">email</a> or on
-        <a href="https://github.com/chasedndt" target="_blank" rel="noopener noreferrer">GitHub</a>.
-      </p>
-    </div>
-  </section>
+  <WorkWithMeCTA />
 </Layout>
 
 <style>
   .hero {
-    padding: 6rem 0 4rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .hero h1 {
-    font-size: clamp(2rem, 5vw, 3.25rem);
-    margin: 0.5rem 0 1.25rem;
-    max-width: 18ch;
-  }
-  .hero-sub {
-    color: var(--text-muted);
-    max-width: 60ch;
-    font-size: 1.05rem;
-  }
-  .hero-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-    flex-wrap: wrap;
-  }
-  .btn {
-    display: inline-block;
-    padding: 0.7rem 1.4rem;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.95rem;
-  }
-  .btn-primary {
-    background: var(--accent);
-    color: #06201c;
-  }
-  .btn-secondary {
-    border: 1px solid var(--border);
-    color: var(--text);
-  }
-  .systems {
-    padding: 4rem 0;
-  }
-  .systems h2,
-  .contact h2 {
-    font-size: 1.8rem;
-  }
-  .section-sub {
-    color: var(--text-muted);
-    max-width: 70ch;
-    margin: 0.75rem 0 2.5rem;
-    font-size: 0.9rem;
-  }
-  .grid {
+    position: relative;
+    min-height: 100svh;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
-    gap: 1.5rem;
+    align-items: center;
+    padding: 6rem 0 5rem;
+    isolation: isolate;
   }
-  .contact {
-    padding: 4rem 0 6rem;
-    border-top: 1px solid var(--border);
-  }
-  .contact-inner p {
-    color: var(--text-muted);
-    margin-top: 0.75rem;
-  }
-  .contact-inner a {
-    color: var(--accent);
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    justify-items: center;
   }
 
+  /* Glass identity surface — the one place glass is used on this page (§18.3) */
+  .identity-card {
+    width: 100%;
+    max-width: 620px;
+    background: var(--cit-glass);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius-lg);
+    padding: 2rem;
+    box-shadow: 0 24px 70px -30px rgba(0, 0, 0, 0.9);
+  }
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--cit-border);
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 7vw, 3.6rem);
+    margin: 0.6rem 0 0;
+  }
+  .signature {
+    color: var(--cit-accent-teal);
+    font-family: var(--cit-font-mono);
+    font-size: 0.95rem;
+    margin-top: 0.6rem;
+  }
+  .bio {
+    color: var(--cit-text-secondary);
+    margin-top: 1.1rem;
+    max-width: 52ch;
+  }
+
+  .frontier-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.6rem;
+    padding: 0.5rem 0.85rem;
+    border: 1px solid var(--cit-border);
+    border-radius: 999px;
+    text-decoration: none;
+    font-family: var(--cit-font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(57, 222, 201, 0.06);
+  }
+  .frontier-status:hover {
+    border-color: var(--cit-accent-teal);
+  }
+  /* Static dot — deliberately not an animated "live" pulse (§13.5) */
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cit-accent-teal);
+    box-shadow: 0 0 8px var(--cit-accent-teal);
+  }
+  .status-label {
+    color: var(--cit-text-muted);
+  }
+  .status-value {
+    color: var(--cit-accent-teal);
+    font-weight: 600;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 1.75rem;
+  }
+  .work-link {
+    display: inline-block;
+    margin-top: 1.1rem;
+  }
+
+  .scroll-cue {
+    position: absolute;
+    bottom: 1.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    width: 26px;
+    height: 42px;
+    border: 1px solid var(--cit-border-strong);
+    border-radius: 999px;
+    display: grid;
+    justify-items: center;
+    padding-top: 8px;
+  }
+  .scroll-cue span {
+    width: 3px;
+    height: 7px;
+    border-radius: 2px;
+    background: var(--cit-accent-teal);
+    animation: cue 1.9s ease-in-out infinite;
+  }
+  @keyframes cue {
+    0%, 100% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(9px); opacity: 0.25; }
+  }
+
+  .band {
+    padding: 4.5rem 0;
+  }
+  .band--alt {
+    background: var(--cit-bg-surface);
+    border-top: 1px solid var(--cit-border);
+    border-bottom: 1px solid var(--cit-border);
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: 1.25rem;
+  }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+    gap: 1.25rem;
+  }
+  .video {
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius);
+    padding: 1.25rem;
+    text-decoration: none;
+    background: var(--cit-bg-surface);
+  }
+  .empty-state {
+    color: var(--cit-text-muted);
+    border: 1px dashed var(--cit-border);
+    border-radius: var(--cit-radius);
+    padding: 1.5rem;
+    font-size: 0.92rem;
+  }
+  .empty-state a {
+    margin: 0 0.25rem;
+  }
+
+  .log-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .log-list > li > a {
+    display: block;
+    text-decoration: none;
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius);
+    padding: 1.4rem;
+    background: var(--cit-bg-surface);
+    transition: border-color 0.2s ease;
+  }
+  .log-list > li > a:hover {
+    border-color: var(--cit-accent-teal);
+  }
+  .log-list h3 {
+    font-size: 1.1rem;
+  }
+  .log-list p {
+    color: var(--cit-text-secondary);
+    font-size: 0.92rem;
+    margin-top: 0.5rem;
+    max-width: 70ch;
+  }
+  .tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0.9rem 0 0;
+    padding: 0;
+  }
+  .tags li {
+    font-family: var(--cit-font-mono);
+    font-size: 0.68rem;
+    color: var(--cit-text-muted);
+    border: 1px solid var(--cit-border);
+    border-radius: 999px;
+    padding: 0.15rem 0.5rem;
+  }
+
+  /* Mobile hero deliberately recalls the legacy vertical card (§15) */
   @media (max-width: 640px) {
     .hero {
-      padding: 3rem 0 2.5rem;
+      padding: 5rem 0 4.5rem;
+      min-height: auto;
     }
-    .hero-sub {
-      font-size: 1rem;
+    .identity-card {
+      padding: 1.5rem 1.25rem;
+    }
+    .card-top {
+      justify-content: center;
+      gap: 1.1rem;
+      flex-direction: column;
+    }
+    .hero-inner {
+      text-align: center;
+    }
+    .bio {
+      margin-left: auto;
+      margin-right: auto;
     }
     .hero-actions {
       flex-direction: column;
-      align-items: stretch;
     }
-    .btn {
-      text-align: center;
+    .hero-actions .btn {
+      width: 100%;
     }
-    .systems {
-      padding: 2.5rem 0;
+    .band {
+      padding: 3rem 0;
     }
-    .contact {
-      padding: 2.5rem 0 3.5rem;
-    }
-    .grid {
-      gap: 1rem;
+    .scroll-cue {
+      display: none;
     }
   }
 </style>
