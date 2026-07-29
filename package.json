@@ -3,8 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "description": "ChaseInTech personal developer/founder website and public builder router.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
-    "check": "node -e \"console.log('chaseintech-personal-site scaffold OK')\""
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check"
   },
   "keywords": [
     "chaseintech",
@@ -12,5 +20,8 @@
     "developer-website",
     "builder-router"
   ],
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "astro": "^7.1.5"
+  }
 }

@@ -1,0 +1,118 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { projects } from "../data/projects.js";
+---
+
+<Layout>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">ChaseInTech</p>
+      <h1>Building governed AI systems, in the open.</h1>
+      <p class="hero-sub">
+        This is the builder home base for ChaseInTech — the router into ChaseOS and
+        the systems that run around it: agents, trading R&D, commerce, security
+        research, and creative tooling. Every project below is labeled with its
+        real current state, not aspirational copy.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#systems">See what I'm building</a>
+        <a class="btn btn-secondary" href="#contact">Work with me</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="systems" id="systems">
+    <div class="container">
+      <h2>Current systems</h2>
+      <p class="section-sub">
+        Status labels: <strong>Live public</strong> (deployed &amp; verified),
+        <strong>Local working</strong> (works locally, not deployed),
+        <strong>Architecture</strong> (designed, pre-implementation),
+        <strong>R&amp;D</strong> (experiments, not a product), <strong>Archive</strong>
+        (older, kept for context).
+      </p>
+      <div class="grid">
+        {projects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="container contact-inner">
+      <h2>Work with me</h2>
+      <p>
+        Following along, hiring, or want to build something together? Reach out on
+        <a href="https://github.com/chasedndt" target="_blank" rel="noopener noreferrer">GitHub</a>.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    padding: 6rem 0 4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    margin: 0.5rem 0 1.25rem;
+    max-width: 18ch;
+  }
+  .hero-sub {
+    color: var(--text-muted);
+    max-width: 60ch;
+    font-size: 1.05rem;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-block;
+    padding: 0.7rem 1.4rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #06201c;
+  }
+  .btn-secondary {
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .systems {
+    padding: 4rem 0;
+  }
+  .systems h2,
+  .contact h2 {
+    font-size: 1.8rem;
+  }
+  .section-sub {
+    color: var(--text-muted);
+    max-width: 70ch;
+    margin: 0.75rem 0 2.5rem;
+    font-size: 0.9rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .contact {
+    padding: 4rem 0 6rem;
+    border-top: 1px solid var(--border);
+  }
+  .contact-inner p {
+    color: var(--text-muted);
+    margin-top: 0.75rem;
+  }
+  .contact-inner a {
+    color: var(--accent);
+  }
+</style>

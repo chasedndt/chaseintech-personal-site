@@ -1,0 +1,161 @@
+---
+import StatusBadge from "./StatusBadge.astro";
+
+const { project } = Astro.props;
+---
+
+<article class="card" id={project.id}>
+  <header class="card-head">
+    <div>
+      <p class="eyebrow">{project.lane}</p>
+      <h3>{project.name}</h3>
+    </div>
+    <StatusBadge status={project.status} />
+  </header>
+
+  <p class="tagline">{project.tagline}</p>
+  <p class="description">{project.description}</p>
+  <p class="boundary">{project.boundary}</p>
+
+  <div class="card-footer">
+    {
+      project.repoUrl ? (
+        <a class="repo-link" href={project.repoUrl} target="_blank" rel="noopener noreferrer">
+          View repo →
+        </a>
+      ) : (
+        <span class="repo-link repo-link--none">Repo not public yet</span>
+      )
+    }
+  </div>
+
+  {
+    project.detail && (
+      <details class="expand">
+        <summary>{project.detail.label}</summary>
+        <p>{project.detail.body}</p>
+      </details>
+    )
+  }
+
+  {
+    project.subProjects && project.subProjects.length > 0 && (
+      <ul class="sub-list">
+        {project.subProjects.map((sub) => (
+          <li class="sub-item">
+            <div class="sub-item-head">
+              <span class="sub-item-name">{sub.name}</span>
+              <StatusBadge status={sub.status} />
+            </div>
+            <p class="sub-item-tagline">{sub.tagline}</p>
+            {sub.repoUrl ? (
+              <a class="repo-link repo-link--sub" href={sub.repoUrl} target="_blank" rel="noopener noreferrer">
+                View repo →
+              </a>
+            ) : (
+              <span class="repo-link repo-link--sub repo-link--none">Repo not public yet</span>
+            )}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</article>
+
+<style>
+  .card {
+    border: 1px solid var(--border);
+    background: var(--bg-elevated);
+    border-radius: 14px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+  .card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .card-head h3 {
+    font-size: 1.25rem;
+    margin-top: 0.15rem;
+  }
+  .tagline {
+    color: var(--text);
+    font-weight: 500;
+    margin: 0;
+  }
+  .description {
+    color: var(--text-muted);
+    margin: 0;
+    font-size: 0.95rem;
+  }
+  .boundary {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-style: italic;
+    margin: 0;
+  }
+  .card-footer {
+    margin-top: 0.25rem;
+  }
+  .repo-link {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .repo-link:hover {
+    text-decoration: underline;
+  }
+  .repo-link--none {
+    color: var(--text-muted);
+  }
+  .expand {
+    border-top: 1px solid var(--border);
+    padding-top: 0.6rem;
+    margin-top: 0.2rem;
+  }
+  .expand summary {
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  .expand p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin: 0.5rem 0 0;
+  }
+  .sub-list {
+    list-style: none;
+    margin: 0.25rem 0 0;
+    padding: 0;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .sub-item {
+    padding-top: 0.75rem;
+  }
+  .sub-item-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .sub-item-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .sub-item-tagline {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin: 0.2rem 0 0.35rem;
+  }
+  .repo-link--sub {
+    font-size: 0.78rem;
+  }
+</style>

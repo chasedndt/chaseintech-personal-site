@@ -1,0 +1,40 @@
+---
+import { statusLabels } from "../data/projects.js";
+
+interface Props {
+  status: keyof typeof statusLabels;
+}
+
+const { status } = Astro.props;
+---
+
+<span class={`badge badge--${status}`}>{statusLabels[status]}</span>
+
+<style>
+  .badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    white-space: nowrap;
+  }
+  .badge--live {
+    color: var(--status-live);
+  }
+  .badge--local {
+    color: var(--status-local);
+  }
+  .badge--architecture {
+    color: var(--status-arch);
+  }
+  .badge--rd {
+    color: var(--status-rd);
+  }
+  .badge--archive {
+    color: var(--status-archive);
+  }
+</style>

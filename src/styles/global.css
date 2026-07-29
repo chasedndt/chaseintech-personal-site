@@ -1,0 +1,61 @@
+:root {
+  --bg: #0b0d12;
+  --bg-elevated: #12151c;
+  --border: #23272f;
+  --text: #e8eaed;
+  --text-muted: #9aa1ac;
+  --accent: #5eead4;
+  --accent-soft: rgba(94, 234, 212, 0.12);
+  --status-live: #4ade80;
+  --status-local: #5eead4;
+  --status-arch: #93c5fd;
+  --status-rd: #fbbf24;
+  --status-archive: #6b7280;
+  --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.5;
+}
+
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.15;
+  margin: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
