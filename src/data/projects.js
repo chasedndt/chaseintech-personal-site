@@ -129,4 +129,16 @@ export const projects = [
     boundary:
       "Not claiming: a shipped native app, signed packaging, or full feature parity — the native shell and several features remain deferred.",
   },
+  {
+    id: "toolshape-voice",
+    name: "Toolshape Voice",
+    lane: "Creative tooling product",
+    status: "local",
+    tagline: "Local-first Windows dictation and writing-intelligence app.",
+    description:
+      "System-wide dictation with Dictionary, Snippets, Voice Styles, and Transforms, an agent-first Voice Hub, and a packaged Electron desktop build.",
+    repoUrl: "https://github.com/chasedndt/toolshape-voice",
+    boundary:
+      "Not claiming: production Tauri/signed packaging, cloud distribution, or a benchmark-selected transcription provider — those remain not built.",
+  },
 ];

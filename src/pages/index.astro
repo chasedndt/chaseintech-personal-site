@@ -102,7 +102,7 @@ import { projects } from "../data/projects.js";
   }
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
     gap: 1.5rem;
   }
   .contact {
@@ -115,5 +115,30 @@ import { projects } from "../data/projects.js";
   }
   .contact-inner a {
     color: var(--accent);
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding: 3rem 0 2.5rem;
+    }
+    .hero-sub {
+      font-size: 1rem;
+    }
+    .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .btn {
+      text-align: center;
+    }
+    .systems {
+      padding: 2.5rem 0;
+    }
+    .contact {
+      padding: 2.5rem 0 3.5rem;
+    }
+    .grid {
+      gap: 1rem;
+    }
   }
 </style>

@@ -52,6 +52,12 @@ h3 {
   padding: 0 1.5rem;
 }
 
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1.1rem;
+  }
+}
+
 .eyebrow {
   font-family: var(--font-mono);
   font-size: 0.8rem;
