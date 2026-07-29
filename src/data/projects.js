@@ -85,9 +85,9 @@ export const projects = [
       },
       {
         id: "chaseos-workflow",
-        name: "ChaseOS-built trading workflow",
+        name: "StrikeZone Market Intelligence (ChaseOS workflow pack)",
         tagline:
-          "Internal ChaseOS agent workflow supporting StrikeZone Crypto's research pipeline.",
+          "Daily BTC/ETH/SOL market-intelligence workflow built on ChaseOS: governed evidence acquisition, Director Thesis drafting, and publication with fetch-back proof. No trade execution.",
         status: "rd",
         repoUrl: null,
       },
