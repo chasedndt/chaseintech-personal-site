@@ -7,7 +7,7 @@
 
 ## Historical change
 
-This pass converted an opaque Linux-only Playwright failure into a diagnosable CI path. GitHub Actions now publishes test annotations and retains an HTML report, while the mobile overflow assertion uses scrollbar-independent viewport geometry. The mobile identity-card status line now wraps safely. Enhanced geometry then identified the actual 18px Linux overflow: slice-scaled decorative children escaped the ambient hero SVG's scroll accounting, so clipping is now enforced at the SVG viewport itself. A public YouTube request that hung during local verification also received a bounded deadline so the existing snapshot fallback can keep scheduled builds moving.
+This pass converted an opaque Linux-only Playwright failure into a diagnosable CI path. GitHub Actions now publishes test annotations and retains an HTML report, while the mobile overflow assertion uses scrollbar-independent viewport geometry. The mobile identity-card status line now wraps safely. Enhanced geometry confirmed a real 18px Linux document overflow, but its first report was dominated by already-clipped ambient SVG descendants. Explicit SVG clipping did not change the result and was removed; the diagnostic now separates clipped geometry from the element that owns the document edge. A public YouTube request that hung during local verification also received a bounded deadline so the existing snapshot fallback can keep scheduled builds moving.
 
 ## Why it mattered
 
@@ -26,7 +26,7 @@ No production content, route, credential, or Cloudflare configuration changed.
 
 ## Completion boundary
 
-The diagnostic implementation is verified in GitHub Actions and the geometry identified the ambient SVG as the remaining source. The SVG-boundary repair is implemented. The result remains PARTIAL until local and GitHub-hosted Linux verification pass.
+The diagnostic implementation is verified in GitHub Actions, but the first geometry report over-attributed the result to already-clipped SVG descendants. The ineffective SVG rule was removed. The result remains PARTIAL until the enhanced unclipped-element evidence identifies and closes the remaining source.
 
 ## Links
 

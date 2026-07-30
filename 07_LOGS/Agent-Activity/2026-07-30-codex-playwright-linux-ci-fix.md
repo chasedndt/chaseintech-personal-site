@@ -30,8 +30,9 @@
 - Verified the repaired mobile hero visually at 320px and confirmed zero document overflow.
 - Inspected the replacement Ubuntu run, which still reported exactly 18px on the homepage.
 - Enhanced the assertion to report root/body widths and concrete overflowing elements.
-- Used the enhanced Ubuntu evidence to identify slice-scaled ambient SVG children as the overflow source.
-- Enforced clipping at the SVG viewport boundary.
+- Tested explicit SVG viewport clipping after the first geometry report implicated off-canvas SVG descendants.
+- Removed that ineffective rule when the replacement Ubuntu run remained unchanged.
+- Refined diagnostics to exclude descendants already clipped by an ancestor and rank actual document-edge candidates.
 - Stopped a misdirected WSL `npm ci` that affected only generated `node_modules`, then restored dependencies from the lockfile with an isolated temporary cache.
 - Added the required session traceability records.
 

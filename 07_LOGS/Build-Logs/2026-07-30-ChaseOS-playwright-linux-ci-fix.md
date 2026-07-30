@@ -71,6 +71,8 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 - Dependency restoration after the WSL diagnostic path error: PASS — 207 packages restored from `package-lock.json` with a fresh temporary cache; 0 vulnerabilities.
 - Final SVG-repair production build: PASS — 42 pages built in 18.05 seconds and indexed by Pagefind.
 - Final mobile overflow subset: PASS — 11/11 routes in 36.5 seconds.
+- Refined-diagnostic production build after removing ineffective SVG clipping: PASS — 42 pages built in 7.87 seconds.
+- Refined-diagnostic mobile subset: PASS — 11/11 routes in 18.6 seconds.
 - An earlier local Playwright attempt failed because the newly required Chromium revision was not installed; this was an environment failure, not a regression.
 - A bounded isolated CI-mode browser invocation exceeded the local command window; the reporter configuration was then validated directly.
 - A later local build exposed an unbounded YouTube request; the hung process was stopped and the public build-time fetch path was given a 10-second deadline.
@@ -83,7 +85,8 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 - Replacement Actions run `30583918543` used the new reporter and identified the exact Linux failure: the homepage exceeded the 320px viewport by 18px; all other 27 tests passed.
 - Visual QA at 320px: PASS — the frontier-status pill wraps into two centered lines, while `clientWidth` and `scrollWidth` both measure 320px.
 - Replacement Actions run `30585252356` still measured exactly 18px on the Linux homepage after the pill repair; 27/28 tests and Lighthouse passed. The overflow assertion now emits root/body geometry and offending elements to distinguish real overflow from scrollbar-gutter accounting.
-- Diagnostic Actions run `30585670598` confirmed a real 18px overflow: Linux Chromium counted slice-scaled children from `AmbientHeroScene` beyond the SVG viewport. The viewport and client widths were both 320px, while root/body scroll width was 338px.
+- Diagnostic Actions run `30585670598` confirmed a real 18px overflow: viewport and client widths were both 320px, while root/body scroll width was 338px. Its first offender list was dominated by off-canvas SVG descendants already clipped by their scene wrapper, so it did not yet prove which element owned the extra scroll width.
+- Actions run `30586696434` proved that explicit SVG overflow clipping did not change the 18px result. That ineffective rule was removed, and the diagnostic now excludes clipped descendants and ranks elements nearest the actual document edge.
 - A WSL reproduction attempt resolved its temporary path incorrectly and started `npm ci` in the main checkout. It touched only ignored/generated `node_modules`, was terminated, and dependencies were restored from the lockfile before verification resumed.
 
 ## What changed
@@ -92,7 +95,6 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 - Horizontal-overflow measurement now compares `scrollWidth` with `documentElement.clientWidth`, avoiding scrollbar-dependent viewport slack.
 - The homepage frontier-status pill can wrap and center at mobile widths instead of forcing Linux's wider monospace rendering beyond the identity card.
 - YouTube RSS and format detection now time out and use the existing committed snapshot fallback instead of holding scheduled builds indefinitely.
-- The ambient hero SVG now clips overflow at the SVG viewport itself, preventing off-canvas decorative geometry from expanding the document scroll width on Linux.
 
 ## What did not change
 
@@ -101,7 +103,7 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 
 ## What remains unverified
 
-- The ambient SVG repair has not yet passed local and GitHub-hosted Linux verification.
+- The unclipped element responsible for Linux's remaining 18px document width is still under diagnostic verification.
 - The new build-fetch deadline has not yet passed a replacement GitHub-hosted Ubuntu run.
 - GitHub repository secrets for the scheduled Cloudflare rebuild are not confirmed.
 

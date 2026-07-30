@@ -61,25 +61,55 @@ for (const route of mobileRoutes) {
     const layout = await page.evaluate(() => {
       const root = document.documentElement;
       const viewportWidth = root.clientWidth;
+      const labelFor = (element) =>
+        [
+          element.tagName.toLowerCase(),
+          element.id ? `#${element.id}` : "",
+          ...Array.from(element.classList).map((name) => `.${name}`),
+        ].join("");
+
       const offenders = Array.from(document.querySelectorAll("*"))
         .map((element) => {
           const rect = element.getBoundingClientRect();
-          const label = [
-            element.tagName.toLowerCase(),
-            element.id ? `#${element.id}` : "",
-            ...Array.from(element.classList).map((name) => `.${name}`),
-          ].join("");
+          let clippedBy = null;
+          let ancestor = element.parentElement;
+          while (ancestor) {
+            const style = getComputedStyle(ancestor);
+            if (style.overflowX === "hidden" || style.overflowX === "clip") {
+              const ancestorRect = ancestor.getBoundingClientRect();
+              if (
+                rect.left < ancestorRect.left - 1 ||
+                rect.right > ancestorRect.right + 1
+              ) {
+                clippedBy = labelFor(ancestor);
+                break;
+              }
+            }
+            ancestor = ancestor.parentElement;
+          }
+
           return {
-            element: label,
+            element: labelFor(element),
             left: Math.round(rect.left),
             right: Math.round(rect.right),
             width: Math.round(rect.width),
+            clippedBy,
           };
         })
         .filter(
-          ({ left, right, width }) =>
-            width > 0 && (left < -1 || right > viewportWidth + 1),
+          ({ right, width }) => width > 0 && right > viewportWidth + 1,
+        );
+
+      const byDocumentEdge = [...offenders]
+        .sort(
+          (a, b) =>
+            Math.abs(a.right - root.scrollWidth) -
+            Math.abs(b.right - root.scrollWidth),
         )
+        .slice(0, 20);
+      const unclipped = offenders
+        .filter(({ clippedBy }) => !clippedBy)
+        .sort((a, b) => b.right - a.right)
         .slice(0, 20);
 
       return {
@@ -89,7 +119,8 @@ for (const route of mobileRoutes) {
         rootScrollWidth: root.scrollWidth,
         bodyClientWidth: document.body.clientWidth,
         bodyScrollWidth: document.body.scrollWidth,
-        offenders,
+        unclippedOffenders: unclipped,
+        offendersNearestDocumentEdge: byDocumentEdge,
       };
     });
     expect(
