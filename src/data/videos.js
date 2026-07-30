@@ -1,45 +1,72 @@
-// Platform-aware content feed.
+// Content feed.
 //
-// One entry = one PIECE OF CONTENT, not one upload. When the same video is
-// posted to both YouTube and TikTok, it stays a SINGLE entry with both
-// platform payloads attached — that is the cross-posting de-duplication.
-// Reliable automatic detection across platforms is not possible (titles,
-// crops and durations all differ), so the link is explicit and therefore
-// always correct.
+// The YouTube channel is the source of truth (operator decision), read from its
+// public RSS feed at build time — no API key, no credentials, no client-side
+// fetch. See src/lib/youtube.js for the caching/fallback behaviour.
 //
-// Per-platform rendering differences are real and handled in VideoCard:
-//   youtube → has a title AND a description; long-form and Shorts
-//   tiktok   → has NO title, only a caption/description
-// `primary` decides which platform's presentation leads on the card.
-//
-// EMPTY BY DESIGN: no channel or profile URLs have been supplied, and social
-// URLs are never invented. Add entries and every surface populates itself.
-//
-// Shape:
-// {
-//   id: "chaseos-control-plane-walkthrough",
-//   publishedAt: "2026-07-20",
-//   primary: "youtube",
-//   featured: true,
-//   relatedProjects: ["chaseos"],
-//   relatedBuildLogs: ["chaseos-control-plane-boundaries"],
-//   tags: ["build-in-public"],
-//   youtube: {
-//     url: "https://www.youtube.com/watch?v=...",
-//     videoId: "...",
-//     title: "Inside the ChaseOS control plane",
-//     description: "...",
-//     duration: "12:04",
-//     format: "long",          // "long" | "short"
-//   },
-//   tiktok: {
-//     url: "https://www.tiktok.com/@handle/video/...",
-//     videoId: "...",
-//     caption: "...",          // TikTok has no separate title
-//   },
-// }
+// Cross-posting: when a video also exists on TikTok, add its URL here keyed by
+// the YouTube video id. That keeps ONE entry per piece of content instead of
+// two near-duplicate cards. It is explicit rather than auto-detected because
+// titles, crops and captions diverge across platforms, and a wrong automatic
+// match would silently hide a video.
+export const tiktokCrossPosts = {
+  // "<youtubeVideoId>": "https://www.tiktok.com/@chaseintech_/video/...",
+};
 
-export const videos = [];
+// Videos to keep out of the public feed (drafts, unlisted, off-brand back
+// catalogue). Add YouTube video ids here.
+export const excludedVideoIds = new Set();
+
+/** Shape one raw feed item into a platform-aware content entry. */
+function toEntry(video, index) {
+  const tiktokUrl = tiktokCrossPosts[video.videoId] ?? null;
+
+  return {
+    id: video.videoId,
+    publishedAt: video.publishedAt,
+    primary: "youtube",
+    featured: index === 0,
+    relatedProjects: [],
+    relatedBuildLogs: [],
+    tags: [],
+    youtube: {
+      url: video.url,
+      videoId: video.videoId,
+      title: video.title,
+      description: video.description,
+      thumbnail: video.thumbnail,
+      // RSS does not state whether an upload is a Short, so format is left
+      // unset rather than guessed — a wrong label is worse than none.
+      format: null,
+    },
+    ...(tiktokUrl
+      ? { tiktok: { url: tiktokUrl, caption: video.title } }
+      : {}),
+  };
+}
+
+let cache = null;
+
+/** Build-time content feed. Awaited from pages; result is reused per build. */
+export async function getContentFeed() {
+  if (cache) return cache;
+
+  const { fetchYouTubeVideos } = await import("../lib/youtube.js");
+  const { videos, source } = await fetchYouTubeVideos();
+
+  const entries = videos
+    .filter((video) => !excludedVideoIds.has(video.videoId))
+    .map(toEntry);
+
+  cache = {
+    source,
+    videos: entries,
+    featured: entries[0] ?? null,
+    recent: entries.slice(1, 3),
+  };
+
+  return cache;
+}
 
 /** Content posted to more than one platform. */
 export function platformsFor(video) {
@@ -48,15 +75,11 @@ export function platformsFor(video) {
 
 /** Title for display: YouTube supplies one, TikTok never does. */
 export function displayTitle(video) {
-  if (video.youtube?.title) return video.youtube.title;
-  return null;
+  return video.youtube?.title ?? null;
 }
 
-/** Body copy for display, preferring the primary platform's own wording. */
+/** Body copy, preferring the primary platform's own wording. */
 export function displayBody(video) {
   const primary = video[video.primary];
   return primary?.description ?? primary?.caption ?? "";
 }
-
-export const featuredVideo = videos.find((v) => v.featured) ?? null;
-export const recentVideos = videos.filter((v) => !v.featured).slice(0, 2);

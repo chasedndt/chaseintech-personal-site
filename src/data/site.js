@@ -20,13 +20,8 @@ export const site = {
 export const emailOperational = true;
 export const email = "chase@chaseintech.com";
 
-// Social links.
-//   - github: verified public profile.
-//   - x: taken from the operator's own GitHub profile metadata
-//     (twitter_username: ChaserCrypto_) — self-declared, pending confirmation.
-//   - youtube / tiktok / instagram: URL not supplied. Left null deliberately.
-//     Never invent a social URL (§43.2); add only on explicit approval.
-// Only entries with a non-null `url` are rendered anywhere on the site.
+// Personal social links — all confirmed by the operator on 2026-07-30.
+// Only entries with a non-null `url` render anywhere on the site.
 export const socials = [
   {
     id: "x",
@@ -38,9 +33,16 @@ export const socials = [
   {
     id: "youtube",
     label: "YouTube",
-    handle: null,
-    url: null, // TODO(operator): supply channel URL
+    handle: "@ChaseDNDT",
+    url: "https://www.youtube.com/@ChaseDNDT",
     event: "youtube_click",
+  },
+  {
+    id: "tiktok",
+    label: "TikTok",
+    handle: "@chaseintech_",
+    url: "https://www.tiktok.com/@chaseintech_",
+    event: "tiktok_click",
   },
   {
     id: "github",
@@ -50,17 +52,10 @@ export const socials = [
     event: "github_click",
   },
   {
-    id: "tiktok",
-    label: "TikTok",
-    handle: null,
-    url: null, // TODO(operator): supply profile URL
-    event: "tiktok_click",
-  },
-  {
     id: "instagram",
     label: "Instagram",
     handle: null,
-    url: null, // TODO(operator): supply profile URL
+    url: null, // Not supplied; never invented.
     event: "instagram_click",
   },
 ];

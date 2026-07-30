@@ -1,7 +1,7 @@
 import { site } from "../data/site.js";
 import { projects } from "../data/projects.js";
 import { publishedBuildLogs } from "../data/build-logs.js";
-import { videos } from "../data/videos.js";
+// Videos have no internal routes — cards link straight to YouTube/TikTok.
 
 export function GET() {
   const routes = [
@@ -16,7 +16,6 @@ export function GET() {
     "/privacy",
     ...projects.map((p) => `/projects/${p.slug}`),
     ...publishedBuildLogs.map((e) => `/build-log/${e.slug}`),
-    ...videos.map((v) => `/videos/${v.slug}`),
   ];
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>

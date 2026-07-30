@@ -10,10 +10,11 @@ import VideoCard from "../components/VideoCard.astro";
 import WorkWithMeCTA from "../components/WorkWithMeCTA.astro";
 import { site } from "../data/site.js";
 import { featuredProjects, frontierProject } from "../data/projects.js";
-import { featuredVideo, recentVideos } from "../data/videos.js";
+import { getContentFeed } from "../data/videos.js";
 import { publishedBuildLogs } from "../data/build-logs.js";
 
 const latestLogs = publishedBuildLogs.slice(0, 2);
+const { featured: featuredVideo, recent: recentVideos } = await getContentFeed();
 ---
 
 <Layout bare>

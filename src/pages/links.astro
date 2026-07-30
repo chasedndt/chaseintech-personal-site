@@ -7,12 +7,15 @@ import AmbientHeroScene from "../components/AmbientHeroScene.astro";
 import Avatar from "../components/Avatar.astro";
 import SocialIconRow from "../components/SocialIconRow.astro";
 import { site, socials, email, emailOperational } from "../data/site.js";
-import { featuredVideo } from "../data/videos.js";
+import { getContentFeed } from "../data/videos.js";
 import "../styles/global.css";
+
+const { featured: featuredVideo } = await getContentFeed();
 
 const find = (id) => socials.find((s) => s.id === id);
 const x = find("x");
 const youtube = find("youtube");
+const tiktok = find("tiktok");
 const github = find("github");
 
 const buttons = [
@@ -20,8 +23,9 @@ const buttons = [
   { label: "Explore ChaseOS", href: "/projects/chaseos", icon: "spark", event: "hero_chaseos_click" },
   featuredVideo && {
     label: "Latest Video",
-    href: `/videos/${featuredVideo.slug}`,
+    href: featuredVideo.youtube.url,
     icon: "play",
+    external: true,
     event: "video_open",
   },
   { label: "View Projects", href: "/projects", icon: "folder", event: "hero_projects_click" },
@@ -33,6 +37,13 @@ const buttons = [
     icon: "youtube",
     external: true,
     event: youtube.event,
+  },
+  tiktok?.url && {
+    label: "TikTok Clips",
+    href: tiktok.url,
+    icon: "tiktok",
+    external: true,
+    event: tiktok.event,
   },
   emailOperational && {
     label: "Email Chase",

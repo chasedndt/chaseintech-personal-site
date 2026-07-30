@@ -60,14 +60,25 @@ export const projects = [
     ],
     boundary:
       "Not claiming production SaaS deployment, unbounded agent execution, or a managed public agent service.",
+    // ChaseOS carries its own presence, separate from the personal accounts.
     links: [
       { type: "site", label: "chaseos.ai", url: "https://chaseos.ai" },
+      { type: "x", label: "@chaseos_ai", url: "https://x.com/chaseos_ai" },
+      {
+        type: "discord",
+        label: "Community",
+        url: "https://discord.gg/s3EAKYJUCW",
+      },
       {
         type: "github",
         label: "ChaseOS-Core",
         url: "https://github.com/chasedndt/ChaseOS-Core",
       },
-      // TODO(operator): ChaseOS X / Discord / YouTube accounts
+      // NOTE: the ChaseOS company LinkedIn (linkedin.com/company/chaseos) was
+      // supplied by the operator, but the visual-identity directive lists
+      // LinkedIn under non-negotiable exclusions. Held out pending a decision:
+      // the exclusion targeted a personal profile, whereas this is a product
+      // page, so it may be intended to be in scope. Flagged, not silently added.
     ],
     media: [],
     relatedVideos: [],
