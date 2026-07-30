@@ -25,7 +25,7 @@ No production content, route, credential, or Cloudflare configuration changed.
 
 ## Completion boundary
 
-The diagnostic implementation is verified in GitHub Actions and the homepage repair is implemented. The result remains PARTIAL until the repaired homepage passes a replacement GitHub-hosted Ubuntu run.
+The diagnostic implementation is verified in GitHub Actions and the homepage repair is implemented. Linux still reports exactly 18px after that repair, so the assertion now records root/body geometry and offending elements. The result remains PARTIAL until that evidence identifies and closes the remaining measurement.
 
 ## Links
 

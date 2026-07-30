@@ -64,6 +64,7 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 - Playwright Chromium suite before the homepage repair: PASS — 28/28 tests in 52.7 seconds.
 - Final production build after the homepage and fetch-deadline repairs: PASS — 42 pages built in 16.77 seconds and indexed by Pagefind.
 - Final Playwright Chromium suite: PASS — 28/28 tests in 1.1 minutes.
+- Enhanced diagnostic Playwright suite: PASS — 28/28 tests in 1.7 minutes.
 - YouTube deadline / snapshot fallback: PASS — a mocked stalled request aborted in 10.11 seconds and returned the 11-video committed snapshot.
 - CI reporter resolution: PASS — resolves to GitHub annotations plus an HTML report.
 - An earlier local Playwright attempt failed because the newly required Chromium revision was not installed; this was an environment failure, not a regression.
@@ -77,6 +78,7 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 - The stricter 320px overflow checks pass locally on all covered routes.
 - Replacement Actions run `30583918543` used the new reporter and identified the exact Linux failure: the homepage exceeded the 320px viewport by 18px; all other 27 tests passed.
 - Visual QA at 320px: PASS — the frontier-status pill wraps into two centered lines, while `clientWidth` and `scrollWidth` both measure 320px.
+- Replacement Actions run `30585252356` still measured exactly 18px on the Linux homepage after the pill repair; 27/28 tests and Lighthouse passed. The overflow assertion now emits root/body geometry and offending elements to distinguish real overflow from scrollbar-gutter accounting.
 
 ## What changed
 
@@ -92,7 +94,7 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 
 ## What remains unverified
 
-- The mobile pill repair has not yet passed a replacement GitHub-hosted Ubuntu run.
+- The exact source of Linux's remaining 18px homepage measurement is still under diagnostic verification.
 - The new build-fetch deadline has not yet passed a replacement GitHub-hosted Ubuntu run.
 - GitHub repository secrets for the scheduled Cloudflare rebuild are not confirmed.
 

@@ -58,10 +58,44 @@ for (const route of mobileRoutes) {
   test(`no horizontal overflow at 320px on ${route}`, async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 720 });
     await page.goto(route);
-    const overflow = await page.evaluate(
-      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
-    );
-    expect(overflow).toBeLessThanOrEqual(0);
+    const layout = await page.evaluate(() => {
+      const root = document.documentElement;
+      const viewportWidth = root.clientWidth;
+      const offenders = Array.from(document.querySelectorAll("*"))
+        .map((element) => {
+          const rect = element.getBoundingClientRect();
+          const label = [
+            element.tagName.toLowerCase(),
+            element.id ? `#${element.id}` : "",
+            ...Array.from(element.classList).map((name) => `.${name}`),
+          ].join("");
+          return {
+            element: label,
+            left: Math.round(rect.left),
+            right: Math.round(rect.right),
+            width: Math.round(rect.width),
+          };
+        })
+        .filter(
+          ({ left, right, width }) =>
+            width > 0 && (left < -1 || right > viewportWidth + 1),
+        )
+        .slice(0, 20);
+
+      return {
+        overflow: root.scrollWidth - viewportWidth,
+        innerWidth: window.innerWidth,
+        viewportWidth,
+        rootScrollWidth: root.scrollWidth,
+        bodyClientWidth: document.body.clientWidth,
+        bodyScrollWidth: document.body.scrollWidth,
+        offenders,
+      };
+    });
+    expect(
+      layout.overflow,
+      `Horizontal layout diagnostics:\n${JSON.stringify(layout, null, 2)}`,
+    ).toBeLessThanOrEqual(0);
   });
 }
 

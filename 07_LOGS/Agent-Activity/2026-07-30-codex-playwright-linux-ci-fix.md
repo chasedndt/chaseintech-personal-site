@@ -28,6 +28,8 @@
 - Made the mobile frontier-status pill wrap inside the identity card.
 - Bounded public YouTube build-time requests after a stalled request held local verification open indefinitely.
 - Verified the repaired mobile hero visually at 320px and confirmed zero document overflow.
+- Inspected the replacement Ubuntu run, which still reported exactly 18px on the homepage.
+- Enhanced the assertion to report root/body widths and concrete overflowing elements.
 - Added the required session traceability records.
 
 ## Files written
