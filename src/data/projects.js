@@ -74,11 +74,14 @@ export const projects = [
         label: "ChaseOS-Core",
         url: "https://github.com/chasedndt/ChaseOS-Core",
       },
-      // NOTE: the ChaseOS company LinkedIn (linkedin.com/company/chaseos) was
-      // supplied by the operator, but the visual-identity directive lists
-      // LinkedIn under non-negotiable exclusions. Held out pending a decision:
-      // the exclusion targeted a personal profile, whereas this is a product
-      // page, so it may be intended to be in scope. Flagged, not silently added.
+      // LinkedIn: the directive's blanket exclusion targeted a PERSONAL
+      // profile. The operator explicitly approved this ChaseOS *company* page,
+      // so it is in scope here and nowhere else on the site.
+      {
+        type: "linkedin",
+        label: "Company page",
+        url: "https://www.linkedin.com/company/chaseos/",
+      },
     ],
     media: [],
     relatedVideos: [],

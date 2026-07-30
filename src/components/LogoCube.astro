@@ -1,13 +1,15 @@
 ---
-import PixelMark from "./PixelMark.astro";
+import ChaseOSMark from "./ChaseOSMark.astro";
 
-// Slowly rotating identity cube. Faces alternate between the faceless pixel
-// PFP (X) and the real photo PFP (YouTube / TikTok), so the rotation reads as
-// one identity with two public faces.
+// The profile image is used exactly as supplied — no redraw, no edits.
+const PFP_SRC = "/images/pfp-pixel.png";
+
+// Slowly rotating identity cube: the faceless pixel PFP alternating with the
+// ChaseOS mark, so the rotation reads as "the person and the system".
 //
-// The photo is not supplied yet: drop it at `public/images/pfp-photo.jpg` and
-// set PHOTO_SRC. Until then the photo faces render a labelled placeholder
-// rather than a broken image.
+// The photo PFP (YouTube / TikTok face) is still to be supplied. Once it is,
+// drop it at `public/images/pfp-photo.jpg` and set PHOTO_SRC — it then takes
+// the fourth face and the cube cycles person → system → person → photo.
 const PHOTO_SRC = null;
 
 interface Props {
@@ -18,23 +20,19 @@ const { size = 96 } = Astro.props;
 
 <div class="cube-stage" style={`--cube-size:${size}px`}>
   <div class="cube">
-    <div class="face face--front"><PixelMark /></div>
-    <div class="face face--right">
+    <div class="face face--front">
+      <img class="pfp" src={PFP_SRC} alt="ChaseInTech" width={size} height={size} />
+    </div>
+    <div class="face face--right"><ChaseOSMark /></div>
+    <div class="face face--back">
+      <img class="pfp" src={PFP_SRC} alt="" width={size} height={size} />
+    </div>
+    <div class="face face--left">
       {
         PHOTO_SRC ? (
           <img src={PHOTO_SRC} alt="Chase" width={size} height={size} />
         ) : (
-          <span class="placeholder">PFP</span>
-        )
-      }
-    </div>
-    <div class="face face--back"><PixelMark /></div>
-    <div class="face face--left">
-      {
-        PHOTO_SRC ? (
-          <img src={PHOTO_SRC} alt="" width={size} height={size} />
-        ) : (
-          <span class="placeholder">PFP</span>
+          <ChaseOSMark />
         )
       }
     </div>
@@ -72,6 +70,10 @@ const { size = 96 } = Astro.props;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+  /* Keep the pixel art crisp rather than letting the browser smooth it. */
+  .pfp {
+    image-rendering: pixelated;
   }
   .placeholder {
     font-family: var(--cit-font-mono);
