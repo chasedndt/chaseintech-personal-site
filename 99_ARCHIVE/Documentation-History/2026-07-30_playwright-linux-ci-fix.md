@@ -26,7 +26,7 @@ No production content, route, credential, or Cloudflare configuration changed.
 
 ## Completion boundary
 
-The diagnostic implementation, hero-grid repair, and GitHub-to-Cloudflare deployment authorization are verified. Quality checks run `30587318644` passed both Playwright and Lighthouse on GitHub-hosted Ubuntu. Production deployment of the final commit remains an operator-triggered follow-up rather than an implementation gap.
+The diagnostic implementation, hero-grid repair, and GitHub-to-Cloudflare deployment path are verified. Quality checks passed Playwright and Lighthouse on GitHub-hosted Ubuntu, Scheduled rebuild run `30588632992` deployed final commit `8348297`, and live production Chromium verification confirmed zero horizontal overflow at 320px.
 
 ## Links
 

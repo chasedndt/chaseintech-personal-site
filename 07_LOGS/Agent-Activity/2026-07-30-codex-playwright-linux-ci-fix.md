@@ -37,6 +37,7 @@
 - Constrained the homepage hero to a shrinkable grid track and allowed its grid item to shrink.
 - Verified the operator-created repository secrets through a successful manually dispatched Cloudflare Pages rebuild.
 - Verified the final repair through successful Playwright and Lighthouse jobs in GitHub-hosted Ubuntu run `30587318644`.
+- Verified Scheduled rebuild run `30588632992` deployed commit `8348297`, then inspected production CSS and 320px Chromium layout geometry.
 - Stopped a misdirected WSL `npm ci` that affected only generated `node_modules`, then restored dependencies from the lockfile with an isolated temporary cache.
 - Added the required session traceability records.
 
@@ -93,4 +94,4 @@ The operator explicitly asked to continue the unfinished work. This was treated 
 
 ## Remaining unverified items
 
-- Final production deployment after the CI-approved commit.
+- None for this CI and deployment pass.

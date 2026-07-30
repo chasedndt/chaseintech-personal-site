@@ -78,6 +78,7 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 - Hero-grid repair mobile subset: PASS — 11/11 routes, including the homepage, in 11.9 seconds.
 - Hero-grid repair full Chromium suite: PASS — 28/28 tests in 20.0 seconds.
 - GitHub-hosted Ubuntu Quality checks run `30587318644`: PASS — Playwright smoke and Lighthouse jobs both completed successfully.
+- Production verification after Scheduled rebuild run `30588632992`: PASS — homepage returned HTTP 200, served the new hero grid CSS, and measured `clientWidth = scrollWidth = 320px` in a real Chromium viewport.
 - An earlier local Playwright attempt failed because the newly required Chromium revision was not installed; this was an environment failure, not a regression.
 - A bounded isolated CI-mode browser invocation exceeded the local command window; the reporter configuration was then validated directly.
 - A later local build exposed an unbounded YouTube request; the hung process was stopped and the public build-time fetch path was given a 10-second deadline.
@@ -95,6 +96,7 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 - Actions run `30586999400` identified the document-edge owner: `div.container.hero-inner` rendered 338px wide in the 320px viewport while no unclipped descendant crossed the edge. The homepage hero now declares a `minmax(0, 1fr)` grid track and permits the grid item to shrink with `min-width: 0`.
 - Scheduled rebuild run `30585238797` passed every step, including the Cloudflare Pages deployment. This verifies that the operator-added GitHub repository secrets are accepted.
 - Quality checks run `30587318644` passed the repaired commit on GitHub-hosted Ubuntu: all 28 Playwright checks and Lighthouse succeeded.
+- Scheduled rebuild run `30588632992` deployed final commit `8348297` successfully. Production served `grid-template-columns: minmax(0, 1fr)` and `min-width: 0`; live 320px Chromium geometry had zero horizontal overflow.
 - A WSL reproduction attempt resolved its temporary path incorrectly and started `npm ci` in the main checkout. It touched only ignored/generated `node_modules`, was terminated, and dependencies were restored from the lockfile before verification resumed.
 
 ## What changed
@@ -112,16 +114,16 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 
 ## What remains unverified
 
-- Production has not yet received commit `375422c`; the operator must manually dispatch Scheduled rebuild once more or wait for its next twice-daily run.
+- None for this CI and deployment pass.
 
 ## Remaining open loops
 
-- Manually dispatch Scheduled rebuild once more after the final CI-approved commit so production receives the complete repair.
 - Refresh stale pre-launch wording in `README.md` and `PROJECT.md` in a separate documentation pass.
+- Audit the non-blocking GitHub Actions Node.js runtime deprecation warning in a separate workflow-maintenance pass.
 
 ## Next recommended pass
 
-Deploy the final CI-approved commit through Scheduled rebuild, then continue with Google Search Console verification.
+Continue with Google Search Console domain verification and sitemap submission.
 
 ## Links
 
