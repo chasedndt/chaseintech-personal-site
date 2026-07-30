@@ -1,16 +1,13 @@
 ---
-import ChaseOSMark from "./ChaseOSMark.astro";
-
-// The profile image is used exactly as supplied — no redraw, no edits.
-const PFP_SRC = "/images/pfp-pixel.png";
-
-// Slowly rotating identity cube: the faceless pixel PFP alternating with the
-// ChaseOS mark, so the rotation reads as "the person and the system".
+// Rotating identity cube with exactly TWO faces, alternating around the four
+// sides of the cube so the rotation is continuous:
+//   pixel PFP (X) → photo PFP (YouTube/TikTok) → pixel PFP → photo PFP
 //
-// The photo PFP (YouTube / TikTok face) is still to be supplied. Once it is,
-// drop it at `public/images/pfp-photo.jpg` and set PHOTO_SRC — it then takes
-// the fourth face and the cube cycles person → system → person → photo.
-const PHOTO_SRC = null;
+// Both images are the operator's own files, used as supplied. The photo was
+// transcoded from HEIC (browsers cannot render HEIC) and centre-cropped square;
+// framing is otherwise untouched.
+const PIXEL_SRC = "/images/pfp-pixel.png";
+const PHOTO_SRC = "/images/pfp-photo.png";
 
 interface Props {
   size?: number;
@@ -21,20 +18,16 @@ const { size = 96 } = Astro.props;
 <div class="cube-stage" style={`--cube-size:${size}px`}>
   <div class="cube">
     <div class="face face--front">
-      <img class="pfp" src={PFP_SRC} alt="ChaseInTech" width={size} height={size} />
+      <img class="pixel" src={PIXEL_SRC} alt="ChaseInTech" width={size} height={size} />
     </div>
-    <div class="face face--right"><ChaseOSMark /></div>
+    <div class="face face--right">
+      <img src={PHOTO_SRC} alt="Chase" width={size} height={size} />
+    </div>
     <div class="face face--back">
-      <img class="pfp" src={PFP_SRC} alt="" width={size} height={size} />
+      <img class="pixel" src={PIXEL_SRC} alt="" width={size} height={size} />
     </div>
     <div class="face face--left">
-      {
-        PHOTO_SRC ? (
-          <img src={PHOTO_SRC} alt="Chase" width={size} height={size} />
-        ) : (
-          <ChaseOSMark />
-        )
-      }
+      <img src={PHOTO_SRC} alt="" width={size} height={size} />
     </div>
   </div>
 </div>
@@ -51,13 +44,11 @@ const { size = 96 } = Astro.props;
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
-    animation: spin 16s cubic-bezier(0.66, 0, 0.34, 1) infinite;
+    animation: spin 12s cubic-bezier(0.66, 0, 0.34, 1) infinite;
   }
   .face {
     position: absolute;
     inset: 0;
-    display: grid;
-    place-items: center;
     overflow: hidden;
     border-radius: 10px;
     background: var(--cit-bg-elevated);
@@ -66,26 +57,18 @@ const { size = 96 } = Astro.props;
       0 0 26px -10px rgba(57, 222, 201, 0.5);
     backface-visibility: hidden;
   }
-  .face :global(img) {
+  .face img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
   }
   /* Keep the pixel art crisp rather than letting the browser smooth it. */
-  .pfp {
+  .pixel {
     image-rendering: pixelated;
   }
-  .placeholder {
-    font-family: var(--cit-font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 0.14em;
-    color: var(--cit-text-muted);
-    border: 1px dashed var(--cit-border-strong);
-    border-radius: 6px;
-    padding: 0.3rem 0.5rem;
-  }
 
-  /* Four faces around the Y axis; translateZ is half the cube width. */
+  /* Four sides around the Y axis; translateZ is half the cube width. */
   .face--front {
     transform: rotateY(0deg) translateZ(calc(var(--cube-size) / 2));
   }
@@ -99,16 +82,16 @@ const { size = 96 } = Astro.props;
     transform: rotateY(270deg) translateZ(calc(var(--cube-size) / 2));
   }
 
-  /* Quarter-turn steps with a pause on each face, so each logo is readable. */
+  /* Quarter-turn steps with a dwell on each face so both images register. */
   @keyframes spin {
-    0%, 18% { transform: rotateY(0deg); }
-    25%, 43% { transform: rotateY(-90deg); }
-    50%, 68% { transform: rotateY(-180deg); }
-    75%, 93% { transform: rotateY(-270deg); }
+    0%, 20% { transform: rotateY(0deg); }
+    25%, 45% { transform: rotateY(-90deg); }
+    50%, 70% { transform: rotateY(-180deg); }
+    75%, 95% { transform: rotateY(-270deg); }
     100% { transform: rotateY(-360deg); }
   }
 
-  /* Reduced motion: no rotation, front face only — still complete (§16.4). */
+  /* Reduced motion: no rotation, pixel face only — still complete (§16.4). */
   @media (prefers-reduced-motion: reduce) {
     .cube {
       animation: none;
