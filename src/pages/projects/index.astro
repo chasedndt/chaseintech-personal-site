@@ -2,7 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
-import { projects, frontierProject, categories } from "../../data/projects.js";
+import { projects, frontierProject, categories, statusLabels } from "../../data/projects.js";
 import { site } from "../../data/site.js";
 
 const grouped = Object.values(categories)
@@ -38,18 +38,66 @@ const grouped = Object.values(categories)
     </a>
   </div>
 
+  <div class="container filter-row" data-filter-row hidden>
+    <span class="filter-label">Filter</span>
+    <button class="chip is-active" data-filter="all" type="button">All</button>
+    {
+      [...new Set(projects.filter((p) => !p.frontier).map((p) => p.status))].map(
+        (status) => (
+          <button class="chip" data-filter={status} type="button">
+            {statusLabels[status]}
+          </button>
+        ),
+      )
+    }
+  </div>
+
   {
     grouped.map((group) => (
-      <section class="group container">
+      <section class="group container" data-group>
         <h2 class="group-title">{group.category}</h2>
         <div class="grid">
           {group.items.map((project) => (
-            <ProjectCard project={project} />
+            <div data-project-status={project.status}>
+              <ProjectCard project={project} />
+            </div>
           ))}
         </div>
       </section>
     ))
   }
+
+  <script>
+    // Status filter — progressive enhancement: the row is hidden until JS
+    // wires it, so without JS the page is simply the full unfiltered list.
+    const initFilter = () => {
+      const row = document.querySelector("[data-filter-row]");
+      if (!row || row.dataset.ready) return;
+      row.dataset.ready = "1";
+      row.hidden = false;
+
+      const chips = [...row.querySelectorAll("[data-filter]")];
+      const cards = [...document.querySelectorAll("[data-project-status]")];
+      const groups = [...document.querySelectorAll("[data-group]")];
+
+      row.addEventListener("click", (event) => {
+        const chip = event.target.closest("[data-filter]");
+        if (!chip) return;
+        chips.forEach((c) => c.classList.toggle("is-active", c === chip));
+        const wanted = chip.dataset.filter;
+        cards.forEach((card) => {
+          card.hidden = wanted !== "all" && card.dataset.projectStatus !== wanted;
+        });
+        groups.forEach((group) => {
+          group.hidden = ![...group.querySelectorAll("[data-project-status]")].some(
+            (card) => !card.hidden,
+          );
+        });
+      });
+    };
+    initFilter();
+    document.addEventListener("astro:page-load", initFilter);
+  </script>
 </Layout>
 
 <style>
@@ -92,6 +140,44 @@ const grouped = Object.values(categories)
     font-size: 0.92rem;
     margin-top: 0.6rem;
     max-width: 62ch;
+  }
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+  .filter-row[hidden] {
+    display: none;
+  }
+  .filter-label {
+    font-family: var(--cit-font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cit-text-muted);
+    margin-right: 0.4rem;
+  }
+  .chip {
+    font-family: var(--cit-font-mono);
+    font-size: 0.72rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--cit-border);
+    background: transparent;
+    color: var(--cit-text-secondary);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .chip:hover {
+    border-color: var(--cit-accent-teal);
+    color: var(--cit-accent-teal);
+  }
+  .chip.is-active {
+    border-color: var(--cit-accent-teal);
+    color: var(--cit-accent-teal);
+    background: rgba(57, 222, 201, 0.08);
   }
   .group {
     margin-top: 3.5rem;

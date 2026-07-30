@@ -28,6 +28,31 @@ const readingMinutes = Math.max(1, Math.round(words / 200));
 ---
 
 <Layout title={`${entry.title} — ${site.brand}`} description={entry.summary}>
+  <script>
+    // Heading anchors also copy the full URL to the clipboard, with a brief
+    // inline confirmation. Navigation still works if clipboard access fails.
+    const initCopyAnchors = () => {
+      document.querySelectorAll(".anchor").forEach((anchor) => {
+        if (anchor.dataset.copyBound) return;
+        anchor.dataset.copyBound = "1";
+        anchor.addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(
+              new URL(anchor.getAttribute("href"), location.href).href,
+            );
+            const original = anchor.textContent;
+            anchor.textContent = "copied";
+            setTimeout(() => (anchor.textContent = original), 1200);
+          } catch {
+            /* fall through to normal anchor navigation */
+          }
+        });
+      });
+    };
+    initCopyAnchors();
+    document.addEventListener("astro:page-load", initCopyAnchors);
+  </script>
+
   <article class="container entry">
     <header>
       <p class="section-label">Build log</p>

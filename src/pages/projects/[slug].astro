@@ -11,14 +11,27 @@ import { buildLogsForProject } from "../../data/build-logs.js";
 import { site } from "../../data/site.js";
 
 export function getStaticPaths() {
-  return projects.map((project) => ({
+  return projects.map((project, index) => ({
     params: { slug: project.slug },
-    props: { project },
+    props: {
+      project,
+      prev: projects[index - 1] ?? projects[projects.length - 1],
+      next: projects[index + 1] ?? projects[0],
+    },
   }));
 }
 
-const { project } = Astro.props;
+const { project, prev, next } = Astro.props;
 const logs = buildLogsForProject(project.slug);
+
+// Articles that reference this project (§31 cross-linking).
+import { getCollection } from "astro:content";
+const relatedArticles = (
+  await getCollection(
+    "articles",
+    ({ data }) => !data.draft && data.relatedProject === Astro.params.slug,
+  )
+).sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
 ---
 
 <Layout
@@ -239,6 +252,26 @@ const logs = buildLogsForProject(project.slug);
           </section>
         )
       }
+
+      {
+        relatedArticles.length > 0 && (
+          <section>
+            <h2>Related articles</h2>
+            <ul class="related">
+              {relatedArticles.map((entry) => (
+                <li>
+                  <a href={`/articles/${entry.id}`}>{entry.data.title}</a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+
+      <nav class="project-pager" aria-label="More projects">
+        <a href={`/projects/${prev.slug}`}>← {prev.name}</a>
+        <a class="next" href={`/projects/${next.slug}`}>{next.name} →</a>
+      </nav>
 
       <p class="back">
         <a class="text-link" href="/projects">← All projects</a>
@@ -494,6 +527,27 @@ const logs = buildLogsForProject(project.slug);
   }
   .related a:hover {
     text-decoration: underline;
+  }
+  .project-pager {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--cit-border);
+  }
+  .project-pager a {
+    color: var(--cit-text-secondary);
+    text-decoration: none;
+    font-size: 0.88rem;
+    max-width: 45%;
+  }
+  .project-pager a:hover {
+    color: var(--cit-accent-teal);
+  }
+  .project-pager .next {
+    text-align: right;
+    margin-left: auto;
   }
   .back {
     margin-top: 1rem;
