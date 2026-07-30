@@ -31,7 +31,11 @@ const year = 2026;
 
   <div class="container footer-bottom">
     <p>© {year} {site.brand}</p>
-    <a href="/privacy">Privacy</a>
+    <nav class="footer-links" aria-label="Secondary">
+      <a href="/uses">Uses</a>
+      <a href="/rss.xml">RSS</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
   </div>
 </footer>
 
@@ -90,6 +94,11 @@ const year = 2026;
     border-top: 1px solid var(--cit-border);
     color: var(--cit-text-muted);
     font-size: 0.8rem;
+  }
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
   }
   .footer-bottom a {
     color: var(--cit-text-muted);

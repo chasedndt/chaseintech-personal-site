@@ -51,6 +51,16 @@ export const socials = [
     url: "https://github.com/chasedndt",
     event: "github_click",
   },
+  // Personal LinkedIn. The visual-identity directive excluded LinkedIn, but the
+  // operator later supplied this profile and made it the primary home for
+  // articles and founder posts, which supersedes that exclusion.
+  {
+    id: "linkedin",
+    label: "LinkedIn",
+    handle: "john-idowu",
+    url: "https://uk.linkedin.com/in/john-idowu-03044a175",
+    event: "linkedin_click",
+  },
   {
     id: "instagram",
     label: "Instagram",
@@ -60,7 +70,7 @@ export const socials = [
   },
 ];
 
-// Excluded by directive (§13.8, §44): LinkedIn and any telephone number.
+// Still excluded by directive (§13.8, §44): any telephone number.
 
 export const activeSocials = socials.filter((s) => s.url);
 

@@ -17,6 +17,7 @@ export async function GET() {
     "/work-with-me",
     "/about",
     "/now",
+    "/uses",
     "/privacy",
     ...projects.map((p) => `/projects/${p.slug}`),
     ...articles.map((a) => `/articles/${a.id}`),

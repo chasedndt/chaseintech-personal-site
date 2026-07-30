@@ -1,0 +1,129 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { site } from "../data/site.js";
+import { groups, lastUpdated } from "../data/uses.js";
+---
+
+<Layout
+  title={`Uses — ${site.brand}`}
+  description="The tools, languages, platforms and services behind ChaseOS, Chaser Agent and the rest of the ChaseInTech portfolio."
+>
+  <div class="container page-head">
+    <p class="section-label">Uses</p>
+    <h1>What I build with</h1>
+    <p class="intro">
+      The actual stack behind ChaseOS and everything around it — not an
+      aspirational list. If something is on this page it is in real use.
+    </p>
+    <p class="updated">Last updated {lastUpdated}</p>
+  </div>
+
+  <div class="container">
+    {
+      groups.map((group) => (
+        <section class="group" data-reveal>
+          <div class="group-head">
+            <h2>{group.title}</h2>
+            {group.note && <p class="note">{group.note}</p>}
+          </div>
+          <ul>
+            {group.items.map((item) => (
+              <li class:list={[item.pending && "is-pending"]}>
+                <span class="name">{item.name}</span>
+                {item.detail ? (
+                  <span class="detail">{item.detail}</span>
+                ) : (
+                  <span class="detail detail--pending">Specification to be added</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</Layout>
+
+<style>
+  .page-head {
+    padding: 4rem 0 2.5rem;
+  }
+  h1 {
+    font-size: clamp(2.1rem, 5vw, 3rem);
+    margin-top: 0.6rem;
+  }
+  .intro {
+    color: var(--cit-text-secondary);
+    max-width: 60ch;
+    margin-top: 1rem;
+  }
+  .updated {
+    font-family: var(--cit-font-mono);
+    font-size: 0.74rem;
+    color: var(--cit-text-muted);
+    margin-top: 1rem;
+  }
+  .group {
+    padding: 2rem 0;
+    border-top: 1px solid var(--cit-border);
+  }
+  .group:last-of-type {
+    padding-bottom: 3.5rem;
+  }
+  .group-head {
+    margin-bottom: 1.2rem;
+  }
+  h2 {
+    font-size: 0.78rem;
+    font-family: var(--cit-font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cit-accent-teal);
+  }
+  .note {
+    color: var(--cit-text-muted);
+    font-size: 0.86rem;
+    margin-top: 0.55rem;
+    max-width: 60ch;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  li {
+    display: grid;
+    grid-template-columns: minmax(140px, 200px) 1fr;
+    gap: 1rem;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius-sm);
+    background: var(--cit-bg-surface);
+  }
+  li.is-pending {
+    border-style: dashed;
+    background: transparent;
+  }
+  .name {
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+  .detail {
+    color: var(--cit-text-secondary);
+    font-size: 0.88rem;
+  }
+  .detail--pending {
+    color: var(--cit-text-muted);
+    font-family: var(--cit-font-mono);
+    font-size: 0.76rem;
+  }
+
+  @media (max-width: 600px) {
+    li {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+  }
+</style>
