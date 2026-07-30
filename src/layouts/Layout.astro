@@ -11,18 +11,21 @@ interface Props {
   description?: string;
   /** Set on the homepage so the hero can sit under a transparent header. */
   bare?: boolean;
+  /** Absolute URL of a page-specific social preview image. */
+  image?: string;
 }
 
 const {
   title = site.title,
   description = site.description,
   bare = false,
+  image,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, site.url).href;
 const sameAs = activeSocials.map((social) => social.url);
 // PNG, not SVG: X, LinkedIn and most scrapers refuse to render SVG previews.
-const ogImage = new URL("/og-default.png", site.url).href;
+const ogImage = image ?? new URL("/og-default.png", site.url).href;
 ---
 
 <html lang="en">

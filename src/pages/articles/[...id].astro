@@ -33,9 +33,34 @@ const buildLog = article.data.relatedBuildLog
 
 const fmt = (date) =>
   date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+
+// Per-article preview card if the generator produced one; site default otherwise.
+import { existsSync } from "node:fs";
+const ogPath = `/og/articles/${article.id}.png`;
+const ogImage = existsSync(`public${ogPath}`)
+  ? new URL(ogPath, site.url).href
+  : undefined;
+
+// Article structured data for search (§SEO priority).
+const articleLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: article.data.title,
+  description: article.data.description,
+  datePublished: article.data.publishedAt.toISOString(),
+  ...(article.data.updatedAt && { dateModified: article.data.updatedAt.toISOString() }),
+  url: new URL(`/articles/${article.id}`, site.url).href,
+  author: { "@type": "Person", name: "Chase", url: site.url },
+  publisher: { "@type": "Person", name: site.brand, url: site.url },
+};
 ---
 
-<Layout title={`${article.data.title} — ${site.brand}`} description={article.data.description}>
+<Layout
+  title={`${article.data.title} — ${site.brand}`}
+  description={article.data.description}
+  image={ogImage}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(articleLd)} />
   <article class="container entry">
     <header>
       <p class="section-label">Article</p>

@@ -1,0 +1,94 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { site } from "../data/site.js";
+
+// Full-text search over the built site, powered by Pagefind. The index is
+// generated at build time (`pagefind --site dist`), loads lazily, and runs
+// entirely in the browser — no search server, no query logging.
+---
+
+<Layout
+  title={`Search — ${site.brand}`}
+  description="Search articles, build logs, projects and pages across chaseintech.com."
+>
+  <div class="container page">
+    <p class="section-label">Search</p>
+    <h1>Find anything on this site</h1>
+    <p class="intro">
+      Articles, build logs, case studies and pages — indexed at build time,
+      searched in your browser.
+    </p>
+
+    <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+    <div id="search" class="search-host"></div>
+    <script is:inline src="/pagefind/pagefind-ui.js"></script>
+    <script is:inline>
+      const initSearch = () => {
+        const host = document.querySelector("#search");
+        if (!host || host.dataset.ready || typeof PagefindUI === "undefined") return;
+        host.dataset.ready = "1";
+        new PagefindUI({
+          element: "#search",
+          showSubResults: true,
+          showImages: false,
+        });
+      };
+      initSearch();
+      document.addEventListener("astro:page-load", initSearch);
+    </script>
+
+    <noscript>
+      <p class="nojs">
+        Search needs JavaScript. Everything is also reachable from
+        <a href="/projects">projects</a>, <a href="/articles">articles</a> and
+        the <a href="/build-log">build log</a>.
+      </p>
+    </noscript>
+  </div>
+</Layout>
+
+<style>
+  .page {
+    max-width: 760px;
+    padding: 4rem 1.5rem 4rem;
+    min-height: 60vh;
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    margin-top: 0.6rem;
+  }
+  .intro {
+    color: var(--cit-text-secondary);
+    margin: 1rem 0 2rem;
+    max-width: 58ch;
+  }
+  .nojs {
+    color: var(--cit-text-muted);
+  }
+  .nojs a {
+    color: var(--cit-accent-teal);
+  }
+
+  /* Theme Pagefind's UI to the site palette. */
+  .search-host {
+    --pagefind-ui-primary: var(--cit-accent-teal);
+    --pagefind-ui-text: var(--cit-text-primary);
+    --pagefind-ui-background: var(--cit-bg-surface);
+    --pagefind-ui-border: var(--cit-border-strong);
+    --pagefind-ui-tag: var(--cit-bg-elevated);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 8px;
+    --pagefind-ui-font: var(--cit-font-sans);
+  }
+  .search-host :global(.pagefind-ui__result-link) {
+    color: var(--cit-accent-teal);
+  }
+  .search-host :global(.pagefind-ui__result-excerpt) {
+    color: var(--cit-text-secondary);
+  }
+  .search-host :global(mark) {
+    background: rgba(57, 222, 201, 0.25);
+    color: var(--cit-text-primary);
+    border-radius: 2px;
+  }
+</style>

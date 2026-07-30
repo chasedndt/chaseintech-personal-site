@@ -59,6 +59,27 @@ body {
   overflow-x: hidden;
 }
 
+/* Themed scrollbars — the Windows default white bar fights the dark design. */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #22333a var(--cit-bg-deep);
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--cit-bg-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: #22333a;
+  border-radius: 999px;
+  border: 2px solid var(--cit-bg-deep);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cit-accent-teal-strong);
+}
+
 h1,
 h2,
 h3,

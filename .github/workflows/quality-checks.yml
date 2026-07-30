@@ -1,0 +1,52 @@
+# Uptime and performance checks.
+#
+# Uptime: curls the two production sites every 30 minutes; a failure fails the
+# workflow, which triggers GitHub's default failure notification email.
+#
+# Lighthouse: runs on pushes to main against the built site, with budgets that
+# fail the run if performance regresses badly. Advisory rather than blocking —
+# it cannot stop a deploy (deploys are direct-upload), but it leaves a public
+# record of when a regression landed.
+
+name: Quality checks
+
+on:
+  schedule:
+    - cron: "*/30 * * * *" # uptime, every 30 minutes (UTC, best-effort timing)
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  uptime:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: chaseintech.com
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 https://chaseintech.com/)
+          echo "chaseintech.com -> $code"
+          [ "$code" = "200" ]
+      - name: chaseos.ai
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 https://chaseos.ai/)
+          echo "chaseos.ai -> $code"
+          [ "$code" = "200" ]
+
+  lighthouse:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Lighthouse with budgets
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          configPath: .lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true

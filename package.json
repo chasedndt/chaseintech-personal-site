@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check"
@@ -23,5 +23,8 @@
   "license": "UNLICENSED",
   "dependencies": {
     "astro": "^7.1.5"
+  },
+  "devDependencies": {
+    "pagefind": "^1.5.2"
   }
 }

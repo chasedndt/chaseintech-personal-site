@@ -11,6 +11,9 @@ const entries = [
   { label: "Home", href: "/", group: "Pages" },
   { label: "Links", href: "/links", group: "Pages" },
   { label: "Now", href: "/now", group: "Pages" },
+  { label: "Search", href: "/search", group: "Pages" },
+  { label: "Press kit", href: "/press", group: "Pages" },
+  { label: "Uses", href: "/uses", group: "Pages" },
   ...projects.map((p) => ({
     label: p.name,
     href: `/projects/${p.slug}`,
@@ -171,6 +174,12 @@ const entries = [
     place-items: start center;
     padding: 12vh 1.25rem 1.25rem;
   }
+  /* The display rules above would otherwise override the `hidden` attribute's
+     UA display:none — this line is what makes open/close actually work. */
+  .palette[hidden],
+  .palette-trigger[hidden] {
+    display: none;
+  }
   .palette-backdrop {
     position: absolute;
     inset: 0;
@@ -206,6 +215,21 @@ const entries = [
     padding: 0.4rem;
     max-height: 46vh;
     overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cit-border-strong) transparent;
+  }
+  .palette-list::-webkit-scrollbar {
+    width: 8px;
+  }
+  .palette-list::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .palette-list::-webkit-scrollbar-thumb {
+    background: var(--cit-border-strong);
+    border-radius: 999px;
+  }
+  .palette-list::-webkit-scrollbar-thumb:hover {
+    background: var(--cit-accent-teal);
   }
   .palette-list a {
     display: flex;

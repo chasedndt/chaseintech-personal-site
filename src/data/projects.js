@@ -226,6 +226,24 @@ export const projects = [
       "Not claiming a public installer, live marketplace transactions, or a managed-agent service.",
     links: [{ type: "site", label: "chaseos.ai", url: "https://chaseos.ai" }],
     media: [],
+    caseStudy: [
+      {
+        heading: "The problem",
+        body: "A governance-first agent OS is a hard thing to explain on a landing page: the product's value is what it refuses to do, and most product sites are structured to promise the opposite. ChaseOS Web has to sell restraint without underselling capability.",
+      },
+      {
+        heading: "Architecture",
+        body: "Vite/React shell deployed on Cloudflare Pages with Pages Functions for the dynamic edges and a D1-backed waitlist path. The route map covers the product story — Studio, Forge, Cloud, developers, pricing, updates — with Early Access boundaries stated per surface rather than buried in a footer.",
+      },
+      {
+        heading: "The content system underneath",
+        body: "Every public surface is driven from a structured content file that carries not just the copy but the operator boundary for that surface — what the page may claim as live, what is gated, and what proof comes next. Marketing copy and governance rules live in the same object, so the site cannot drift into overclaiming without the diff showing it.",
+      },
+      {
+        heading: "Where it is now",
+        body: "Live on chaseos.ai behind Cloudflare with a hardening pass documented. Forge and pricing are public; checkout and managed services deliberately are not, and the site says so in its own words.",
+      },
+    ],
     relatedVideos: [],
     relatedBuildLogs: [],
   },
@@ -284,6 +302,24 @@ export const projects = [
         repositoryUrl: null,
       },
     ],
+    caseStudy: [
+      {
+        heading: "The problem",
+        body: "Trading content is the least trustworthy corner of the internet, because claims are cheap and evidence is optional. StrikeZone is run as the opposite experiment: a trading-systems workspace where everything is an audited artifact — and where no live trade execution exists to overclaim about.",
+      },
+      {
+        heading: "Indicator engineering as reviewed software",
+        body: "The Pine Script v6 indicator suite — market-structure analysis, fair-value-gap detection, equal-high/low sweep detection, session clocks and killzones, bias and risk-regime tools — is developed with per-indicator audit folders, so a change to detection logic leaves a review trail the same way application code would.",
+      },
+      {
+        heading: "The automation layer",
+        body: "The StrikeZone Market Intelligence pack runs the daily research loop on ChaseOS: governed evidence acquisition with manifest validation, macro and derivatives context, thesis drafting, and publication to Discord with fetch-back proof that what posted is what was approved. Roughly thirty-five scheduled jobs are the workflow, with paper evaluation on public Hyperliquid data and, by hard rule, no execution authority.",
+      },
+      {
+        heading: "Where it is now",
+        body: "An active R&D workspace with a public indicator repository, dated market-analysis archives, Discord signal-delivery infrastructure and Whop distribution. No live trade execution, no performance guarantees, no production signal-subscription claims — the discipline is the product.",
+      },
+    ],
     relatedVideos: [],
     relatedBuildLogs: ["strikezone-market-intelligence-pack"],
   },
@@ -306,6 +342,24 @@ export const projects = [
       { type: "github", label: "Hypelist", url: "https://github.com/chasedndt/Hypelist" },
     ],
     media: [],
+    caseStudy: [
+      {
+        heading: "The problem",
+        body: "Resellers track inventory, sales and margins across spreadsheets that rot. Hypelist is a full-stack answer for streetwear and hype-item workflows: one place for inventory state, listing prep and the admin work around it.",
+      },
+      {
+        heading: "Architecture",
+        body: "React frontend over a Flask backend, with a deliberately swappable persistence layer: Firebase for hosted mode, SQLite for local-first mode. The dual-mode design means development and personal use never require a cloud dependency, while the hosted path stays available for multi-user scenarios.",
+      },
+      {
+        heading: "Trade-offs",
+        body: "Supporting two storage modes costs abstraction effort that a single-backend app would skip, and keeping Stripe integration at the documented-setup stage rather than live billing was a deliberate scope line: no payment path ships before the repo passes a hygiene review.",
+      },
+      {
+        heading: "Where it is now",
+        body: "Working full-stack application in development. Not described as a production commerce site, and live billing and customer operations stay off the claims list until they are real.",
+      },
+    ],
     relatedVideos: [],
     relatedBuildLogs: [],
   },
@@ -332,6 +386,24 @@ export const projects = [
       },
     ],
     media: [],
+    caseStudy: [
+      {
+        heading: "The problem",
+        body: "AI-assisted security tooling has a credibility crisis: LLMs generate plausible vulnerability reports that waste triage time, and 'AI bug bounty' mostly means noise at scale. GreyTheory starts from the position that an AI-assisted finding is worthless until something deterministic has proven it.",
+      },
+      {
+        heading: "The architecture",
+        body: "A modular bug-bounty operating system in the ChaseOS mould: LLM reasoning proposes, deterministic validation confirms, a confidence taxonomy grades every finding, and a mandatory human review gate sits before anything leaves the system. The evidence threshold is designed in from the start rather than bolted on after the first embarrassing false positive.",
+      },
+      {
+        heading: "Why architecture-first",
+        body: "Security work punishes overclaiming harder than any other domain. Publishing the architecture before the implementation is a deliberate ordering: the validation and review design is the hard part, and it deserves scrutiny before a single scanner runs.",
+      },
+      {
+        heading: "Where it is now",
+        body: "Architecture phase, pre-implementation, with the design public. No live scanner, no autonomous exploit engine, no validated findings claimed — and none will be claimed until the deterministic layer can prove them.",
+      },
+    ],
     relatedVideos: [],
     relatedBuildLogs: [],
   },
@@ -359,6 +431,24 @@ export const projects = [
       },
     ],
     media: [],
+    caseStudy: [
+      {
+        heading: "The problem",
+        body: "Design and video tools weren't built for a world where an agent is a second pair of hands. Toolshape Studio is a visual-design and video-editing application designed from the start with an agent control plane — every edit an agent can make is a typed operation a human can inspect, not a blob of UI automation.",
+      },
+      {
+        heading: "Architecture",
+        body: "A unified scene/timeline project model where all mutations flow through typed edit operations with revision enforcement — which is what makes undo/redo, agent auditability and SQLite-backed restart recovery fall out of one design decision instead of three features. A scalable React editor shell sits on top; render output is verified rather than assumed.",
+      },
+      {
+        heading: "Trade-offs",
+        body: "Typed operations and revision checks make every feature slower to add than direct state mutation would be. That cost buys the property the product exists for: an agent and a human editing the same project without either being able to corrupt it silently.",
+      },
+      {
+        heading: "Where it is now",
+        body: "Milestones one through five verified locally. The native Tauri shell, signed packaging and full feature parity are deferred and say so — the repository's own validation docs are the source of truth for what is proven.",
+      },
+    ],
     relatedVideos: [],
     relatedBuildLogs: [],
   },
@@ -386,6 +476,24 @@ export const projects = [
       },
     ],
     media: [],
+    caseStudy: [
+      {
+        heading: "The problem",
+        body: "Dictation tools either ship audio to someone else's cloud or trust every text field equally. Toolshape Voice is a local-first Windows dictation and writing-intelligence app built on the opposite assumptions: audio is process-lifetime-only, and no target application is written to until it has been verified safe to write to.",
+      },
+      {
+        heading: "Architecture",
+        body: "An executable SQLite-backed semantic kernel under a deterministic transcript pipeline, with a native Voice Bar companion: a system-wide held Ctrl+Win trigger that opens the capture device only while held. Dictionary, Snippets, Voice Styles and Transforms all run revision-checked lifecycles, previews are digest-bound with protected-span evidence, and custom styles fail closed until a rewrite provider actually exists.",
+      },
+      {
+        heading: "The hard part nobody plans for",
+        body: "The workstation's Windows application-control policy blocks newly compiled unsigned executables — which killed the original launcher design. The shipped answer works with the policy instead of around it: a packaged application target, regenerated shortcuts, and a launcher test that verifies a real Explorer launch with zero Code Integrity blocks. Secure fields are refused before capture, and guarded input is revalidated with UI Automation readback.",
+      },
+      {
+        heading: "Where it is now",
+        body: "Packaged desktop build in daily local use, with Word, terminals, remote desktop, a benchmark-selected transcription provider and production signing all explicitly marked not built. The README's capability table is kept honest enough to be the case study.",
+      },
+    ],
     relatedVideos: [],
     relatedBuildLogs: [],
   },

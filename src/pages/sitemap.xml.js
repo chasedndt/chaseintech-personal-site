@@ -18,6 +18,8 @@ export async function GET() {
     "/about",
     "/now",
     "/uses",
+    "/press",
+    "/search",
     "/privacy",
     ...projects.map((p) => `/projects/${p.slug}`),
     ...articles.map((a) => `/articles/${a.id}`),
