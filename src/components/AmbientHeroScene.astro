@@ -10,6 +10,7 @@
     class="scene-svg"
     viewBox="0 0 1440 900"
     preserveAspectRatio="xMidYMid slice"
+    overflow="hidden"
     xmlns="http://www.w3.org/2000/svg"
   >
     <defs>
@@ -153,6 +154,9 @@
     width: 100%;
     height: 100%;
     display: block;
+    /* Linux Chromium otherwise includes slice-scaled SVG children in the
+       document's horizontal scroll width despite the parent scene clipping. */
+    overflow: hidden;
   }
 
   /* Lightweight CSS rain (§16.3) — no canvas, no library. */

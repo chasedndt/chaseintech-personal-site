@@ -30,6 +30,7 @@ Continue the unfinished investigation of the GitHub Actions smoke-test failure a
 - `tests/smoke.spec.js`
 - `src/pages/index.astro`
 - `src/lib/youtube.js`
+- `src/components/AmbientHeroScene.astro`
 
 ## Files modified
 
@@ -67,6 +68,9 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 - Enhanced diagnostic Playwright suite: PASS — 28/28 tests in 1.7 minutes.
 - YouTube deadline / snapshot fallback: PASS — a mocked stalled request aborted in 10.11 seconds and returned the 11-video committed snapshot.
 - CI reporter resolution: PASS — resolves to GitHub annotations plus an HTML report.
+- Dependency restoration after the WSL diagnostic path error: PASS — 207 packages restored from `package-lock.json` with a fresh temporary cache; 0 vulnerabilities.
+- Final SVG-repair production build: PASS — 42 pages built in 18.05 seconds and indexed by Pagefind.
+- Final mobile overflow subset: PASS — 11/11 routes in 36.5 seconds.
 - An earlier local Playwright attempt failed because the newly required Chromium revision was not installed; this was an environment failure, not a regression.
 - A bounded isolated CI-mode browser invocation exceeded the local command window; the reporter configuration was then validated directly.
 - A later local build exposed an unbounded YouTube request; the hung process was stopped and the public build-time fetch path was given a 10-second deadline.
@@ -79,6 +83,8 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 - Replacement Actions run `30583918543` used the new reporter and identified the exact Linux failure: the homepage exceeded the 320px viewport by 18px; all other 27 tests passed.
 - Visual QA at 320px: PASS — the frontier-status pill wraps into two centered lines, while `clientWidth` and `scrollWidth` both measure 320px.
 - Replacement Actions run `30585252356` still measured exactly 18px on the Linux homepage after the pill repair; 27/28 tests and Lighthouse passed. The overflow assertion now emits root/body geometry and offending elements to distinguish real overflow from scrollbar-gutter accounting.
+- Diagnostic Actions run `30585670598` confirmed a real 18px overflow: Linux Chromium counted slice-scaled children from `AmbientHeroScene` beyond the SVG viewport. The viewport and client widths were both 320px, while root/body scroll width was 338px.
+- A WSL reproduction attempt resolved its temporary path incorrectly and started `npm ci` in the main checkout. It touched only ignored/generated `node_modules`, was terminated, and dependencies were restored from the lockfile before verification resumed.
 
 ## What changed
 
@@ -86,6 +92,7 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 - Horizontal-overflow measurement now compares `scrollWidth` with `documentElement.clientWidth`, avoiding scrollbar-dependent viewport slack.
 - The homepage frontier-status pill can wrap and center at mobile widths instead of forcing Linux's wider monospace rendering beyond the identity card.
 - YouTube RSS and format detection now time out and use the existing committed snapshot fallback instead of holding scheduled builds indefinitely.
+- The ambient hero SVG now clips overflow at the SVG viewport itself, preventing off-canvas decorative geometry from expanding the document scroll width on Linux.
 
 ## What did not change
 
@@ -94,7 +101,7 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 
 ## What remains unverified
 
-- The exact source of Linux's remaining 18px homepage measurement is still under diagnostic verification.
+- The ambient SVG repair has not yet passed local and GitHub-hosted Linux verification.
 - The new build-fetch deadline has not yet passed a replacement GitHub-hosted Ubuntu run.
 - GitHub repository secrets for the scheduled Cloudflare rebuild are not confirmed.
 

@@ -30,6 +30,9 @@
 - Verified the repaired mobile hero visually at 320px and confirmed zero document overflow.
 - Inspected the replacement Ubuntu run, which still reported exactly 18px on the homepage.
 - Enhanced the assertion to report root/body widths and concrete overflowing elements.
+- Used the enhanced Ubuntu evidence to identify slice-scaled ambient SVG children as the overflow source.
+- Enforced clipping at the SVG viewport boundary.
+- Stopped a misdirected WSL `npm ci` that affected only generated `node_modules`, then restored dependencies from the lockfile with an isolated temporary cache.
 - Added the required session traceability records.
 
 ## Files written
@@ -59,6 +62,8 @@ Public GitHub REST endpoints were read without credentials for Actions metadata.
 - CI reporter configuration resolution
 - Mocked stalled YouTube request and snapshot fallback
 - 320px mobile screenshot and geometry inspection
+- Final 11-route mobile overflow subset after SVG clipping
+- Final 42-page production build after dependency restoration
 
 ## Approval assumptions
 
@@ -69,6 +74,7 @@ The operator explicitly asked to continue the unfinished work. This was treated 
 - No secrets or credential values were requested, printed, stored, or modified.
 - No Cloudflare or GitHub settings were mutated.
 - Only the test process tree created by this session was terminated.
+- The misdirected WSL package-install process was terminated by exact PID; tracked source was not modified by it.
 - No protected product-state or ChaseOS core-runtime records were mutated.
 
 ## Boundaries not tested
