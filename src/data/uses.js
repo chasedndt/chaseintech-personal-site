@@ -111,10 +111,14 @@ export const groups = [
   },
   {
     title: "Machines",
-    note: "Two systems. Full specifications to be added.",
+    note: "Two systems; specs read from the hardware, not from memory.",
     items: [
-      { name: "Primary workstation", detail: null, pending: true },
-      { name: "Secondary system", detail: null, pending: true },
+      {
+        name: "Surface Pro 7+",
+        detail:
+          "Intel Core i7-1165G7 (4c/8t) · 16GB RAM · Iris Xe · 256GB NVMe · Windows 11 Pro with WSL/Ubuntu. The everywhere machine — a surprising amount of ChaseOS runs from it.",
+      },
+      { name: "Second system", detail: null, pending: true },
     ],
   },
 ];
