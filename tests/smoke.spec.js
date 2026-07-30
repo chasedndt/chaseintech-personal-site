@@ -39,13 +39,48 @@ test("command palette is closed on load, opens and closes", async ({ page }) => 
   await expect(palette).toBeHidden();
 });
 
-test("no horizontal overflow at 320px", async ({ page }) => {
-  await page.setViewportSize({ width: 320, height: 720 });
+// Mobile responsiveness: no page may scroll horizontally at small-phone width.
+const mobileRoutes = [
+  "/",
+  "/projects/",
+  "/projects/chaseos/",
+  "/articles/",
+  "/videos/",
+  "/build-log/",
+  "/build-log/chaseos-cloud-metering-architecture/",
+  "/uses/",
+  "/press/",
+  "/work-with-me/",
+  "/links/",
+];
+
+for (const route of mobileRoutes) {
+  test(`no horizontal overflow at 320px on ${route}`, async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 720 });
+    await page.goto(route);
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    );
+    expect(overflow).toBeLessThanOrEqual(0);
+  });
+}
+
+test("More dropdown stacks items vertically", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/");
-  const overflow = await page.evaluate(
-    () => document.documentElement.scrollWidth - window.innerWidth,
-  );
-  expect(overflow).toBeLessThanOrEqual(0);
+  await page.locator("[data-more-menu] summary").click();
+  const boxes = await page
+    .locator(".more-panel > li > a")
+    .evaluateAll((els) => els.map((el) => el.getBoundingClientRect()));
+  expect(boxes.length).toBeGreaterThanOrEqual(4);
+  // Every item must start below the previous one — vertical, not side-by-side.
+  for (let i = 1; i < boxes.length; i++) {
+    expect(boxes[i].top).toBeGreaterThanOrEqual(boxes[i - 1].bottom - 1);
+  }
+  // And the panel must not spill past the viewport edge.
+  for (const box of boxes) {
+    expect(box.right).toBeLessThanOrEqual(1280);
+  }
 });
 
 test("articles feed is valid and article pages render", async ({ page }) => {

@@ -195,25 +195,26 @@ const isCurrent = (href) =>
     box-shadow: 0 0 12px var(--cit-accent-teal);
   }
 
-  .desktop-nav ul {
+  .desktop-nav > ul {
     display: flex;
+    align-items: center;
     gap: 1.6rem;
     list-style: none;
     margin: 0;
     padding: 0;
   }
-  .desktop-nav a {
+  .desktop-nav > ul > li > a {
     text-decoration: none;
     font-size: 0.9rem;
     color: var(--cit-text-secondary);
     padding: 0.35rem 0;
     border-bottom: 1px solid transparent;
   }
-  .desktop-nav a:hover {
+  .desktop-nav > ul > li > a:hover {
     color: var(--cit-text-primary);
   }
   /* Current route marked by more than colour alone (§12.3) */
-  .desktop-nav a[aria-current="page"] {
+  .desktop-nav > ul > li > a[aria-current="page"] {
     color: var(--cit-accent-teal);
     border-bottom-color: var(--cit-accent-teal);
   }
