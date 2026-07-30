@@ -10,9 +10,27 @@ export const groups = [
     title: "AI and coding",
     note: "The day-to-day loop: agentic tools doing the drafting, me reviewing.",
     items: [
-      { name: "Claude Code", detail: "Primary agentic coding harness." },
-      { name: "Codex", detail: "Second opinion and parallel implementation passes." },
+      { name: "Claude Code", detail: "Primary agentic coding harness, running Anthropic's Claude models." },
+      { name: "Codex", detail: "OpenAI-backed second opinion and parallel implementation passes." },
       { name: "VS Code", detail: "Editor of record." },
+    ],
+  },
+  {
+    title: "Agent harnesses",
+    note: "The runtimes doing autonomous work inside ChaseOS, all behind human approval gates.",
+    items: [
+      {
+        name: "Hermes",
+        detail: "ChaseOS runtime agent — scheduled jobs, watchdogs and workflow execution.",
+      },
+      {
+        name: "OpenClaw",
+        detail: "Peer runtime within the ChaseOS agent bus.",
+      },
+      {
+        name: "Chaser Agent",
+        detail: "Review-first source-intelligence harness. Open source — see the project page.",
+      },
     ],
   },
   {
@@ -40,22 +58,55 @@ export const groups = [
     ],
   },
   {
-    title: "Data and storage",
+    title: "Trading and research",
     items: [
-      { name: "SQLite", detail: "Local-first state for ChaseOS, Toolshape and Hypelist." },
-      { name: "Cloudflare D1", detail: "Hosted SQL for the public web surfaces." },
-      { name: "Firebase", detail: "Alternate mode in Hypelist." },
+      { name: "TradingView", detail: "Charting and Pine Script strategy development for StrikeZone Crypto." },
+      {
+        name: "StrikeZone Market Intelligence",
+        detail: "ChaseOS workflow pack running governed daily market research. No trade execution.",
+      },
     ],
   },
   {
-    title: "Operations",
+    title: "Terminal and shell",
     items: [
+      { name: "Windows Terminal", detail: "Primary terminal." },
+      { name: "PowerShell", detail: "Windows-side scripting and ops." },
+      { name: "WSL + Ubuntu", detail: "Linux side of the workflow; Ubuntu for anything POSIX." },
+    ],
+  },
+  {
+    title: "Content and design",
+    note: "The production pipeline behind the YouTube and TikTok output.",
+    items: [
+      { name: "OBS Studio", detail: "Screen and build-session recording." },
+      { name: "Recordly", detail: "Recording workflow." },
+      { name: "CapCut", detail: "Short-form editing." },
+      { name: "Photoshop", detail: "Image work and thumbnails." },
+      { name: "Canva", detail: "Fast graphics and social assets." },
+    ],
+  },
+  {
+    title: "Knowledge and operations",
+    items: [
+      {
+        name: "ChaseOS knowledge graph",
+        detail: "The knowledge base is a system I built — governed graph with provenance, not a notes app.",
+      },
       { name: "GitHub", detail: "Source of record; Actions for scheduled builds and deploys." },
       {
         name: "Discord",
         detail: "Control plane. One lane per project for status receipts and approval gates.",
       },
       { name: "Whop", detail: "Distribution and access for StrikeZone Crypto." },
+    ],
+  },
+  {
+    title: "Data and storage",
+    items: [
+      { name: "SQLite", detail: "Local-first state for ChaseOS, Toolshape and Hypelist." },
+      { name: "Cloudflare D1", detail: "Hosted SQL for the public web surfaces." },
+      { name: "Firebase", detail: "Alternate mode in Hypelist." },
     ],
   },
   {
