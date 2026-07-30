@@ -59,7 +59,7 @@ for (const route of mobileRoutes) {
     await page.setViewportSize({ width: 320, height: 720 });
     await page.goto(route);
     const overflow = await page.evaluate(
-      () => document.documentElement.scrollWidth - window.innerWidth,
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
     );
     expect(overflow).toBeLessThanOrEqual(0);
   });
