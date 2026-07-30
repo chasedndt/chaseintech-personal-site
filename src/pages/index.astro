@@ -1,11 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import AmbientHeroScene from "../components/AmbientHeroScene.astro";
-import Avatar from "../components/Avatar.astro";
+import LogoCube from "../components/LogoCube.astro";
 import SocialIconRow from "../components/SocialIconRow.astro";
 import FrontierProjectFeature from "../components/FrontierProjectFeature.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import ProjectCard from "../components/ProjectCard.astro";
+import VideoCard from "../components/VideoCard.astro";
 import WorkWithMeCTA from "../components/WorkWithMeCTA.astro";
 import { site } from "../data/site.js";
 import { featuredProjects, frontierProject } from "../data/projects.js";
@@ -23,7 +24,7 @@ const latestLogs = publishedBuildLogs.slice(0, 2);
     <div class="container hero-inner">
       <div class="identity-card">
         <div class="card-top">
-          <Avatar size={76} />
+          <LogoCube size={84} />
           <SocialIconRow size="sm" />
         </div>
 
@@ -85,13 +86,9 @@ const latestLogs = publishedBuildLogs.slice(0, 2);
       {
         featuredVideo ? (
           <div class="video-grid">
-            <a class="video video--featured" href={`/videos/${featuredVideo.slug}`} data-analytics="video_open">
-              <span class="video-title">{featuredVideo.title}</span>
-            </a>
+            <VideoCard video={featuredVideo} featured />
             {recentVideos.map((v) => (
-              <a class="video" href={`/videos/${v.slug}`} data-analytics="video_open">
-                <span class="video-title">{v.title}</span>
-              </a>
+              <VideoCard video={v} />
             ))}
           </div>
         ) : (

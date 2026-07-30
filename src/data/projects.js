@@ -21,6 +21,15 @@ export const categories = {
   creative: "Creative Tooling",
 };
 
+// Per-project links (§: each project carries its own presence).
+// `type` drives the icon: site | github | x | youtube | tiktok | discord | docs
+// NEVER invent a URL. A project with no verified account simply has fewer
+// entries — an empty row is honest, a guessed handle is not.
+//
+// TODO(operator): supply per-project accounts where they exist. Known gap:
+// ChaseOS, StrikeZone Crypto and TradeSync were each described as having their
+// own socials, but no URLs have been provided.
+
 export const projects = [
   {
     slug: "chaseos",
@@ -51,6 +60,16 @@ export const projects = [
     ],
     boundary:
       "Not claiming production SaaS deployment, unbounded agent execution, or a managed public agent service.",
+    links: [
+      { type: "site", label: "chaseos.ai", url: "https://chaseos.ai" },
+      {
+        type: "github",
+        label: "ChaseOS-Core",
+        url: "https://github.com/chasedndt/ChaseOS-Core",
+      },
+      // TODO(operator): ChaseOS X / Discord / YouTube accounts
+    ],
+    media: [],
     relatedVideos: [],
     relatedBuildLogs: ["chaseos-control-plane-boundaries"],
   },
@@ -70,6 +89,14 @@ export const projects = [
     liveUrl: null,
     boundary:
       "Not claiming a production autonomous agent, live provider routing, or a browser-control adapter.",
+    links: [
+      {
+        type: "github",
+        label: "Chaser-Agent",
+        url: "https://github.com/chasedndt/Chaser-Agent",
+      },
+    ],
+    media: [],
     relatedVideos: [],
     relatedBuildLogs: ["chaser-agent-source-card-harness"],
   },
@@ -88,6 +115,8 @@ export const projects = [
     liveUrl: "https://chaseos.ai",
     boundary:
       "Not claiming a public installer, live marketplace transactions, or a managed-agent service.",
+    links: [{ type: "site", label: "chaseos.ai", url: "https://chaseos.ai" }],
+    media: [],
     relatedVideos: [],
     relatedBuildLogs: [],
   },
@@ -107,6 +136,14 @@ export const projects = [
     liveUrl: null,
     boundary:
       "No live trade execution, no financial performance guarantees, and no production signal subscription service.",
+    links: [
+      // NOTE(operator): @ChaserCrypto_ is currently wired as the PERSONAL X
+      // account in src/data/site.js, taken from the GitHub profile. If that
+      // handle actually belongs to StrikeZone Crypto rather than to
+      // ChaseInTech, move it here and supply the personal handle separately.
+      // TODO(operator): StrikeZone Discord / X / Whop URLs
+    ],
+    media: [],
     subProjects: [
       {
         name: "TradeSync",
@@ -149,6 +186,10 @@ export const projects = [
     liveUrl: null,
     boundary:
       "Not claiming a production commerce site, live billing, or live customer operations ahead of a repo-hygiene review.",
+    links: [
+      { type: "github", label: "Hypelist", url: "https://github.com/chasedndt/Hypelist" },
+    ],
+    media: [],
     relatedVideos: [],
     relatedBuildLogs: [],
   },
@@ -167,6 +208,14 @@ export const projects = [
     liveUrl: null,
     boundary:
       "Architecture and pre-implementation only. No live scanner, no autonomous exploit engine, no validated findings.",
+    links: [
+      {
+        type: "github",
+        label: "GreyTheory-Research",
+        url: "https://github.com/chasedndt/GreyTheory-Research",
+      },
+    ],
+    media: [],
     relatedVideos: [],
     relatedBuildLogs: [],
   },
@@ -186,6 +235,14 @@ export const projects = [
     liveUrl: null,
     boundary:
       "Milestones 1–5 verified locally. Native shell, signed packaging and broad feature parity remain deferred.",
+    links: [
+      {
+        type: "github",
+        label: "toolshape-studio",
+        url: "https://github.com/chasedndt/toolshape-studio",
+      },
+    ],
+    media: [],
     relatedVideos: [],
     relatedBuildLogs: [],
   },
@@ -205,6 +262,14 @@ export const projects = [
     liveUrl: null,
     boundary:
       "Not claiming production signed packaging, cloud distribution, or a benchmark-selected transcription provider.",
+    links: [
+      {
+        type: "github",
+        label: "toolshape-voice",
+        url: "https://github.com/chasedndt/toolshape-voice",
+      },
+    ],
+    media: [],
     relatedVideos: [],
     relatedBuildLogs: [],
   },

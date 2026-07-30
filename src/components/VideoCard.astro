@@ -1,0 +1,215 @@
+---
+import { platformsFor, displayTitle, displayBody } from "../data/videos.js";
+
+// Renders one piece of content correctly for whichever platform(s) it lives on.
+// YouTube leads with a title; TikTok has no title so the caption becomes the
+// primary line and is given the space a title would otherwise take.
+interface Props {
+  video: any;
+  featured?: boolean;
+}
+const { video, featured = false } = Astro.props;
+
+const platforms = platformsFor(video);
+const title = displayTitle(video);
+const body = displayBody(video);
+const primary = video[video.primary];
+const isShort = video.youtube?.format === "short";
+---
+
+<article class:list={["video-card", featured && "video-card--featured"]}>
+  <a class="thumb" href={primary.url} target="_blank" rel="noopener noreferrer" data-analytics="video_open">
+    {
+      video.youtube?.videoId ? (
+        <img
+          src={`https://i.ytimg.com/vi/${video.youtube.videoId}/hqdefault.jpg`}
+          alt={title ?? "Video thumbnail"}
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <span class="thumb-fallback" aria-hidden="true">▶</span>
+      )
+    }
+    {video.youtube?.duration && <span class="duration">{video.youtube.duration}</span>}
+  </a>
+
+  <div class="content">
+    <div class="platforms">
+      {
+        platforms.map((platform) => (
+          <span class:list={["chip", `chip--${platform}`]}>
+            {platform === "youtube" ? (isShort ? "YouTube Short" : "YouTube") : "TikTok"}
+          </span>
+        ))
+      }
+      {
+        platforms.length > 1 && (
+          <span class="chip chip--cross" title="Posted to both platforms">
+            cross-posted
+          </span>
+        )
+      }
+    </div>
+
+    {
+      title ? (
+        <>
+          <h3>
+            <a href={primary.url} target="_blank" rel="noopener noreferrer" data-analytics="video_open">
+              {title}
+            </a>
+          </h3>
+          {body && <p class="body">{body}</p>}
+        </>
+      ) : (
+        /* TikTok-only: no title exists, so the caption carries the card. */
+        <p class="caption">
+          <a href={primary.url} target="_blank" rel="noopener noreferrer" data-analytics="video_open">
+            {body}
+          </a>
+        </p>
+      )
+    }
+
+    <div class="foot">
+      <time datetime={video.publishedAt}>{video.publishedAt}</time>
+      {
+        platforms.length > 1 && (
+          <span class="also">
+            Also on{" "}
+            {platforms
+              .filter((p) => p !== video.primary)
+              .map((p) => (
+                <a href={video[p].url} target="_blank" rel="noopener noreferrer">
+                  {p === "youtube" ? "YouTube" : "TikTok"}
+                </a>
+              ))}
+          </span>
+        )
+      }
+    </div>
+  </div>
+</article>
+
+<style>
+  .video-card {
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius);
+    background: var(--cit-bg-surface);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.2s ease;
+  }
+  .video-card:hover {
+    border-color: var(--cit-accent-teal);
+  }
+  .thumb {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    background: var(--cit-bg-elevated);
+    display: grid;
+    place-items: center;
+  }
+  .video-card--featured .thumb {
+    aspect-ratio: 16 / 8;
+  }
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .thumb-fallback {
+    color: var(--cit-text-muted);
+    font-size: 1.5rem;
+  }
+  .duration {
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    background: rgba(4, 12, 14, 0.85);
+    color: var(--cit-text-primary);
+    font-family: var(--cit-font-mono);
+    font-size: 0.68rem;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+  }
+  .content {
+    padding: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .platforms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+  .chip {
+    font-family: var(--cit-font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+  }
+  .chip--youtube {
+    color: #ff6b6b;
+  }
+  .chip--tiktok {
+    color: #6be5e0;
+  }
+  .chip--cross {
+    color: var(--cit-accent-violet);
+  }
+  h3 {
+    font-size: 1.02rem;
+  }
+  .video-card--featured h3 {
+    font-size: 1.35rem;
+  }
+  h3 a,
+  .caption a {
+    text-decoration: none;
+  }
+  h3 a:hover,
+  .caption a:hover {
+    color: var(--cit-accent-teal);
+  }
+  .body {
+    color: var(--cit-text-secondary);
+    font-size: 0.88rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  /* Title-less platforms get more room, since the caption IS the headline. */
+  .caption {
+    color: var(--cit-text-primary);
+    font-size: 0.98rem;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+    font-family: var(--cit-font-mono);
+    font-size: 0.7rem;
+    color: var(--cit-text-muted);
+  }
+  .also a {
+    color: var(--cit-text-secondary);
+  }
+</style>

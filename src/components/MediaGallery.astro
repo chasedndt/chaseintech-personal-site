@@ -1,0 +1,124 @@
+---
+// Media strip for a project (screenshots, diagrams, demo clips).
+//
+// Deliberately calm: a fixed 16:9 aspect grid that caps at three tiles per row
+// so a project page never turns into a congested wall of thumbnails. When no
+// media is supplied it renders a single quiet reserved slot instead of
+// disappearing — it reads as "coming", not as a broken layout.
+//
+// Media shape:
+// { src: "/images/projects/<slug>/shot-1.webp", alt: "...", caption: "..." }
+// or { type: "video", src: "...", poster: "...", alt: "..." }
+interface Props {
+  media?: Array<{ src: string; alt: string; caption?: string; type?: string }>;
+  label?: string;
+}
+const { media = [], label = "Media" } = Astro.props;
+---
+
+<section class="media">
+  <h2>{label}</h2>
+
+  {
+    media.length > 0 ? (
+      <ul class="grid">
+        {media.map((item) => (
+          <li>
+            <figure>
+              <div class="frame">
+                {item.type === "video" ? (
+                  <video src={item.src} poster={item.poster} controls preload="none" />
+                ) : (
+                  <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
+                )}
+              </div>
+              {item.caption && <figcaption>{item.caption}</figcaption>}
+            </figure>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <div class="reserved">
+        <div class="frame frame--empty">
+          <span class="mark" aria-hidden="true"></span>
+        </div>
+        <p>
+          Screenshots and demo clips for this project will appear here once
+          they're added.
+        </p>
+      </div>
+    )
+  }
+</section>
+
+<style>
+  .media h2 {
+    font-size: 0.78rem;
+    font-family: var(--cit-font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cit-accent-teal);
+    margin-bottom: 0.9rem;
+  }
+  .grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+    gap: 1rem;
+  }
+  figure {
+    margin: 0;
+  }
+  .frame {
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius);
+    overflow: hidden;
+    background: var(--cit-bg-surface);
+    display: grid;
+    place-items: center;
+  }
+  .frame img,
+  .frame video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  figcaption {
+    margin-top: 0.55rem;
+    font-size: 0.78rem;
+    color: var(--cit-text-muted);
+  }
+
+  /* Quiet reserved slot — one tile, half width, never a grid of empty boxes */
+  .reserved {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 420px;
+  }
+  .frame--empty {
+    border-style: dashed;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.015) 25%,
+      transparent 25% 50%,
+      rgba(255, 255, 255, 0.015) 50% 75%,
+      transparent 75%
+    );
+    background-size: 14px 14px;
+  }
+  .mark {
+    width: 22px;
+    height: 22px;
+    border: 1px solid var(--cit-border-strong);
+    border-radius: 4px;
+    opacity: 0.7;
+  }
+  .reserved p {
+    font-size: 0.8rem;
+    color: var(--cit-text-muted);
+  }
+</style>

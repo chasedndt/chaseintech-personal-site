@@ -2,6 +2,8 @@
 import Layout from "../../layouts/Layout.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
 import WorkWithMeCTA from "../../components/WorkWithMeCTA.astro";
+import ProjectLinks from "../../components/ProjectLinks.astro";
+import MediaGallery from "../../components/MediaGallery.astro";
 import { projects } from "../../data/projects.js";
 import { buildLogsForProject } from "../../data/build-logs.js";
 import { site } from "../../data/site.js";
@@ -59,6 +61,11 @@ const logs = buildLogsForProject(project.slug);
           )
         }
       </div>
+      {project.links?.length > 0 && (
+        <div class="project-link-row">
+          <ProjectLinks links={project.links} />
+        </div>
+      )}
     </header>
 
     <div class="container body">
@@ -66,6 +73,9 @@ const logs = buildLogsForProject(project.slug);
         <h2>Outcome</h2>
         <p>{project.outcome}</p>
       </section>
+
+      <MediaGallery media={project.media} />
+
 
       <section>
         <h2>Technology</h2>
@@ -182,6 +192,11 @@ const logs = buildLogsForProject(project.slug);
     flex-wrap: wrap;
     gap: 0.85rem;
     margin-top: 1.9rem;
+  }
+  .project-link-row {
+    margin-top: 1.4rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--cit-border);
   }
   .body {
     max-width: 820px;
