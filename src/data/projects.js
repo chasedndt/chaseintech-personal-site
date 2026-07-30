@@ -8,6 +8,7 @@ export const statusLabels = {
   oss: "Open Source",
   research: "Research",
   prototype: "Prototype",
+  planned: "Planned",
   archived: "Archived",
   private: "Private",
 };
@@ -86,10 +87,6 @@ export const projects = [
     media: [],
     // Significant surfaces shipped within ChaseOS. Only entries verified
     // against the live site or the repository appear here.
-    // TODO(operator): ChaseOS Cloud — asked for, but nothing describing it was
-    // found in the repos, and chaseos.ai serves a client-rendered SPA whose
-    // catch-all returns 200 for any path, so /cloud could not be confirmed
-    // from outside. Supply one line on what it does and it goes in.
     components: [
       {
         name: "ChaseOS Forge",
@@ -117,6 +114,42 @@ export const projects = [
           "Per-project lanes carrying status receipts and human approval gates that agents cannot self-authorise.",
         status: "development",
         url: null,
+      },
+      {
+        // Sourced from the ChaseOS commercial site content, which is explicit
+        // that Cloud is planned/early-access — never describe it as live.
+        name: "ChaseOS Cloud",
+        detail:
+          "Planned managed layer over the local-first core: Providers & Tools, encrypted Sync, usage-based Compute, Managed Runtimes and Deploy. Local-first and BYOK stay viable; managed is opt-in convenience.",
+        status: "planned",
+        url: "https://chaseos.ai/cloud",
+      },
+    ],
+    // Deep case study (§24.1), written from the ChaseOS-Core repository.
+    caseStudy: [
+      {
+        heading: "The problem",
+        body: "Running many agents across real projects collapses too much into one stream: source facts, model guesses, proposed actions, memory writes and public claims all arrive looking equally confident. Once an agent can deploy, spend or publish, the cost of that ambiguity stops being theoretical. ChaseOS starts from the position that the boundary — not the model — is the product.",
+      },
+      {
+        heading: "The design decision that shapes everything else",
+        body: "ChaseOS's runtime contract does not assume an LLM should do each step. Before any execution, its decision router selects a modality per material step: a human for accountability and liability, deterministic rules for exact or security-sensitive operations, ML for versioned prediction over structured data, and generative AI only for bounded interpretation and synthesis. The first shipped foothold of this is deliberately read-only — it validates a decision contract and produces an approval plan naming the accountable human, the exact scope, the required evidence and the block-on-timeout behaviour, without executing anything.",
+      },
+      {
+        heading: "Public core, private instance",
+        body: "The framework is split hard: ChaseOS Core is an MIT-licensed public scaffold — folder structure, governance docs, templates, runtime standards, a lean CLI — while identity, credentials, live memory and project state live in a separate private instance. The publication standard requires Core materials to be reusable without exposing private paths, names or deployment state, and a repo-safe secret audit module scans tracked and untracked text before anything ships.",
+      },
+      {
+        heading: "What the CLI actually does today",
+        body: "The lean Core CLI covers version and health checks, explicit capture into quarantine (file, stdin, local image-text — no ambient screen or browser capture), schedule-intent listing, a bounded workflow runner with dry-run, a local-first connections registry that discovers provider manifests without authenticating anything, and read-only commercial scaffolding for catalog, entitlements and ledger surfaces.",
+      },
+      {
+        heading: "Trade-offs accepted",
+        body: "Everything defaults to fail-closed, read-only, or dry-run, which makes the system slower to demo than an autonomous agent stack. That is deliberate: the failure mode of a confused agent here is a rejected proposal or a blocked approval, not a live incident. Convenience is being layered on top (Forge packs, and eventually the managed Cloud lane) rather than by weakening the boundary.",
+      },
+      {
+        heading: "Where it is now",
+        body: "Active framework in developer preview. The Forge workflow-pack marketplace and pricing surfaces are live on chaseos.ai; Studio and the control plane are in development; the managed Cloud lane is planned and explicitly not live. Not a production SaaS, not unbounded agent execution, and not described as either.",
       },
     ],
     relatedVideos: [],
@@ -146,6 +179,33 @@ export const projects = [
       },
     ],
     media: [],
+    // Deep case study (§24.1), written from the Chaser-Agent repository.
+    caseStudy: [
+      {
+        heading: "The problem",
+        body: "Most agent demos optimise for speed and autonomy, which collapses source facts, model inference, recommended actions and memory updates into one confident blob of prose. Once that happens, a reviewer cannot tell what is grounded, what is speculative, what is safe to act on, or what deserves to become durable knowledge — so verification costs as much as doing the work by hand.",
+      },
+      {
+        heading: "Behaviour before implementation",
+        body: "The repo is deliberately built in thinking order: a Layer 0 Behaviour Contract — the product constitution — comes first, then a V0 definition and blueprint, with a 17-layer architecture map kept subordinate to the contract. Code only exists where behaviour was defined first, and existing tests were reclassified as smoke or schema checks unless they genuinely test contract behaviour.",
+      },
+      {
+        heading: "What V0 produces",
+        body: "The Source Card Harness takes safe source input and emits a deterministic local review packet: a source card, a claims table kept separate from inference, traceable evidence snippets, explicit uncertainty and contradiction labels, action candidates that require human acceptance, memory candidates that are never auto-promoted, and a run log. It calls no LLM provider, browses nothing, and mutates no memory.",
+      },
+      {
+        heading: "Testing and evals",
+        body: "Twenty-eight tests across ten suites verify the harness, the packet schemas, skill gating, research intake and the repo scaffold itself. Five golden JSONL datasets — action extraction, citation grounding, memory candidates, source-card summaries and a trading-research workflow — are in place as the seed of a real evaluation harness rather than a demo suite.",
+      },
+      {
+        heading: "The governance boundary",
+        body: "Chaser Agent may propose; ChaseOS decides. Canonical truth, permission boundaries, runtime authority and promotion rules stay with the parent control plane. The harness's outputs are review-only by design, which is the point: an artifact optimised for a human deciding whether to trust it, not for skimming.",
+      },
+      {
+        heading: "Where it is now",
+        body: "Phase 1 — Source Card Harness V0 — is complete and open source under MIT. It is not production-ready autonomy, not a foundation model, and not a canonical truth engine; live providers, browser authority and managed hosting are future lanes that only open once the review loop has earned trust.",
+      },
+    ],
     relatedVideos: [],
     relatedBuildLogs: ["chaser-agent-source-card-harness"],
   },

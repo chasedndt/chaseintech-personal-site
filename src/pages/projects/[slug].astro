@@ -77,6 +77,22 @@ const logs = buildLogsForProject(project.slug);
 
       <MediaGallery media={project.media} />
 
+      {
+        project.caseStudy && (
+          <section class="case-study">
+            <h2>Case study</h2>
+            <div class="case-sections">
+              {project.caseStudy.map((section) => (
+                <section>
+                  <h3>{section.heading}</h3>
+                  <p>{section.body}</p>
+                </section>
+              ))}
+            </div>
+          </section>
+        )
+      }
+
 
       <section>
         <h2>Technology</h2>
@@ -315,6 +331,23 @@ const logs = buildLogsForProject(project.slug);
     font-family: var(--cit-font-mono);
     font-size: 0.75rem;
     color: var(--cit-text-muted);
+  }
+  .case-study {
+    border-top: 1px solid var(--cit-border);
+    padding-top: 2rem;
+  }
+  .case-sections {
+    display: grid;
+    gap: 1.8rem;
+    margin-top: 0.4rem;
+  }
+  .case-sections h3 {
+    font-size: 1.05rem;
+    color: var(--cit-text-primary);
+    margin-bottom: 0.5rem;
+  }
+  .case-sections p {
+    line-height: 1.75;
   }
   .components {
     list-style: none;
