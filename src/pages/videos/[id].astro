@@ -1,0 +1,244 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import WorkWithMeCTA from "../../components/WorkWithMeCTA.astro";
+import { getContentFeed, platformsFor } from "../../data/videos.js";
+import { site } from "../../data/site.js";
+
+export async function getStaticPaths() {
+  const { videos } = await getContentFeed();
+  return videos.map((video, index) => ({
+    params: { id: video.id },
+    props: {
+      video,
+      newer: videos[index - 1] ?? null,
+      older: videos[index + 1] ?? null,
+    },
+  }));
+}
+
+const { video, newer, older } = Astro.props;
+const yt = video.youtube;
+const platforms = platformsFor(video);
+
+const videoLd = {
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  name: yt.title,
+  description: yt.description || yt.title,
+  uploadDate: video.publishedAt,
+  thumbnailUrl: yt.thumbnail,
+  embedUrl: `https://www.youtube-nocookie.com/embed/${yt.videoId}`,
+  url: new URL(`/videos/${video.id}`, site.url).href,
+  author: { "@type": "Person", name: site.brand, url: site.url },
+};
+---
+
+<Layout
+  title={`${yt.title} — ${site.brand}`}
+  description={yt.description || yt.title}
+  image={yt.thumbnail}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(videoLd)} />
+
+  <article class="container entry">
+    <header>
+      <p class="section-label">Video</p>
+      <h1>{yt.title}</h1>
+      <p class="meta">
+        <time datetime={video.publishedAt}>{video.publishedAt}</time>
+        {platforms.length > 1 && <span>· also on TikTok</span>}
+      </p>
+    </header>
+
+    <!-- Click-to-play: nothing loads from YouTube until the visitor asks.
+         The thumbnail is a real button; activation swaps in the iframe. -->
+    <div class="player" data-player data-video-id={yt.videoId}>
+      <button class="player-cover" type="button" data-play aria-label={`Play ${yt.title}`}>
+        <img src={yt.thumbnail} alt="" loading="eager" decoding="async" />
+        <span class="play-badge" aria-hidden="true">▶</span>
+      </button>
+    </div>
+
+    {yt.description && <p class="desc">{yt.description}</p>}
+
+    <div class="actions">
+      <a
+        class="btn btn-secondary"
+        href={yt.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-analytics="youtube_click"
+      >
+        Watch on YouTube ↗
+      </a>
+      {
+        video.tiktok && (
+          <a
+            class="btn btn-secondary"
+            href={video.tiktok.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-analytics="tiktok_click"
+          >
+            Watch on TikTok ↗
+          </a>
+        )
+      }
+    </div>
+
+    <footer class="entry-footer">
+      <div class="pager">
+        {older ? (
+          <a href={`/videos/${older.id}`}>← {older.youtube.title}</a>
+        ) : (
+          <span />
+        )}
+        {newer && <a class="next" href={`/videos/${newer.id}`}>{newer.youtube.title} →</a>}
+      </div>
+      <p><a class="text-link" href="/videos">← All videos</a></p>
+    </footer>
+  </article>
+
+  <WorkWithMeCTA />
+</Layout>
+
+<script>
+  const initPlayer = () => {
+    document.querySelectorAll("[data-player]").forEach((player) => {
+      const button = player.querySelector("[data-play]");
+      if (!button || button.dataset.bound) return;
+      button.dataset.bound = "1";
+      button.addEventListener("click", () => {
+        const id = player.getAttribute("data-video-id");
+        const iframe = document.createElement("iframe");
+        iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
+        iframe.title = "YouTube video player";
+        iframe.allow =
+          "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iframe.allowFullscreen = true;
+        player.replaceChildren(iframe);
+        window.__cfBeacon?.trackEvent?.("video_play");
+        window.plausible?.("video_play");
+      });
+    });
+  };
+  initPlayer();
+  document.addEventListener("astro:page-load", initPlayer);
+</script>
+
+<style>
+  .entry {
+    max-width: 860px;
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+  }
+  h1 {
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    margin-top: 0.6rem;
+  }
+  .meta {
+    display: flex;
+    gap: 0.6rem;
+    font-family: var(--cit-font-mono);
+    font-size: 0.75rem;
+    color: var(--cit-text-muted);
+    margin-top: 0.9rem;
+  }
+  .player {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    margin-top: 1.8rem;
+    border-radius: var(--cit-radius);
+    overflow: hidden;
+    border: 1px solid var(--cit-border);
+    background: var(--cit-bg-elevated);
+  }
+  .player :global(iframe) {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+  .player-cover {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    display: block;
+  }
+  .player-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .play-badge {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 1.4rem;
+    color: #04181a;
+  }
+  .play-badge::before {
+    content: "";
+    position: absolute;
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    background: rgba(57, 222, 201, 0.92);
+    box-shadow: 0 8px 40px -8px rgba(0, 0, 0, 0.8);
+    transition: transform 0.15s ease;
+  }
+  .player-cover:hover .play-badge::before {
+    transform: scale(1.08);
+  }
+  .play-badge {
+    z-index: 1;
+  }
+  .play-badge::before {
+    z-index: -1;
+  }
+  .desc {
+    color: var(--cit-text-secondary);
+    line-height: 1.75;
+    margin-top: 1.5rem;
+    max-width: 70ch;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.6rem;
+  }
+  .entry-footer {
+    margin-top: 2.5rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--cit-border);
+    display: grid;
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+  .pager {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .pager a {
+    color: var(--cit-text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    max-width: 45%;
+  }
+  .pager a:hover {
+    color: var(--cit-accent-teal);
+  }
+  .pager .next {
+    text-align: right;
+    margin-left: auto;
+  }
+</style>

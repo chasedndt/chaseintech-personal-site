@@ -23,9 +23,8 @@ const buttons = [
   { label: "Explore ChaseOS", href: "/projects/chaseos", icon: "spark", event: "hero_chaseos_click" },
   featuredVideo && {
     label: "Latest Video",
-    href: featuredVideo.youtube.url,
+    href: `/videos/${featuredVideo.id}`,
     icon: "play",
-    external: true,
     event: "video_open",
   },
   { label: "View Projects", href: "/projects", icon: "folder", event: "hero_projects_click" },

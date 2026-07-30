@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { site, email, emailOperational } from "../data/site.js";
+import { site, email, emailOperational, activeFreelancePlatforms } from "../data/site.js";
 
 const services = [
   {
@@ -54,6 +54,29 @@ const services = [
         ))
       }
     </ul>
+
+    {
+      activeFreelancePlatforms.length > 0 && (
+        <section class="platforms">
+          <h2>Also on</h2>
+          <ul>
+            {activeFreelancePlatforms.map((platform) => (
+              <li>
+                <a
+                  class="btn btn-secondary"
+                  href={platform.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-analytics="external_product_click"
+                >
+                  {platform.label} ↗
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
 
     <section class="enquiry">
       <h2>Make an enquiry</h2>
@@ -123,6 +146,25 @@ const services = [
     color: var(--cit-text-secondary);
     font-size: 0.9rem;
     margin-top: 0.6rem;
+  }
+  .platforms {
+    margin-top: 3rem;
+  }
+  .platforms h2 {
+    font-size: 0.78rem;
+    font-family: var(--cit-font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cit-accent-teal);
+    margin-bottom: 0.9rem;
+  }
+  .platforms ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
   }
   .enquiry {
     margin: 3.5rem 0 4rem;

@@ -1,0 +1,22 @@
+# Guessable-URL hygiene (Cloudflare Pages redirects).
+# Internal conveniences first, then social shortcuts.
+/blog        /articles      301
+/article     /articles      301
+/writing     /articles      301
+/video       /videos        301
+/log         /build-log     301
+/logs        /build-log     301
+/resume      /about         301
+/cv          /about         301
+/contact     /work-with-me  301
+/hire        /work-with-me  301
+/kit         /press         301
+
+# Shareable social shortcuts — chaseintech.com/<platform>
+/github      https://github.com/chasedndt                       302
+/x           https://x.com/ChaserCrypto_                        302
+/twitter     https://x.com/ChaserCrypto_                        302
+/youtube     https://www.youtube.com/@ChaseDNDT                 302
+/tiktok      https://www.tiktok.com/@chaseintech_               302
+/linkedin    https://uk.linkedin.com/in/john-idowu-03044a175    302
+/discord     https://discord.gg/s3EAKYJUCW                      302

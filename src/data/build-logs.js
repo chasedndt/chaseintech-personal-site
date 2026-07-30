@@ -90,6 +90,46 @@ export const buildLogs = [
     ],
   },
   {
+    slug: "chaseos-cloud-metering-architecture",
+    title: "ChaseOS Cloud: designing the meter before the product",
+    publishedAt: "2026-07-30",
+    updatedAt: null,
+    status: "published",
+    source:
+      "ChaseOS Cloud architecture and gateway specifications (internal design docs, screened for publication)",
+    relatedProject: "chaseos",
+    relatedVideos: [],
+    tags: ["architecture", "cloud", "billing", "governance"],
+    summary:
+      "Cloud is planned, not live — but its billing architecture is already specified. Notes on the single-chokepoint meter, the reserve-execute-settle state machine, and why the local path is free by construction.",
+    sections: [
+      {
+        heading: "Context",
+        body: "ChaseOS Cloud is the planned managed layer over the local-first core: managed providers, sync, compute, hosted runtimes and deploy. None of it is live, and the public site says so. What does exist is the architecture — because the question 'credits exist, but what actually spends them?' describes a bug if you can't answer it, and a design once you can.",
+      },
+      {
+        heading: "The chokepoint decision",
+        body: "Credits are consumed in exactly one place: the Cloud provider gateway. Not in the chat panel, not in the graph builder, not in the workflow engine. Features ask for work; the gateway prices it. Spend caps are enforced once, correctly, instead of N times inconsistently — and a new feature is metered from day one without writing any billing code.",
+      },
+      {
+        heading: "Local is free by construction",
+        body: "The most important property falls out of the same decision: the local path never touches the gateway, so it has no meter on it. 'Local-first stays free' isn't a pricing policy someone has to remember to honour — it is structurally true. The same feature that meters when ChaseOS supplies the compute costs nothing on your own machine or your own keys, on every plan, permanently.",
+      },
+      {
+        heading: "Reserve, execute, settle",
+        body: "You can't know a request's token count before making it. Consuming credits afterwards lets a user overrun into negative balance; consuming before overcharges. So the gateway reserves an estimated amount, executes, settles the actual, and releases the remainder. A reservation leaves its reserved state exactly once — enforced by an idempotency key, a database uniqueness constraint, and a per-account settlement lock, all three required. Insufficient balance is a hard stop with the shortfall reported, never a silent slide into debt.",
+      },
+      {
+        heading: "The boundary that matters most",
+        body: "The gateway supplies inference only. Tools always execute locally in the harness, under the same ChaseOS governance and approval gates as everything else. Hosted compute never becomes a side door around the control plane — and per the commercial architecture, founder hardware never runs customer production.",
+      },
+      {
+        heading: "Current status",
+        body: "Specification, not deployment: the credits ledger exists in code; the gateway state machine is specified but unbuilt. Cloud remains planned and early-access, and nothing here should be read as a launch. Designing the meter before the product is the point — billing retrofitted onto a working system is where trust goes to die.",
+      },
+    ],
+  },
+  {
     slug: "toolshape-voice-code-integrity-launcher",
     title: "Toolshape Voice: shipping a launcher the OS is trying to block",
     publishedAt: "2026-07-30",

@@ -27,11 +27,14 @@ import { site } from "../data/site.js";
         const host = document.querySelector("#search");
         if (!host || host.dataset.ready || typeof PagefindUI === "undefined") return;
         host.dataset.ready = "1";
-        new PagefindUI({
+        const ui = new PagefindUI({
           element: "#search",
           showSubResults: true,
           showImages: false,
         });
+        // Honour ?q= from the 404 page and shared links.
+        const q = new URLSearchParams(location.search).get("q");
+        if (q) ui.triggerSearch(q);
       };
       initSearch();
       document.addEventListener("astro:page-load", initSearch);

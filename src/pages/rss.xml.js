@@ -1,4 +1,5 @@
 import { getCollection } from "astro:content";
+import { marked } from "marked";
 import { site } from "../data/site.js";
 
 // ARTICLES FEED — articles only. Build logs have their own feed at
@@ -31,13 +32,16 @@ export async function GET() {
       date: article.data.publishedAt,
       category: "Article",
       tags: article.data.tags,
+      // Full article body as HTML — serious feed readers expect the whole
+      // piece, not a teaser. CDATA-wrapped below.
+      html: marked.parse(article.body ?? ""),
     }))
     .sort((a, b) => b.date.valueOf() - a.date.valueOf());
 
   const latest = items[0]?.date ?? new Date(0);
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>${esc(site.brand)} — Articles</title>
     <link>${new URL("/articles", site.url).href}</link>
@@ -52,6 +56,7 @@ ${items
       <link>${item.link}</link>
       <guid isPermaLink="true">${item.link}</guid>
       <description>${esc(item.description)}</description>
+      <content:encoded><![CDATA[${item.html}]]></content:encoded>
       <pubDate>${item.date.toUTCString()}</pubDate>
       <category>${esc(item.category)}</category>
 ${item.tags.map((tag) => `      <category>${esc(tag)}</category>`).join("\n")}

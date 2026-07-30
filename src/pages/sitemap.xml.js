@@ -2,10 +2,11 @@ import { getCollection } from "astro:content";
 import { site } from "../data/site.js";
 import { projects } from "../data/projects.js";
 import { publishedBuildLogs } from "../data/build-logs.js";
-// Videos have no internal routes — cards link straight to YouTube/TikTok.
+import { getContentFeed } from "../data/videos.js";
 
 export async function GET() {
   const articles = await getCollection("articles", ({ data }) => !data.draft);
+  const { videos } = await getContentFeed();
 
   const routes = [
     "/",
@@ -24,6 +25,7 @@ export async function GET() {
     ...projects.map((p) => `/projects/${p.slug}`),
     ...articles.map((a) => `/articles/${a.id}`),
     ...publishedBuildLogs.map((e) => `/build-log/${e.slug}`),
+    ...videos.map((v) => `/videos/${v.id}`),
   ];
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>

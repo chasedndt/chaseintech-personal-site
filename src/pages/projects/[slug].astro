@@ -24,6 +24,13 @@ export function getStaticPaths() {
 const { project, prev, next } = Astro.props;
 const logs = buildLogsForProject(project.slug);
 
+// Per-project preview card when the generator produced one.
+import { existsSync } from "node:fs";
+const ogPath = `/og/projects/${Astro.params.slug}.png`;
+const ogImage = existsSync(`public${ogPath}`)
+  ? new URL(ogPath, site.url).href
+  : undefined;
+
 // Articles that reference this project (§31 cross-linking).
 import { getCollection } from "astro:content";
 const relatedArticles = (
@@ -37,6 +44,7 @@ const relatedArticles = (
 <Layout
   title={`${project.name} — ${site.brand}`}
   description={project.summary}
+  image={ogImage}
 >
   <article>
     <header class="container page-head">

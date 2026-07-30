@@ -18,7 +18,7 @@ const isShort = video.youtube?.format === "short";
 ---
 
 <article class:list={["video-card", featured && "video-card--featured"]}>
-  <a class="thumb" href={primary.url} target="_blank" rel="noopener noreferrer" data-analytics="video_open">
+  <a class="thumb" href={`/videos/${video.id}`} data-analytics="video_open">
     {
       video.youtube?.videoId ? (
         <img
@@ -56,7 +56,7 @@ const isShort = video.youtube?.format === "short";
       title ? (
         <>
           <h3>
-            <a href={primary.url} target="_blank" rel="noopener noreferrer" data-analytics="video_open">
+            <a href={`/videos/${video.id}`} data-analytics="video_open">
               {title}
             </a>
           </h3>
@@ -65,7 +65,7 @@ const isShort = video.youtube?.format === "short";
       ) : (
         /* TikTok-only: no title exists, so the caption carries the card. */
         <p class="caption">
-          <a href={primary.url} target="_blank" rel="noopener noreferrer" data-analytics="video_open">
+          <a href={`/videos/${video.id}`} data-analytics="video_open">
             {body}
           </a>
         </p>

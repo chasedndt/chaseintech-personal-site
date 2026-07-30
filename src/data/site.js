@@ -74,6 +74,18 @@ export const socials = [
 
 export const activeSocials = socials.filter((s) => s.url);
 
+// Freelance platform profiles. Render-when-present: entries with a null URL
+// are invisible everywhere. The operator registers the accounts (account
+// creation is theirs alone); URLs get added here as they exist.
+export const freelancePlatforms = [
+  { id: "upwork", label: "Upwork", url: null },
+  { id: "fiverr", label: "Fiverr", url: null },
+  { id: "contra", label: "Contra", url: null },
+  { id: "toptal", label: "Toptal", url: null },
+];
+
+export const activeFreelancePlatforms = freelancePlatforms.filter((p) => p.url);
+
 export const nav = [
   { label: "Projects", href: "/projects" },
   { label: "Articles", href: "/articles" },

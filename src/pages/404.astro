@@ -11,8 +11,13 @@ import { site } from "../data/site.js";
       The page you were looking for isn't here. It may have moved, or the link
       may be wrong.
     </p>
+    <form class="search-form" action="/search" method="get" role="search">
+      <input type="search" name="q" placeholder="Search the site instead…" aria-label="Search the site" />
+      <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+
     <div class="actions">
-      <a class="btn btn-primary" href="/">Back to home</a>
+      <a class="btn btn-secondary" href="/">Back to home</a>
       <a class="btn btn-secondary" href="/projects">View projects</a>
     </div>
   </div>
@@ -30,6 +35,23 @@ import { site } from "../data/site.js";
   .body {
     color: var(--cit-text-secondary);
     margin-top: 1rem;
+  }
+  .search-form {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 1.8rem;
+    flex-wrap: wrap;
+  }
+  .search-form input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.7rem 0.9rem;
+    border-radius: var(--cit-radius-sm);
+    border: 1px solid var(--cit-border-strong);
+    background: var(--cit-bg-surface);
+    color: var(--cit-text-primary);
+    font-family: inherit;
+    font-size: 0.95rem;
   }
   .actions {
     display: flex;

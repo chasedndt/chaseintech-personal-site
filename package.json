@@ -12,7 +12,8 @@
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check"
+    "check": "astro check",
+    "test:e2e": "playwright test"
   },
   "keywords": [
     "chaseintech",
@@ -22,9 +23,11 @@
   ],
   "license": "UNLICENSED",
   "dependencies": {
-    "astro": "^7.1.5"
+    "astro": "^7.1.5",
+    "marked": "^18.0.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.0",
     "pagefind": "^1.5.2"
   }
 }
