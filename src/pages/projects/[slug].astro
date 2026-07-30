@@ -4,6 +4,7 @@ import StatusBadge from "../../components/StatusBadge.astro";
 import WorkWithMeCTA from "../../components/WorkWithMeCTA.astro";
 import ProjectLinks from "../../components/ProjectLinks.astro";
 import MediaGallery from "../../components/MediaGallery.astro";
+import ArchitectureDiagram from "../../components/ArchitectureDiagram.astro";
 import { projects } from "../../data/projects.js";
 import { buildLogsForProject } from "../../data/build-logs.js";
 import { site } from "../../data/site.js";
@@ -83,6 +84,40 @@ const logs = buildLogsForProject(project.slug);
           {project.technologies.map((tech) => <li>{tech}</li>)}
         </ul>
       </section>
+
+      {
+        project.components && (
+          <section>
+            <h2>What's shipped inside it</h2>
+            <ul class="components">
+              {project.components.map((component) => (
+                <li>
+                  <div class="component-head">
+                    <h3>
+                      {component.url ? (
+                        <a
+                          href={component.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          data-analytics="external_product_click"
+                        >
+                          {component.name} ↗
+                        </a>
+                      ) : (
+                        component.name
+                      )}
+                    </h3>
+                    <StatusBadge status={component.status} />
+                  </div>
+                  <p>{component.detail}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+
+      {project.slug === "chaseos" && <ArchitectureDiagram />}
 
       {
         project.systemAreas && (
@@ -280,6 +315,41 @@ const logs = buildLogsForProject(project.slug);
     font-family: var(--cit-font-mono);
     font-size: 0.75rem;
     color: var(--cit-text-muted);
+  }
+  .components {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .components li {
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius);
+    padding: 1.1rem 1.2rem;
+    background: var(--cit-bg-surface);
+  }
+  .component-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .components h3 {
+    font-size: 1rem;
+    overflow-wrap: anywhere;
+  }
+  .components h3 a {
+    text-decoration: none;
+    color: var(--cit-accent-teal);
+  }
+  .components h3 a:hover {
+    text-decoration: underline;
+  }
+  .components p {
+    font-size: 0.88rem;
+    margin-top: 0.5rem;
   }
   .boundary-note {
     border-left: 2px solid var(--cit-accent-violet);

@@ -17,6 +17,13 @@ export const tiktokCrossPosts = {
 // catalogue). Add YouTube video ids here.
 export const excludedVideoIds = new Set();
 
+// YouTube RSS does not expose whether an upload is a Short, and guessing from
+// the title is unreliable — so format is declared explicitly here. Anything not
+// listed renders without a format label rather than with a wrong one.
+export const shortVideoIds = new Set([
+  // "<youtubeVideoId>",
+]);
+
 /** Shape one raw feed item into a platform-aware content entry. */
 function toEntry(video, index) {
   const tiktokUrl = tiktokCrossPosts[video.videoId] ?? null;
@@ -35,9 +42,7 @@ function toEntry(video, index) {
       title: video.title,
       description: video.description,
       thumbnail: video.thumbnail,
-      // RSS does not state whether an upload is a Short, so format is left
-      // unset rather than guessed — a wrong label is worse than none.
-      format: null,
+      format: shortVideoIds.has(video.videoId) ? "short" : null,
     },
     ...(tiktokUrl
       ? { tiktok: { url: tiktokUrl, caption: video.title } }

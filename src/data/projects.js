@@ -84,6 +84,41 @@ export const projects = [
       },
     ],
     media: [],
+    // Significant surfaces shipped within ChaseOS. Only entries verified
+    // against the live site or the repository appear here.
+    // TODO(operator): ChaseOS Cloud — asked for, but nothing describing it was
+    // found in the repos, and chaseos.ai serves a client-rendered SPA whose
+    // catch-all returns 200 for any path, so /cloud could not be confirmed
+    // from outside. Supply one line on what it does and it goes in.
+    components: [
+      {
+        name: "ChaseOS Forge",
+        detail:
+          "Public workflow-pack marketplace. Packs are installable units of governed automation rather than prompt templates.",
+        status: "live",
+        url: "https://chaseos.ai/forge",
+      },
+      {
+        name: "Plans and pricing",
+        detail: "Public commercial surface for Early Access tiers.",
+        status: "live",
+        url: "https://chaseos.ai/pricing",
+      },
+      {
+        name: "ChaseOS Studio",
+        detail:
+          "Operator surface for projects, review queues and approvals — where agent output gets accepted or rejected.",
+        status: "development",
+        url: null,
+      },
+      {
+        name: "Control plane",
+        detail:
+          "Per-project lanes carrying status receipts and human approval gates that agents cannot self-authorise.",
+        status: "development",
+        url: null,
+      },
+    ],
     relatedVideos: [],
     relatedBuildLogs: ["chaseos-control-plane-boundaries"],
   },

@@ -1,0 +1,183 @@
+---
+// ChaseOS architecture view (§24.2).
+//
+// Layers are labelled with their real state so the diagram cannot overstate the
+// implementation. `state` drives the styling: implemented | partial | planned.
+const layers = [
+  {
+    name: "ChaseOS Studio",
+    detail: "Operator surface — projects, review queues, approvals",
+    state: "partial",
+  },
+  {
+    name: "Governance / control plane",
+    detail: "Approval gates, authority boundaries, status receipts",
+    state: "implemented",
+  },
+  {
+    name: "Agent bus",
+    detail: "Dispatch and arbitration across runtimes",
+    state: "partial",
+  },
+  {
+    name: "Runtimes",
+    detail: "Hermes · peer runtimes · Chaser Agent",
+    state: "implemented",
+  },
+  {
+    name: "Tools · MCP · integrations",
+    detail: "Capability surface exposed to agents",
+    state: "partial",
+  },
+  {
+    name: "Memory · knowledge graph · workflows",
+    detail: "Durable project state and provenance",
+    state: "partial",
+  },
+];
+
+const stateLabels = {
+  implemented: "Implemented",
+  partial: "Partial",
+  planned: "Planned",
+};
+---
+
+<section class="architecture">
+  <h2>Architecture</h2>
+  <p class="lede">
+    Each layer is marked with its real state. Nothing below is described as
+    finished because it is drawn in a box.
+  </p>
+
+  <ol class="stack">
+    {
+      layers.map((layer, index) => (
+        <li class:list={["layer", `layer--${layer.state}`]}>
+          <span class="index" aria-hidden="true">{index + 1}</span>
+          <span class="body">
+            <span class="name">{layer.name}</span>
+            <span class="detail">{layer.detail}</span>
+          </span>
+          <span class="state">{stateLabels[layer.state]}</span>
+        </li>
+      ))
+    }
+  </ol>
+
+  <ul class="key">
+    <li><span class="swatch swatch--implemented"></span> Implemented and in use</li>
+    <li><span class="swatch swatch--partial"></span> Partially built</li>
+    <li><span class="swatch swatch--planned"></span> Designed, not built</li>
+  </ul>
+</section>
+
+<style>
+  .architecture h2 {
+    font-size: 0.78rem;
+    font-family: var(--cit-font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cit-accent-teal);
+    margin-bottom: 0.9rem;
+  }
+  .lede {
+    color: var(--cit-text-secondary);
+    font-size: 0.9rem;
+    max-width: 60ch;
+    margin-bottom: 1.4rem;
+  }
+  .stack {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+    counter-reset: layer;
+  }
+  .layer {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--cit-border);
+    border-left-width: 3px;
+    border-radius: var(--cit-radius-sm);
+    background: var(--cit-bg-surface);
+  }
+  .layer--implemented {
+    border-left-color: var(--cit-accent-teal);
+  }
+  .layer--partial {
+    border-left-color: var(--cit-accent-violet);
+  }
+  .layer--planned {
+    border-left-color: var(--cit-text-muted);
+  }
+  .index {
+    font-family: var(--cit-font-mono);
+    font-size: 0.7rem;
+    color: var(--cit-text-muted);
+    flex-shrink: 0;
+  }
+  .body {
+    display: grid;
+    gap: 0.15rem;
+    flex: 1;
+  }
+  .name {
+    font-weight: 600;
+    font-size: 0.94rem;
+  }
+  .detail {
+    color: var(--cit-text-muted);
+    font-size: 0.8rem;
+  }
+  .state {
+    font-family: var(--cit-font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--cit-text-secondary);
+    flex-shrink: 0;
+  }
+  .key {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1.2rem 0 0;
+    padding: 0;
+    font-size: 0.76rem;
+    color: var(--cit-text-muted);
+  }
+  .key li {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .swatch {
+    width: 10px;
+    height: 3px;
+    border-radius: 2px;
+  }
+  .swatch--implemented {
+    background: var(--cit-accent-teal);
+  }
+  .swatch--partial {
+    background: var(--cit-accent-violet);
+  }
+  .swatch--planned {
+    background: var(--cit-text-muted);
+  }
+
+  @media (max-width: 560px) {
+    .layer {
+      flex-wrap: wrap;
+      gap: 0.4rem 0.9rem;
+    }
+    .state {
+      margin-left: auto;
+    }
+  }
+</style>

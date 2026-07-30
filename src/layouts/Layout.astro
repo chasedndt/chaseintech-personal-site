@@ -1,7 +1,9 @@
 ---
 import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import CommandPalette from "../components/CommandPalette.astro";
 import { site } from "../data/site.js";
 
 interface Props {
@@ -18,7 +20,8 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, site.url).href;
-const ogImage = new URL("/og-default.svg", site.url).href;
+// PNG, not SVG: X, LinkedIn and most scrapers refuse to render SVG previews.
+const ogImage = new URL("/og-default.png", site.url).href;
 ---
 
 <html lang="en">
@@ -39,11 +42,18 @@ const ogImage = new URL("/og-default.svg", site.url).href;
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta name="twitter:image:alt" content="ChaseInTech — builder mode, everywhere." />
 
     <!-- Favicon is the actual profile image, unmodified. -->
     <link rel="icon" type="image/png" href="/images/pfp-pixel.png" />
     <link rel="apple-touch-icon" href="/images/pfp-pixel.png" />
     <meta name="generator" content={Astro.generator} />
+    <!-- Cross-fade between routes; the browser falls back to a normal
+         navigation where the View Transitions API is unsupported. -->
+    <ClientRouter />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -52,18 +62,21 @@ const ogImage = new URL("/og-default.svg", site.url).href;
       <slot />
     </main>
     <SiteFooter />
+    <CommandPalette />
 
     <script>
       // Scroll reveal. The hiding CSS is gated behind `.reveal-enabled`, which
       // only JS adds — so with JS broken or disabled, nothing is ever hidden.
       // Skipped entirely when the visitor prefers reduced motion.
-      const prefersReduced = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
+      const initReveal = () => {
+        const prefersReduced = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
 
-      const targets = document.querySelectorAll("[data-reveal]");
+        const targets = document.querySelectorAll("[data-reveal]");
+        if (prefersReduced || targets.length === 0) return;
+        if (!("IntersectionObserver" in window)) return;
 
-      if (!prefersReduced && targets.length > 0 && "IntersectionObserver" in window) {
         document.documentElement.classList.add("reveal-enabled");
 
         const reveal = (el) => el.classList.add("is-revealed");
@@ -86,7 +99,31 @@ const ogImage = new URL("/og-default.svg", site.url).href;
         // never fires — background tab, non-compositing renderer, prerender,
         // anything unexpected — reveal everything anyway.
         setTimeout(() => targets.forEach(reveal), 2500);
-      }
+      };
+
+      // Analytics dispatcher. Every CTA already carries a `data-analytics`
+      // event name; this forwards them to whichever provider is present and
+      // stays completely silent if none is. No third-party script is loaded
+      // here and no personal data is collected.
+      const initAnalytics = () => {
+        document.addEventListener("click", (event) => {
+          const el = event.target instanceof Element
+            ? event.target.closest("[data-analytics]")
+            : null;
+          if (!el) return;
+          const name = el.getAttribute("data-analytics");
+          if (!name) return;
+          // Cloudflare Web Analytics / Plausible-style custom events.
+          window.__cfBeacon?.trackEvent?.(name);
+          window.plausible?.(name);
+          window.dataLayer?.push?.({ event: name });
+        });
+      };
+
+      initReveal();
+      initAnalytics();
+      // Re-run after a view transition swaps the document.
+      document.addEventListener("astro:page-load", initReveal);
     </script>
   </body>
 </html>

@@ -18,6 +18,13 @@ export function getStaticPaths() {
 const { entry, prev, next } = Astro.props;
 const project = entry.relatedProject ? getProject(entry.relatedProject) : null;
 const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+// Reading time from the actual prose, at a conservative 200 wpm.
+const words = entry.sections.reduce(
+  (total, section) => total + section.body.trim().split(/\s+/).length,
+  0,
+);
+const readingMinutes = Math.max(1, Math.round(words / 200));
 ---
 
 <Layout title={`${entry.title} — ${site.brand}`} description={entry.summary}>
@@ -27,6 +34,8 @@ const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, "-");
       <h1>{entry.title}</h1>
       <p class="meta">
         <time datetime={entry.publishedAt}>{entry.publishedAt}</time>
+        <span aria-hidden="true">·</span>
+        <span>{readingMinutes} min read</span>
         {project && (
           <>
             <span aria-hidden="true">·</span>
@@ -55,7 +64,16 @@ const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, "-");
       {
         entry.sections.map((section) => (
           <section id={slugify(section.heading)}>
-            <h2>{section.heading}</h2>
+            <h2>
+              {section.heading}
+              <a
+                class="anchor"
+                href={`#${slugify(section.heading)}`}
+                aria-label={`Link to ${section.heading}`}
+              >
+                #
+              </a>
+            </h2>
             <p>{section.body}</p>
           </section>
         ))
@@ -162,6 +180,21 @@ const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, "-");
     text-transform: uppercase;
     color: var(--cit-accent-teal);
     margin-bottom: 0.8rem;
+    scroll-margin-top: 90px;
+  }
+  /* Anchor stays hidden until hover/focus, but is always keyboard reachable. */
+  .anchor {
+    margin-left: 0.5rem;
+    color: var(--cit-text-muted);
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+  .prose h2:hover .anchor,
+  .anchor:focus-visible {
+    opacity: 1;
+  }
+  section {
     scroll-margin-top: 90px;
   }
   .prose p {

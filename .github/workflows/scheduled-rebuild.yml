@@ -1,0 +1,51 @@
+# Rebuilds and redeploys the site on a schedule so new YouTube uploads appear
+# without a manual deploy. The video feed is read from RSS at build time, so a
+# rebuild is what refreshes it.
+#
+# OPERATOR ACTION REQUIRED before this can run — two GitHub repository secrets
+# (Settings -> Secrets and variables -> Actions):
+#   CLOUDFLARE_API_TOKEN   a token with "Cloudflare Pages: Edit" permission
+#   CLOUDFLARE_ACCOUNT_ID  e7e22870bb20f09c4e06e53e881fb5c6
+# Until those exist the scheduled run will fail at the deploy step and nothing
+# else is affected. Secrets must be added by you — never pasted into code.
+
+name: Scheduled rebuild
+
+on:
+  schedule:
+    # 07:00 and 19:00 UTC daily. Cron here is UTC and not guaranteed to the
+    # minute; GitHub may delay runs under load.
+    - cron: "0 7,19 * * *"
+  workflow_dispatch: {} # allows a manual run from the Actions tab
+
+concurrency:
+  group: deploy-chaseintech
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Refresh the committed fallback snapshot so a later feed outage still
+      # has recent content to fall back on.
+      - name: Refresh YouTube snapshot
+        run: node scripts/snapshot-youtube.mjs
+        continue-on-error: true
+
+      - run: npm run build
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy ./dist --project-name chaseintech --commit-dirty=true
