@@ -3,9 +3,14 @@ import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import { site } from "../../data/site.js";
 
+import { existsSync } from "node:fs";
+
 const articles = (await getCollection("articles", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
 );
+
+const thumbFor = (id) =>
+  existsSync(`public/og/articles/${id}.png`) ? `/og/articles/${id}.png` : null;
 
 const fmt = (date) =>
   date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
@@ -32,22 +37,70 @@ const fmt = (date) =>
         <ul class="entries">
           {articles.map((article) => (
             <li data-reveal>
-              <a href={`/articles/${article.id}`}>
-                <p class="date">
-                  <time datetime={article.data.publishedAt.toISOString()}>
-                    {fmt(article.data.publishedAt)}
-                  </time>
-                </p>
-                <h2>{article.data.title}</h2>
-                <p class="desc">{article.data.description}</p>
-                {article.data.tags.length > 0 && (
-                  <ul class="tags">
-                    {article.data.tags.map((tag) => (
-                      <li>{tag}</li>
-                    ))}
-                  </ul>
-                )}
-              </a>
+              <article class="entry-card">
+                <a class="thumb" href={`/articles/${article.id}`} aria-hidden="true" tabindex="-1">
+                  {thumbFor(article.id) ? (
+                    <img
+                      src={thumbFor(article.id)}
+                      alt=""
+                      width="1200"
+                      height="630"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <span class="thumb-fallback">✦</span>
+                  )}
+                </a>
+                <div class="entry-body">
+                  <p class="date">
+                    <time datetime={article.data.publishedAt.toISOString()}>
+                      {fmt(article.data.publishedAt)}
+                    </time>
+                  </p>
+                  <h2>
+                    <a href={`/articles/${article.id}`}>{article.data.title}</a>
+                  </h2>
+                  <p class="desc">{article.data.description}</p>
+                  <div class="entry-foot">
+                    {article.data.tags.length > 0 && (
+                      <ul class="tags">
+                        {article.data.tags.map((tag) => (
+                          <li>{tag}</li>
+                        ))}
+                      </ul>
+                    )}
+                    {(article.data.xUrl || article.data.linkedinUrl) && (
+                      <span class="platforms">
+                        {article.data.linkedinUrl && (
+                          <a
+                            class="platform-icon"
+                            href={article.data.linkedinUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Read on LinkedIn"
+                            title="Read on LinkedIn"
+                          >
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.44-2.13 2.94v5.67H9.35V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12M7.12 20.45H3.56V9h3.56zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0" /></svg>
+                          </a>
+                        )}
+                        {article.data.xUrl && (
+                          <a
+                            class="platform-icon"
+                            href={article.data.xUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Read on X"
+                            title="Read on X"
+                          >
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
+                          </a>
+                        )}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </article>
             </li>
           ))}
         </ul>
@@ -86,17 +139,81 @@ const fmt = (date) =>
     display: grid;
     gap: 1rem;
   }
-  .entries > li > a {
-    display: block;
-    text-decoration: none;
+  .entry-card {
+    display: grid;
+    grid-template-columns: 260px 1fr;
     border: 1px solid var(--cit-border);
     border-radius: var(--cit-radius);
-    padding: 1.6rem;
     background: var(--cit-bg-surface);
+    overflow: hidden;
     transition: border-color 0.2s ease;
   }
-  .entries > li > a:hover {
+  .entry-card:hover {
     border-color: var(--cit-accent-teal);
+  }
+  .thumb {
+    display: block;
+    background: var(--cit-bg-elevated);
+    border-right: 1px solid var(--cit-border);
+  }
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .thumb-fallback {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    color: var(--cit-text-muted);
+  }
+  .entry-body {
+    padding: 1.4rem 1.6rem;
+  }
+  .entry-body h2 a {
+    text-decoration: none;
+  }
+  .entry-body h2 a:hover {
+    color: var(--cit-accent-teal);
+  }
+  .entry-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .platforms {
+    display: flex;
+    gap: 0.45rem;
+  }
+  .platform-icon {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius-sm);
+    color: var(--cit-text-muted);
+  }
+  .platform-icon:hover {
+    color: var(--cit-accent-teal);
+    border-color: var(--cit-accent-teal);
+  }
+  .platform-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+  @media (max-width: 640px) {
+    .entry-card {
+      grid-template-columns: 1fr;
+    }
+    .thumb {
+      border-right: 0;
+      border-bottom: 1px solid var(--cit-border);
+      aspect-ratio: 1200 / 630;
+    }
   }
   .date {
     font-family: var(--cit-font-mono);

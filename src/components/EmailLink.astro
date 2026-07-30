@@ -1,0 +1,42 @@
+---
+// Email link that Cloudflare's Email Obfuscation cannot mangle into
+// "[email protected]": the address never appears assembled in the HTML.
+// JS composes href and text from parts; the no-JS fallback stays readable.
+import { email } from "../data/site.js";
+
+interface Props {
+  className?: string;
+  analytics?: string;
+  subject?: string;
+}
+const { className = "", analytics = "email_click", subject } = Astro.props;
+const [user, domain] = email.split("@");
+---
+
+<a
+  class={className}
+  href="#contact"
+  data-email-user={user}
+  data-email-domain={domain}
+  data-email-subject={subject}
+  data-analytics={analytics}
+  data-email-link
+>
+  <slot>{user} [at] {domain}</slot>
+</a>
+
+<script>
+  const initEmailLinks = () => {
+    document.querySelectorAll("[data-email-link]").forEach((el) => {
+      if (el.dataset.wired) return;
+      el.dataset.wired = "1";
+      const address = `${el.dataset.emailUser}@${el.dataset.emailDomain}`;
+      const subject = el.dataset.emailSubject;
+      el.href = `mailto:${address}${subject ? `?subject=${encodeURIComponent(subject)}` : ""}`;
+      // Only swap visible text when the slot was the fallback address form.
+      if (el.textContent.includes("[at]")) el.textContent = address;
+    });
+  };
+  initEmailLinks();
+  document.addEventListener("astro:page-load", initEmailLinks);
+</script>

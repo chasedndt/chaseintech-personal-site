@@ -92,5 +92,6 @@ export const nav = [
   { label: "Videos", href: "/videos" },
   { label: "Build Log", href: "/build-log" },
   { label: "About", href: "/about" },
+  { label: "Uses", href: "/uses" },
   { label: "Work With Me", href: "/work-with-me" },
 ];

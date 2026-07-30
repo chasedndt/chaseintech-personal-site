@@ -10,3 +10,5 @@ build/
 !.env.example
 .DS_Store
 Thumbs.db
+test-results/
+playwright-report/

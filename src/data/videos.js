@@ -42,7 +42,8 @@ function toEntry(video, index) {
       title: video.title,
       description: video.description,
       thumbnail: video.thumbnail,
-      format: shortVideoIds.has(video.videoId) ? "short" : null,
+      // Auto-detected at build time; shortVideoIds remains a manual override.
+      format: shortVideoIds.has(video.videoId) ? "short" : (video.format ?? null),
     },
     ...(tiktokUrl
       ? { tiktok: { url: tiktokUrl, caption: video.title } }

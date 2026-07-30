@@ -71,6 +71,36 @@ export function parseFeed(xml) {
     .sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
 }
 
+/**
+ * Detect which uploads are Shorts. RSS doesn't expose format, but
+ * youtube.com/shorts/<id> returns 200 for a Short and redirects to /watch for
+ * long-form. The SOCS consent cookie is required or EU/UK requests get walled
+ * at consent.youtube.com before the distinction is visible.
+ * Failures leave format null — unknown, never guessed.
+ */
+export async function detectFormats(videos) {
+  await Promise.all(
+    videos.map(async (video) => {
+      try {
+        const response = await fetch(
+          `https://www.youtube.com/shorts/${video.videoId}`,
+          {
+            redirect: "manual",
+            headers: {
+              "User-Agent": "Mozilla/5.0 chaseintech.com build",
+              Cookie: "SOCS=CAI",
+            },
+          },
+        );
+        video.format = response.status === 200 ? "short" : "long";
+      } catch {
+        video.format = null;
+      }
+    }),
+  );
+  return videos;
+}
+
 export async function fetchYouTubeVideos() {
   try {
     const response = await fetch(FEED_URL, {
@@ -80,6 +110,13 @@ export async function fetchYouTubeVideos() {
 
     const parsed = parseFeed(await response.text());
     if (parsed.length === 0) throw new Error("feed parsed to zero entries");
+
+    await detectFormats(parsed);
+    // Backfill from the snapshot for any id whose live detection failed.
+    const known = new Map((fallback.videos ?? []).map((v) => [v.videoId, v.format]));
+    for (const video of parsed) {
+      if (video.format == null) video.format = known.get(video.videoId) ?? null;
+    }
 
     return { videos: parsed, source: "live" };
   } catch (error) {

@@ -1,7 +1,7 @@
 // Refreshes the committed YouTube fallback snapshot.
 // Run: node scripts/snapshot-youtube.mjs
 import { writeFileSync } from "node:fs";
-import { parseFeed, FEED_URL, CHANNEL_ID } from "../src/lib/youtube.js";
+import { parseFeed, detectFormats, FEED_URL, CHANNEL_ID } from "../src/lib/youtube.js";
 
 const response = await fetch(FEED_URL, {
   headers: { "User-Agent": "chaseintech.com snapshot" },
@@ -12,6 +12,7 @@ if (!response.ok) {
 }
 
 const videos = parseFeed(await response.text());
+await detectFormats(videos);
 if (videos.length === 0) {
   console.error("parsed zero entries — refusing to overwrite the snapshot");
   process.exit(1);

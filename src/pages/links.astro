@@ -46,7 +46,8 @@ const buttons = [
   },
   emailOperational && {
     label: "Email Chase",
-    href: `mailto:${email}`,
+    href: "#email",
+    emailParts: email.split("@"),
     icon: "mail",
     event: "email_click",
   },
@@ -93,6 +94,9 @@ const canonical = new URL("/links", site.url).href;
               <a
                 href={button.href}
                 data-analytics={button.event}
+                {...(button.emailParts
+                  ? { "data-email-user": button.emailParts[0], "data-email-domain": button.emailParts[1], "data-email-link": true }
+                  : {})}
                 {...(button.external
                   ? { target: "_blank", rel: "noopener noreferrer" }
                   : {})}
@@ -104,6 +108,11 @@ const canonical = new URL("/links", site.url).href;
           }
         </nav>
       </div>
+      <script is:inline>
+        document.querySelectorAll("[data-email-link]").forEach((el) => {
+          el.href = "mailto:" + el.dataset.emailUser + "@" + el.dataset.emailDomain;
+        });
+      </script>
     </main>
   </body>
 </html>
@@ -123,7 +132,8 @@ const canonical = new URL("/links", site.url).href;
     width: 100%;
     max-width: 440px;
     background: var(--cit-glass);
-    backdrop-filter: blur(14px);
+    backdrop-filter: blur(8px);
+    transform: translateZ(0);
     border: 1px solid var(--cit-border);
     border-radius: var(--cit-radius-lg);
     padding: 1.75rem;

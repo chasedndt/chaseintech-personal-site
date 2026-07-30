@@ -1,7 +1,15 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { publishedBuildLogs } from "../../data/build-logs.js";
+import { getProject } from "../../data/projects.js";
 import { site } from "../../data/site.js";
+
+const entries = [...publishedBuildLogs].sort((a, b) =>
+  a.publishedAt < b.publishedAt ? 1 : -1,
+);
+
+const fmt = (iso) =>
+  new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 ---
 
 <Layout
@@ -10,84 +18,169 @@ import { site } from "../../data/site.js";
 >
   <div class="container page-head">
     <p class="section-label">Engineering build log</p>
-    <h1>How the decisions actually got made</h1>
+    <h1>The road so far</h1>
     <p class="intro">
-      Written from the repositories rather than from memory. Entries cover
-      architecture, constraints, trade-offs and the corrections that followed
-      when something turned out to be wrong.
+      An ongoing engineering roadmap, written from the repositories rather than
+      from memory — architecture, constraints, trade-offs, and the corrections
+      that followed when something turned out to be wrong.
     </p>
+    <a class="text-link" href="/build-log/rss.xml">Subscribe via RSS →</a>
   </div>
 
   <div class="container">
-    <ul class="entries">
+    <ol class="roadmap">
       {
-        publishedBuildLogs.map((entry) => (
-          <li>
-            <a href={`/build-log/${entry.slug}`} data-analytics="build_log_open">
-              <p class="date">
-                <time datetime={entry.publishedAt}>{entry.publishedAt}</time>
-              </p>
-              <h2>{entry.title}</h2>
-              <p class="summary">{entry.summary}</p>
-              <ul class="tags">
-                {entry.tags.map((tag) => (
-                  <li>{tag}</li>
-                ))}
-              </ul>
-            </a>
-          </li>
-        ))
+        entries.map((entry, index) => {
+          const project = entry.relatedProject ? getProject(entry.relatedProject) : null;
+          return (
+            <li class="milestone" data-reveal style={`--i:${index}`}>
+              <div class="node" aria-hidden="true">
+                <span class="node-core" />
+              </div>
+              <div class="milestone-meta">
+                <time datetime={entry.publishedAt}>{fmt(entry.publishedAt)}</time>
+                {project && <span class="proj">{project.name}</span>}
+              </div>
+              <a class="milestone-card" href={`/build-log/${entry.slug}`} data-analytics="build_log_open">
+                <h2>{entry.title}</h2>
+                <p>{entry.summary}</p>
+                <ul class="tags">
+                  {entry.tags.map((tag) => (
+                    <li>{tag}</li>
+                  ))}
+                </ul>
+                <span class="read">Read the entry →</span>
+              </a>
+            </li>
+          );
+        })
       }
-    </ul>
+      <li class="milestone milestone--next" aria-hidden="true">
+        <div class="node node--next"><span class="node-core" /></div>
+        <div class="milestone-meta"><span class="proj">next</span></div>
+        <div class="milestone-card milestone-card--ghost">
+          <p>The road keeps going — the next entry lands here.</p>
+        </div>
+      </li>
+    </ol>
   </div>
 </Layout>
 
 <style>
   .page-head {
-    padding: 4rem 0 2.5rem;
+    padding: 4rem 0 3rem;
   }
   h1 {
     font-size: clamp(2.1rem, 5vw, 3rem);
     margin-top: 0.6rem;
-    max-width: 20ch;
   }
   .intro {
     color: var(--cit-text-secondary);
     max-width: 62ch;
-    margin-top: 1rem;
+    margin: 1rem 0 1.2rem;
   }
-  .entries {
+
+  /* Roadmap: a glowing spine with nodes marching down it. */
+  .roadmap {
     list-style: none;
-    margin: 0;
-    padding: 0 0 3rem;
-    display: grid;
-    gap: 1rem;
+    margin: 0 0 4rem;
+    padding: 0.5rem 0 0;
+    position: relative;
+    max-width: 780px;
   }
-  .entries > li > a {
+  .roadmap::before {
+    content: "";
+    position: absolute;
+    left: 11px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(
+      to bottom,
+      var(--cit-accent-teal) 0%,
+      rgba(57, 222, 201, 0.35) 45%,
+      rgba(141, 124, 243, 0.3) 80%,
+      transparent 100%
+    );
+  }
+  .milestone {
+    position: relative;
+    padding: 0 0 2.4rem 3rem;
+  }
+  .node {
+    position: absolute;
+    left: 0;
+    top: 0.35rem;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid var(--cit-border-strong);
+    background: var(--cit-bg-deep);
+    display: grid;
+    place-items: center;
+  }
+  .node-core {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--cit-accent-teal);
+    box-shadow: 0 0 10px var(--cit-accent-teal);
+  }
+  .milestone:hover .node-core {
+    animation: nodePulse 1.2s ease-in-out infinite;
+  }
+  @keyframes nodePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.45); }
+  }
+  .node--next .node-core {
+    background: var(--cit-accent-violet);
+    box-shadow: 0 0 10px var(--cit-accent-violet);
+    animation: nodePulse 2.2s ease-in-out infinite;
+  }
+
+  .milestone-meta {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+    font-family: var(--cit-font-mono);
+    font-size: 0.72rem;
+    color: var(--cit-text-muted);
+    margin-bottom: 0.55rem;
+  }
+  .proj {
+    color: var(--cit-accent-violet);
+    border: 1px solid rgba(141, 124, 243, 0.35);
+    border-radius: 999px;
+    padding: 0.1rem 0.55rem;
+  }
+
+  .milestone-card {
     display: block;
     text-decoration: none;
     border: 1px solid var(--cit-border);
     border-radius: var(--cit-radius);
-    padding: 1.6rem;
-    background: var(--cit-bg-surface);
-    transition: border-color 0.2s ease;
+    padding: 1.4rem 1.6rem;
+    background:
+      radial-gradient(ellipse at 0% 0%, rgba(57, 222, 201, 0.05), transparent 55%),
+      var(--cit-bg-surface);
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
   }
-  .entries > li > a:hover {
+  .milestone-card:hover {
     border-color: var(--cit-accent-teal);
+    transform: translateX(4px);
+    box-shadow: -6px 0 24px -14px rgba(57, 222, 201, 0.55);
   }
-  .date {
-    font-family: var(--cit-font-mono);
-    font-size: 0.72rem;
-    color: var(--cit-text-muted);
+  .milestone-card h2 {
+    font-size: 1.2rem;
   }
-  h2 {
-    font-size: 1.25rem;
-    margin-top: 0.5rem;
-  }
-  .summary {
+  .milestone-card p {
     color: var(--cit-text-secondary);
-    font-size: 0.93rem;
-    margin-top: 0.6rem;
+    font-size: 0.92rem;
+    margin-top: 0.55rem;
     max-width: 70ch;
   }
   .tags {
@@ -95,7 +188,7 @@ import { site } from "../../data/site.js";
     display: flex;
     flex-wrap: wrap;
     gap: 0.35rem;
-    margin: 1rem 0 0;
+    margin: 0.9rem 0 0;
     padding: 0;
   }
   .tags li {
@@ -105,5 +198,26 @@ import { site } from "../../data/site.js";
     border: 1px solid var(--cit-border);
     border-radius: 999px;
     padding: 0.15rem 0.5rem;
+  }
+  .read {
+    display: inline-block;
+    margin-top: 0.9rem;
+    font-family: var(--cit-font-mono);
+    font-size: 0.78rem;
+    color: var(--cit-accent-teal);
+  }
+  .milestone-card--ghost {
+    border-style: dashed;
+    background: transparent;
+    color: var(--cit-text-muted);
+    font-size: 0.88rem;
+  }
+  .milestone--next {
+    padding-bottom: 0;
+  }
+
+  /* Stagger the reveal slightly per node for the marching-down feel. */
+  :global(.reveal-enabled) .milestone.is-revealed {
+    transition-delay: calc(var(--i, 0) * 60ms);
   }
 </style>

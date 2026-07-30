@@ -1,6 +1,7 @@
 ---
 import { site, email, emailOperational } from "../data/site.js";
 import SocialIconRow from "./SocialIconRow.astro";
+import EmailLink from "./EmailLink.astro";
 import Avatar from "./Avatar.astro";
 
 const year = 2026;
@@ -21,9 +22,7 @@ const year = 2026;
       <SocialIconRow size="sm" />
       {
         emailOperational && (
-          <a class="email" href={`mailto:${email}`} data-analytics="email_click">
-            {email}
-          </a>
+          <EmailLink className="email" />
         )
       }
     </div>

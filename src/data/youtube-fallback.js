@@ -5,13 +5,24 @@ export const fallback = {
   "channelId": "UCYMroow7WQ2aRR3g_9VKzGA",
   "videos": [
     {
+      "id": "VrvI4yPDdAo",
+      "videoId": "VrvI4yPDdAo",
+      "title": "Building Two AI Systems | AI Engineer Day in the Life - Part 3",
+      "description": "Day in the life of an AI engineer, Part 3.",
+      "publishedAt": "2026-07-30",
+      "url": "https://www.youtube.com/watch?v=VrvI4yPDdAo",
+      "thumbnail": "https://i3.ytimg.com/vi/VrvI4yPDdAo/hqdefault.jpg",
+      "format": "long"
+    },
+    {
       "id": "7iXAxSn9JEc",
       "videoId": "7iXAxSn9JEc",
       "title": "A Day in the Life of an AI Engineer Building ChaseOS - Part 2",
       "description": "Part 2 of a real build day.",
       "publishedAt": "2026-07-24",
       "url": "https://www.youtube.com/watch?v=7iXAxSn9JEc",
-      "thumbnail": "https://i4.ytimg.com/vi/7iXAxSn9JEc/hqdefault.jpg"
+      "thumbnail": "https://i4.ytimg.com/vi/7iXAxSn9JEc/hqdefault.jpg",
+      "format": "long"
     },
     {
       "id": "Wma48AiENoE",
@@ -20,7 +31,8 @@ export const fallback = {
       "description": "Building ChaseOS through a real day in the life of an AI engineer and founder.",
       "publishedAt": "2026-07-13",
       "url": "https://www.youtube.com/watch?v=Wma48AiENoE",
-      "thumbnail": "https://i4.ytimg.com/vi/Wma48AiENoE/hqdefault.jpg"
+      "thumbnail": "https://i4.ytimg.com/vi/Wma48AiENoE/hqdefault.jpg",
+      "format": "long"
     },
     {
       "id": "DObde-RlHNY",
@@ -29,7 +41,8 @@ export const fallback = {
       "description": "",
       "publishedAt": "2026-07-02",
       "url": "https://www.youtube.com/watch?v=DObde-RlHNY",
-      "thumbnail": "https://i1.ytimg.com/vi/DObde-RlHNY/hqdefault.jpg"
+      "thumbnail": "https://i1.ytimg.com/vi/DObde-RlHNY/hqdefault.jpg",
+      "format": "short"
     },
     {
       "id": "MKao_9JkUsg",
@@ -38,7 +51,8 @@ export const fallback = {
       "description": "✈️ I built HolidayAtlas — an AI trip planner / booking-style travel app — using prompt engineering, Claude Code, Antigravity, and a real API stack.",
       "publishedAt": "2026-04-02",
       "url": "https://www.youtube.com/watch?v=MKao_9JkUsg",
-      "thumbnail": "https://i2.ytimg.com/vi/MKao_9JkUsg/hqdefault.jpg"
+      "thumbnail": "https://i2.ytimg.com/vi/MKao_9JkUsg/hqdefault.jpg",
+      "format": "long"
     },
     {
       "id": "L19NBEcBrZ8",
@@ -47,7 +61,8 @@ export const fallback = {
       "description": "Nvidia might not release a single new gaming GPU in 2026.\nRTX 60 could be delayed until 2028.",
       "publishedAt": "2026-03-18",
       "url": "https://www.youtube.com/watch?v=L19NBEcBrZ8",
-      "thumbnail": "https://i1.ytimg.com/vi/L19NBEcBrZ8/hqdefault.jpg"
+      "thumbnail": "https://i1.ytimg.com/vi/L19NBEcBrZ8/hqdefault.jpg",
+      "format": "long"
     },
     {
       "id": "bPCwtFMMS34",
@@ -56,7 +71,8 @@ export const fallback = {
       "description": "",
       "publishedAt": "2025-08-03",
       "url": "https://www.youtube.com/watch?v=bPCwtFMMS34",
-      "thumbnail": "https://i3.ytimg.com/vi/bPCwtFMMS34/hqdefault.jpg"
+      "thumbnail": "https://i3.ytimg.com/vi/bPCwtFMMS34/hqdefault.jpg",
+      "format": "short"
     },
     {
       "id": "wpAzAAVdCTY",
@@ -65,7 +81,8 @@ export const fallback = {
       "description": "",
       "publishedAt": "2025-07-15",
       "url": "https://www.youtube.com/watch?v=wpAzAAVdCTY",
-      "thumbnail": "https://i4.ytimg.com/vi/wpAzAAVdCTY/hqdefault.jpg"
+      "thumbnail": "https://i4.ytimg.com/vi/wpAzAAVdCTY/hqdefault.jpg",
+      "format": "short"
     },
     {
       "id": "lFFEQ7ugtkY",
@@ -74,16 +91,18 @@ export const fallback = {
       "description": "",
       "publishedAt": "2025-07-13",
       "url": "https://www.youtube.com/watch?v=lFFEQ7ugtkY",
-      "thumbnail": "https://i1.ytimg.com/vi/lFFEQ7ugtkY/hqdefault.jpg"
+      "thumbnail": "https://i1.ytimg.com/vi/lFFEQ7ugtkY/hqdefault.jpg",
+      "format": "short"
     },
     {
       "id": "fYqgQAtHOZk",
       "videoId": "fYqgQAtHOZk",
-      "title": "Day in the Life: locked in man - Building  a $1,00,000 reseller app & Boxing competition training",
+      "title": "Day in the Life: locked in Developer - $1,00,000 reseller Web app (Hypelist)",
       "description": "Pushing Limits: Boxing Fitness Journey and Streetwear AI-Powered App Development",
       "publishedAt": "2025-07-11",
       "url": "https://www.youtube.com/watch?v=fYqgQAtHOZk",
-      "thumbnail": "https://i3.ytimg.com/vi/fYqgQAtHOZk/hqdefault.jpg"
+      "thumbnail": "https://i3.ytimg.com/vi/fYqgQAtHOZk/hqdefault.jpg",
+      "format": "long"
     },
     {
       "id": "5zgel55QuJ8",
@@ -92,25 +111,8 @@ export const fallback = {
       "description": "Pushing Limits: Boxing Fitness Journey and Streetwear AI-Powered App Development",
       "publishedAt": "2025-07-11",
       "url": "https://www.youtube.com/watch?v=5zgel55QuJ8",
-      "thumbnail": "https://i2.ytimg.com/vi/5zgel55QuJ8/hqdefault.jpg"
-    },
-    {
-      "id": "y3MVB2f1BCk",
-      "videoId": "y3MVB2f1BCk",
-      "title": "SYNA x NFL jersey unboxing + fit check 🛍️   #streetwear #fashion #sneakerhead",
-      "description": "",
-      "publishedAt": "2025-03-09",
-      "url": "https://www.youtube.com/watch?v=y3MVB2f1BCk",
-      "thumbnail": "https://i2.ytimg.com/vi/y3MVB2f1BCk/hqdefault.jpg"
-    },
-    {
-      "id": "akkOosuSaHY",
-      "videoId": "akkOosuSaHY",
-      "title": "A Reseller Finesses you!!😡",
-      "description": "",
-      "publishedAt": "2023-02-16",
-      "url": "https://www.youtube.com/watch?v=akkOosuSaHY",
-      "thumbnail": "https://i2.ytimg.com/vi/akkOosuSaHY/hqdefault.jpg"
+      "thumbnail": "https://i2.ytimg.com/vi/5zgel55QuJ8/hqdefault.jpg",
+      "format": "short"
     }
   ]
 };

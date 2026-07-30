@@ -47,10 +47,17 @@ const tiktok = activeSocials.find((s) => s.id === "tiktok");
     </div>
   </div>
 
+  <div class="container filter-row" data-filter-row hidden>
+    <span class="filter-label">Show</span>
+    <button class="chip is-active" data-filter="all" type="button">All</button>
+    <button class="chip" data-filter="long" type="button">Videos</button>
+    <button class="chip" data-filter="short" type="button">Shorts</button>
+  </div>
+
   <div class="container">
     {
       featured && (
-        <div class="featured">
+        <div class="featured" data-video-format={featured.youtube.format ?? "long"}>
           <VideoCard video={featured} featured />
         </div>
       )
@@ -60,7 +67,7 @@ const tiktok = activeSocials.find((s) => s.id === "tiktok");
       rest.length > 0 && (
         <ul class="grid">
           {rest.map((video) => (
-            <li>
+            <li data-video-format={video.youtube.format ?? "long"}>
               <VideoCard video={video} />
             </li>
           ))}
@@ -82,6 +89,27 @@ const tiktok = activeSocials.find((s) => s.id === "tiktok");
       YouTube at build time{source === "snapshot" ? " (showing last cached copy)" : ""}
     </p>
   </div>
+  <script>
+    const initVideoFilter = () => {
+      const row = document.querySelector("[data-filter-row]");
+      if (!row || row.dataset.ready) return;
+      row.dataset.ready = "1";
+      row.hidden = false;
+      const chips = [...row.querySelectorAll("[data-filter]")];
+      const items = [...document.querySelectorAll("[data-video-format]")];
+      row.addEventListener("click", (event) => {
+        const chip = event.target.closest("[data-filter]");
+        if (!chip) return;
+        chips.forEach((c) => c.classList.toggle("is-active", c === chip));
+        const wanted = chip.dataset.filter;
+        items.forEach((item) => {
+          item.hidden = wanted !== "all" && item.dataset.videoFormat !== wanted;
+        });
+      });
+    };
+    initVideoFilter();
+    document.addEventListener("astro:page-load", initVideoFilter);
+  </script>
 </Layout>
 
 <style>
@@ -102,6 +130,43 @@ const tiktok = activeSocials.find((s) => s.id === "tiktok");
     flex-wrap: wrap;
     gap: 0.75rem;
     margin-top: 1.6rem;
+  }
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.6rem;
+  }
+  .filter-row[hidden] {
+    display: none;
+  }
+  .filter-label {
+    font-family: var(--cit-font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cit-text-muted);
+    margin-right: 0.4rem;
+  }
+  .chip {
+    font-family: var(--cit-font-mono);
+    font-size: 0.72rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--cit-border);
+    background: transparent;
+    color: var(--cit-text-secondary);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .chip:hover,
+  .chip.is-active {
+    border-color: var(--cit-accent-teal);
+    color: var(--cit-accent-teal);
+  }
+  .chip.is-active {
+    background: rgba(57, 222, 201, 0.08);
   }
   .featured {
     max-width: 780px;

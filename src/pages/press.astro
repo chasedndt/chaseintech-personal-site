@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Avatar from "../components/Avatar.astro";
 import { site, activeSocials, email, emailOperational } from "../data/site.js";
+import EmailLink from "../components/EmailLink.astro";
 ---
 
 <Layout
@@ -101,9 +102,7 @@ import { site, activeSocials, email, emailOperational } from "../data/site.js";
         <section>
           <h2>Contact</h2>
           <p>
-            <a class="text-link" href={`mailto:${email}`}>
-              {email}
-            </a>
+            <EmailLink className="text-link" />
           </p>
         </section>
       )

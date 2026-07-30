@@ -38,7 +38,8 @@ export const projects = [
     frontier: true,
     featured: true,
     category: categories.agentic,
-    status: "development",
+    // Operator decision 2026-07-30: ChaseOS is live (chaseos.ai + Forge public).
+    status: "live",
     role: "Founder and Systems Builder",
     summary:
       "A human-AI operating system and governance layer for orchestrating agents, projects, knowledge, approvals and persistent digital workflows.",
@@ -322,6 +323,49 @@ export const projects = [
     ],
     relatedVideos: [],
     relatedBuildLogs: ["strikezone-market-intelligence-pack"],
+  },
+  {
+    // Promoted to a standalone project by operator decision 2026-07-30 —
+    // it also remains listed inside the StrikeZone Crypto ecosystem.
+    slug: "tradesync",
+    name: "TradeSync",
+    featured: true,
+    category: categories.trading,
+    status: "development",
+    role: "Architect and Engineer",
+    summary:
+      "An AI-powered crypto trading engine for signal scoring, market-structure analysis and on-chain execution research.",
+    outcome:
+      "Ingests funding, open interest, CVD and price structure in real time, scores directional bias through configurable rule-weighting models, and delivers long/short alerts with confidence scores and written rationale.",
+    technologies: ["Python", "Docker", "Signal scoring", "Discord/Telegram delivery", "Hyperliquid data"],
+    repositoryUrl: "https://github.com/chasedndt/TradeSync",
+    liveUrl: null,
+    boundary:
+      "Research and engineering: no live trade execution, no autonomous trading authority, no performance claims. Execution across Drift and Hyperliquid is a designed future lane, not a shipped one.",
+    links: [
+      { type: "github", label: "TradeSync", url: "https://github.com/chasedndt/TradeSync" },
+    ],
+    media: [],
+    caseStudy: [
+      {
+        heading: "The problem",
+        body: "Discretionary crypto trading runs on vibes dressed up as analysis. TradeSync is built on the opposite premise: if a directional bias can't be produced by an inspectable scoring model over defined inputs, it isn't a signal — it's a feeling.",
+      },
+      {
+        heading: "Architecture",
+        body: "A modular Python engine ingests real-time market data — funding rates, open interest, cumulative volume delta, price structure — and computes bias scores through configurable rule-weighting models. Outputs are human-readable by design: every alert carries its confidence score and a written rationale, because a signal you can't interrogate is a signal you can't trust.",
+      },
+      {
+        heading: "The execution boundary",
+        body: "The execution layer is deliberately swappable and deliberately unshipped. Drift and Hyperliquid adapters are designed as future lanes behind a common interface, and a Hyperliquid-focused variant exists for paper evaluation — but no code path today places a trade. Inside the wider ChaseOS ecosystem, that boundary is enforced by governance, not by promise.",
+      },
+      {
+        heading: "Where it is now",
+        body: "Active development within the StrikeZone Crypto ecosystem, feeding its signal-delivery infrastructure. The interesting engineering is in the scoring discipline and the refusal to blur research into execution — which is exactly what makes it worth building in public.",
+      },
+    ],
+    relatedVideos: [],
+    relatedBuildLogs: [],
   },
   {
     slug: "hypelist",

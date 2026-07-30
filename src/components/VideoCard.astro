@@ -22,8 +22,10 @@ const isShort = video.youtube?.format === "short";
     {
       video.youtube?.videoId ? (
         <img
-          src={`https://i.ytimg.com/vi/${video.youtube.videoId}/hqdefault.jpg`}
+          src={`https://i.ytimg.com/vi/${video.youtube.videoId}/mqdefault.jpg`}
           alt={title ?? "Video thumbnail"}
+          width="320"
+          height="180"
           loading="lazy"
           decoding="async"
         />

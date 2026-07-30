@@ -1,5 +1,6 @@
 ---
 import { email, emailOperational } from "../data/site.js";
+import EmailLink from "./EmailLink.astro";
 ---
 
 <section class="cta" aria-labelledby="cta-title">
@@ -18,9 +19,7 @@ import { email, emailOperational } from "../data/site.js";
       </a>
       {
         emailOperational && (
-          <a class="btn btn-secondary" href={`mailto:${email}`} data-analytics="email_click">
-            {email}
-          </a>
+          <EmailLink className="btn btn-secondary" />
         )
       }
     </div>

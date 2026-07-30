@@ -56,6 +56,17 @@ import { site } from "../data/site.js";
       </section>
 
       <section>
+        <h2>More of this site</h2>
+        <ul class="site-map">
+          <li><a href="/uses">Uses</a> — the stack, harnesses and machines behind everything</li>
+          <li><a href="/now">Now</a> — current focus, kept honest with a date</li>
+          <li><a href="/press">Press kit</a> — bio, imagery and approved descriptions</li>
+          <li><a href="/links">Links</a> — the compact card for socials and QR codes</li>
+          <li><a href="/search">Search</a> — full-text over everything here</li>
+        </ul>
+      </section>
+
+      <section>
         <h2>Elsewhere</h2>
         <SocialIconRow />
       </section>
@@ -112,5 +123,14 @@ import { site } from "../data/site.js";
   }
   .prose a {
     color: var(--cit-accent-teal);
+  }
+  .site-map {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+    color: var(--cit-text-secondary);
+    font-size: 0.95rem;
   }
 </style>
