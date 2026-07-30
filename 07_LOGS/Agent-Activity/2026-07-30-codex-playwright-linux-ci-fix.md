@@ -6,7 +6,7 @@
 - Access mode: repo-aware coding agent
 - Authority: bounded editor for the requested CI continuation
 - Task type: `repo.inspect`, `test.run`, `code.patch`
-- Status: PARTIAL
+- Status: COMPLETE
 
 ## Inputs read
 
@@ -36,6 +36,7 @@
 - Used the refined Ubuntu annotation to identify `div.container.hero-inner` as the 338px document-edge owner in a 320px viewport.
 - Constrained the homepage hero to a shrinkable grid track and allowed its grid item to shrink.
 - Verified the operator-created repository secrets through a successful manually dispatched Cloudflare Pages rebuild.
+- Verified the final repair through successful Playwright and Lighthouse jobs in GitHub-hosted Ubuntu run `30587318644`.
 - Stopped a misdirected WSL `npm ci` that affected only generated `node_modules`, then restored dependencies from the lockfile with an isolated temporary cache.
 - Added the required session traceability records.
 
@@ -92,5 +93,4 @@ The operator explicitly asked to continue the unfinished work. This was treated 
 
 ## Remaining unverified items
 
-- Replacement Ubuntu Actions result for the hero-grid repair.
 - Final production deployment after the CI-approved commit.

@@ -4,7 +4,7 @@
 - Runtime: Codex
 - Session descriptor: `playwright-linux-ci-fix`
 - Phase / pass: Post-launch CI verification
-- Status: PARTIAL
+- Status: COMPLETE
 
 ## Task summary
 
@@ -16,7 +16,7 @@ Continue the unfinished investigation of the GitHub Actions smoke-test failure a
 - `main` already contains the 28-test Playwright suite and GitHub Actions workflows.
 - Public GitHub Actions run `30582180885` passed checkout, dependency installation, the production build, Chromium installation, and Lighthouse; only the Playwright smoke step failed.
 - The public run exposed no failing test name and produced no Playwright report.
-- Scheduled rebuild run `30578162750` failed in the Cloudflare deploy action; GitHub secret acceptance remains unverified.
+- The initially observed scheduled rebuild failed before the operator added the required GitHub repository secrets; replacement run `30585238797` later verified the complete deployment path.
 - `README.md` and `PROJECT.md` still contain pre-launch wording and are stale, but updating product-positioning docs is outside this focused CI pass.
 
 ## Files read
@@ -77,6 +77,7 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 - Hero-grid repair production build: PASS — 42 pages built in 4.96 seconds and 42 pages indexed by Pagefind.
 - Hero-grid repair mobile subset: PASS — 11/11 routes, including the homepage, in 11.9 seconds.
 - Hero-grid repair full Chromium suite: PASS — 28/28 tests in 20.0 seconds.
+- GitHub-hosted Ubuntu Quality checks run `30587318644`: PASS — Playwright smoke and Lighthouse jobs both completed successfully.
 - An earlier local Playwright attempt failed because the newly required Chromium revision was not installed; this was an environment failure, not a regression.
 - A bounded isolated CI-mode browser invocation exceeded the local command window; the reporter configuration was then validated directly.
 - A later local build exposed an unbounded YouTube request; the hung process was stopped and the public build-time fetch path was given a 10-second deadline.
@@ -93,6 +94,7 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 - Actions run `30586696434` proved that explicit SVG overflow clipping did not change the 18px result. That ineffective rule was removed, and the diagnostic now excludes clipped descendants and ranks elements nearest the actual document edge.
 - Actions run `30586999400` identified the document-edge owner: `div.container.hero-inner` rendered 338px wide in the 320px viewport while no unclipped descendant crossed the edge. The homepage hero now declares a `minmax(0, 1fr)` grid track and permits the grid item to shrink with `min-width: 0`.
 - Scheduled rebuild run `30585238797` passed every step, including the Cloudflare Pages deployment. This verifies that the operator-added GitHub repository secrets are accepted.
+- Quality checks run `30587318644` passed the repaired commit on GitHub-hosted Ubuntu: all 28 Playwright checks and Lighthouse succeeded.
 - A WSL reproduction attempt resolved its temporary path incorrectly and started `npm ci` in the main checkout. It touched only ignored/generated `node_modules`, was terminated, and dependencies were restored from the lockfile before verification resumed.
 
 ## What changed
@@ -110,18 +112,16 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 
 ## What remains unverified
 
-- The hero-grid constraint has not yet passed its replacement GitHub-hosted Ubuntu run.
-- The new build-fetch deadline has not yet passed a replacement GitHub-hosted Ubuntu run.
+- Production has not yet received commit `375422c`; the operator must manually dispatch Scheduled rebuild once more or wait for its next twice-daily run.
 
 ## Remaining open loops
 
-- Run the local mobile suite after the hero-grid repair, push it, and inspect the replacement GitHub Actions run.
 - Manually dispatch Scheduled rebuild once more after the final CI-approved commit so production receives the complete repair.
 - Refresh stale pre-launch wording in `README.md` and `PROJECT.md` in a separate documentation pass.
 
 ## Next recommended pass
 
-Close the Ubuntu CI loop first, then manually deploy the final CI-approved commit through the now-verified scheduled rebuild workflow.
+Deploy the final CI-approved commit through Scheduled rebuild, then continue with Google Search Console verification.
 
 ## Links
 
