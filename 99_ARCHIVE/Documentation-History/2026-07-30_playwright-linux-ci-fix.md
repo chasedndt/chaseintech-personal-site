@@ -7,7 +7,7 @@
 
 ## Historical change
 
-This pass converted an opaque Linux-only Playwright failure into a diagnosable CI path. GitHub Actions will now publish test annotations and retain an HTML report, while the mobile overflow assertion uses scrollbar-independent viewport geometry.
+This pass converted an opaque Linux-only Playwright failure into a diagnosable CI path. GitHub Actions now publishes test annotations and retains an HTML report, while the mobile overflow assertion uses scrollbar-independent viewport geometry. The resulting annotation isolated an 18px homepage overflow to the mobile identity-card status line, which now wraps safely. A public YouTube request that hung during local verification also received a bounded deadline so the existing snapshot fallback can keep scheduled builds moving.
 
 ## Why it mattered
 
@@ -17,13 +17,15 @@ The preceding public workflow run exposed only exit code 1 and uploaded no Playw
 
 - `playwright.config.js`
 - `tests/smoke.spec.js`
+- `src/pages/index.astro`
+- `src/lib/youtube.js`
 - CI verification records and session indexes
 
-No production content, route, style, credential, or Cloudflare configuration changed.
+No production content, route, credential, or Cloudflare configuration changed.
 
 ## Completion boundary
 
-The implementation is complete locally. The result remains PARTIAL until a replacement GitHub-hosted Ubuntu run passes or provides the exact failing assertion.
+The diagnostic implementation is verified in GitHub Actions and the homepage repair is implemented. The result remains PARTIAL until the repaired homepage passes a replacement GitHub-hosted Ubuntu run.
 
 ## Links
 

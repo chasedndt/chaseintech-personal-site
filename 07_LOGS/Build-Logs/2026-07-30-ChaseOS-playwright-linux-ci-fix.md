@@ -28,6 +28,8 @@ Continue the unfinished investigation of the GitHub Actions smoke-test failure a
 - `.github/workflows/scheduled-rebuild.yml`
 - `playwright.config.js`
 - `tests/smoke.spec.js`
+- `src/pages/index.astro`
+- `src/lib/youtube.js`
 
 ## Files modified
 
@@ -52,43 +54,51 @@ npx playwright install chromium
 npx playwright test --project=chromium --reporter=list
 $env:CI='true'
 node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m.default.reporter)))"
+# A mocked stalled fetch was also run through fetchYouTubeVideos().
 ```
 
 ## Test results
 
 - `npm run build`: PASS — 42 pages built and indexed by Pagefind.
 - Chromium installation: PASS — Playwright Chromium and headless shell revision 1234 installed.
-- Playwright Chromium suite: PASS — 28/28 tests in 52.7 seconds.
+- Playwright Chromium suite before the homepage repair: PASS — 28/28 tests in 52.7 seconds.
+- Final production build after the homepage and fetch-deadline repairs: PASS — 42 pages built in 16.77 seconds and indexed by Pagefind.
+- Final Playwright Chromium suite: PASS — 28/28 tests in 1.1 minutes.
+- YouTube deadline / snapshot fallback: PASS — a mocked stalled request aborted in 10.11 seconds and returned the 11-video committed snapshot.
 - CI reporter resolution: PASS — resolves to GitHub annotations plus an HTML report.
 - An earlier local Playwright attempt failed because the newly required Chromium revision was not installed; this was an environment failure, not a regression.
 - A bounded isolated CI-mode browser invocation exceeded the local command window; the reporter configuration was then validated directly.
+- A later local build exposed an unbounded YouTube request; the hung process was stopped and the public build-time fetch path was given a 10-second deadline.
 
 ## Verification evidence
 
 - Public Actions metadata confirms only the `npx playwright test` step failed in Quality Checks run `30582180885`.
 - Public annotations confirm the old run had only a generic exit-code failure and no uploaded `playwright-report/`.
 - The stricter 320px overflow checks pass locally on all covered routes.
+- Replacement Actions run `30583918543` used the new reporter and identified the exact Linux failure: the homepage exceeded the 320px viewport by 18px; all other 27 tests passed.
+- Visual QA at 320px: PASS — the frontier-status pill wraps into two centered lines, while `clientWidth` and `scrollWidth` both measure 320px.
 
 ## What changed
 
 - CI now emits GitHub test annotations and an HTML Playwright report.
 - Horizontal-overflow measurement now compares `scrollWidth` with `documentElement.clientWidth`, avoiding scrollbar-dependent viewport slack.
+- The homepage frontier-status pill can wrap and center at mobile widths instead of forcing Linux's wider monospace rendering beyond the identity card.
+- YouTube RSS and format detection now time out and use the existing committed snapshot fallback instead of holding scheduled builds indefinitely.
 
 ## What did not change
 
-- No site content, styles, routes, production configuration, credentials, or Cloudflare settings changed.
+- No site content, routes, credentials, or Cloudflare settings changed.
 - No GitHub or Cloudflare secrets were read or written.
 
 ## What remains unverified
 
-- The replacement GitHub-hosted Ubuntu run has not yet completed.
+- The mobile pill repair has not yet passed a replacement GitHub-hosted Ubuntu run.
+- The new build-fetch deadline has not yet passed a replacement GitHub-hosted Ubuntu run.
 - GitHub repository secrets for the scheduled Cloudflare rebuild are not confirmed.
-- The exact failing test in the previous Linux run is unavailable because that run lacked a useful reporter artifact.
 
 ## Remaining open loops
 
-- Push the focused CI change and inspect the replacement GitHub Actions run.
-- If it fails, use the new annotations/report to repair the exact Linux-only assertion.
+- Run the local suite after the mobile pill repair, push it, and inspect the replacement GitHub Actions run.
 - Have the operator add or confirm `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in GitHub repository Actions secrets, then manually dispatch Scheduled rebuild.
 - Refresh stale pre-launch wording in `README.md` and `PROJECT.md` in a separate documentation pass.
 

@@ -18,6 +18,14 @@ import { fallback } from "../data/youtube-fallback.js";
 export const CHANNEL_ID = "UCYMroow7WQ2aRR3g_9VKzGA";
 export const CHANNEL_URL = "https://www.youtube.com/@ChaseDNDT";
 export const FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
+const BUILD_FETCH_TIMEOUT_MS = 10_000;
+
+const fetchForBuild = (url, options = {}) =>
+  fetch(url, {
+    ...options,
+    // A slow upstream must not hold a scheduled static build indefinitely.
+    signal: AbortSignal.timeout(BUILD_FETCH_TIMEOUT_MS),
+  });
 
 const pick = (xml, tag) => {
   const match = xml.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`));
@@ -82,7 +90,7 @@ export async function detectFormats(videos) {
   await Promise.all(
     videos.map(async (video) => {
       try {
-        const response = await fetch(
+        const response = await fetchForBuild(
           `https://www.youtube.com/shorts/${video.videoId}`,
           {
             redirect: "manual",
@@ -103,7 +111,7 @@ export async function detectFormats(videos) {
 
 export async function fetchYouTubeVideos() {
   try {
-    const response = await fetch(FEED_URL, {
+    const response = await fetchForBuild(FEED_URL, {
       headers: { "User-Agent": "chaseintech.com build" },
     });
     if (!response.ok) throw new Error(`feed responded ${response.status}`);

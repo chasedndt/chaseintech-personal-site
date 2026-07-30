@@ -23,12 +23,19 @@
 - Confirmed the old run did not expose a test name or upload a Playwright report.
 - Installed the missing local Playwright Chromium revision.
 - Ran the production build and complete Chromium suite.
+- Pushed the diagnostic change and inspected the replacement public Actions run.
+- Used the new annotation to isolate an 18px homepage overflow on Linux.
+- Made the mobile frontier-status pill wrap inside the identity card.
+- Bounded public YouTube build-time requests after a stalled request held local verification open indefinitely.
+- Verified the repaired mobile hero visually at 320px and confirmed zero document overflow.
 - Added the required session traceability records.
 
 ## Files written
 
 - `playwright.config.js`
 - `tests/smoke.spec.js`
+- `src/pages/index.astro`
+- `src/lib/youtube.js`
 - Build log, documentation-history note, daily note, agent activity record, and their indexes
 
 ## Commands run
@@ -48,6 +55,8 @@ Public GitHub REST endpoints were read without credentials for Actions metadata.
 - Astro production build and Pagefind indexing
 - Full Playwright Chromium smoke suite
 - CI reporter configuration resolution
+- Mocked stalled YouTube request and snapshot fallback
+- 320px mobile screenshot and geometry inspection
 
 ## Approval assumptions
 
@@ -68,5 +77,5 @@ The operator explicitly asked to continue the unfinished work. This was treated 
 
 ## Remaining unverified items
 
-- Replacement Ubuntu Actions result.
+- Replacement Ubuntu Actions result for the mobile pill repair.
 - Scheduled Cloudflare rebuild after the operator adds the two GitHub repository secrets.
