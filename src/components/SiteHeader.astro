@@ -41,7 +41,38 @@ const isCurrent = (href) =>
                       href={item.href}
                       aria-current={isCurrent(item.href) ? "page" : undefined}
                     >
-                      {item.label}
+                      <span class="more-icon" aria-hidden="true">
+                        {item.id === "now" && (
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M12 7v5l3 3" />
+                          </svg>
+                        )}
+                        {item.id === "press" && (
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 5h12v14H6a2 2 0 0 1-2-2z" />
+                            <path d="M16 8h3a1 1 0 0 1 1 1v8a2 2 0 0 1-2 2" />
+                            <path d="M7 9h6M7 13h6M7 16h4" />
+                          </svg>
+                        )}
+                        {item.id === "links" && (
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5" />
+                            <path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7L12.5 19" />
+                          </svg>
+                        )}
+                        {item.id === "search" && (
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <circle cx="11" cy="11" r="7" />
+                            <path d="m20 20-3.8-3.8" />
+                          </svg>
+                        )}
+                      </span>
+                      <span class="more-text">
+                        <span class="more-label">{item.label}</span>
+                        <span class="more-hint">{item.hint}</span>
+                      </span>
+                      <span class="more-arrow" aria-hidden="true">→</span>
                     </a>
                   </li>
                 ))
@@ -221,32 +252,113 @@ const isCurrent = (href) =>
   .more-panel {
     position: absolute;
     right: 0;
-    top: calc(100% + 0.6rem);
-    min-width: 160px;
+    top: calc(100% + 0.7rem);
+    width: 248px;
     list-style: none;
     margin: 0;
-    padding: 0.4rem;
+    padding: 0.45rem;
     display: grid;
-    gap: 0.1rem;
-    background: var(--cit-bg-surface);
+    gap: 0.15rem;
+    background: rgba(13, 23, 27, 0.92);
+    backdrop-filter: blur(12px);
     border: 1px solid var(--cit-border-strong);
     border-radius: var(--cit-radius);
-    box-shadow: 0 18px 50px -18px rgba(0, 0, 0, 0.85);
+    box-shadow:
+      0 0 0 1px rgba(57, 222, 201, 0.06),
+      0 24px 60px -20px rgba(0, 0, 0, 0.9);
     z-index: 60;
+    transform-origin: top right;
+    animation: morePop 0.18s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+  }
+  /* Teal seam where the panel meets the nav — ties it to the brand accent. */
+  .more-panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    right: 1rem;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--cit-accent-teal), transparent);
+    opacity: 0.6;
+  }
+  @keyframes morePop {
+    from {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .more-panel {
+      animation: none;
+    }
   }
   .more-panel a {
-    display: block;
-    padding: 0.55rem 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.7rem;
     border-radius: var(--cit-radius-sm);
     text-decoration: none;
-    font-size: 0.88rem;
     color: var(--cit-text-secondary);
+    transition: background-color 0.14s ease;
   }
-  .more-panel a:hover {
-    background: rgba(57, 222, 201, 0.08);
+  .more-icon {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius-sm);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--cit-text-muted);
+    transition: color 0.14s ease, border-color 0.14s ease;
+  }
+  .more-icon svg {
+    width: 15px;
+    height: 15px;
+  }
+  .more-text {
+    display: grid;
+    gap: 0.1rem;
+    flex: 1;
+    min-width: 0;
+  }
+  .more-label {
+    font-size: 0.88rem;
+    font-weight: 600;
     color: var(--cit-text-primary);
   }
-  .more-panel a[aria-current="page"] {
+  .more-hint {
+    font-family: var(--cit-font-mono);
+    font-size: 0.66rem;
+    color: var(--cit-text-muted);
+    letter-spacing: 0.02em;
+  }
+  .more-arrow {
+    font-size: 0.8rem;
+    color: var(--cit-accent-teal);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.14s ease, transform 0.14s ease;
+  }
+  .more-panel a:hover {
+    background: rgba(57, 222, 201, 0.07);
+  }
+  .more-panel a:hover .more-icon {
+    color: var(--cit-accent-teal);
+    border-color: rgba(57, 222, 201, 0.45);
+  }
+  .more-panel a:hover .more-arrow,
+  .more-panel a:focus-visible .more-arrow {
+    opacity: 1;
+    transform: none;
+  }
+  .more-panel a[aria-current="page"] .more-label {
     color: var(--cit-accent-teal);
   }
 

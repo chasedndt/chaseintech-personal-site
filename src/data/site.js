@@ -99,8 +99,8 @@ export const nav = [
 // Satellite pages, surfaced in the header "More" menu (desktop) and appended
 // flat to the mobile menu — nothing on the site should be footer-only.
 export const moreNav = [
-  { label: "Now", href: "/now" },
-  { label: "Press Kit", href: "/press" },
-  { label: "Links", href: "/links" },
-  { label: "Search", href: "/search" },
+  { id: "now", label: "Now", href: "/now", hint: "Current focus, dated" },
+  { id: "press", label: "Press Kit", href: "/press", hint: "Bio, imagery, links" },
+  { id: "links", label: "Links", href: "/links", hint: "The compact card" },
+  { id: "search", label: "Search", href: "/search", hint: "Full-text, on-device" },
 ];
