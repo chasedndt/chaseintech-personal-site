@@ -66,6 +66,7 @@ export const activeSocials = socials.filter((s) => s.url);
 
 export const nav = [
   { label: "Projects", href: "/projects" },
+  { label: "Articles", href: "/articles" },
   { label: "Videos", href: "/videos" },
   { label: "Build Log", href: "/build-log" },
   { label: "About", href: "/about" },

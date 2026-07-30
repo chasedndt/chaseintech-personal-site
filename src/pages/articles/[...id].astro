@@ -1,0 +1,261 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import WorkWithMeCTA from "../../components/WorkWithMeCTA.astro";
+import { getProject } from "../../data/projects.js";
+import { getBuildLog } from "../../data/build-logs.js";
+import { site } from "../../data/site.js";
+
+export async function getStaticPaths() {
+  const articles = (await getCollection("articles", ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
+  );
+
+  return articles.map((article, index) => ({
+    params: { id: article.id },
+    props: {
+      article,
+      newer: articles[index - 1] ?? null,
+      older: articles[index + 1] ?? null,
+    },
+  }));
+}
+
+const { article, newer, older } = Astro.props;
+const { Content } = await render(article);
+
+const project = article.data.relatedProject
+  ? getProject(article.data.relatedProject)
+  : null;
+const buildLog = article.data.relatedBuildLog
+  ? getBuildLog(article.data.relatedBuildLog)
+  : null;
+
+const fmt = (date) =>
+  date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+---
+
+<Layout title={`${article.data.title} — ${site.brand}`} description={article.data.description}>
+  <article class="container entry">
+    <header>
+      <p class="section-label">Article</p>
+      <h1>{article.data.title}</h1>
+      <p class="meta">
+        <time datetime={article.data.publishedAt.toISOString()}>
+          {fmt(article.data.publishedAt)}
+        </time>
+        {
+          article.data.updatedAt && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span>updated {fmt(article.data.updatedAt)}</span>
+            </>
+          )
+        }
+      </p>
+      <p class="desc">{article.data.description}</p>
+
+      {
+        (article.data.xUrl || article.data.linkedinUrl) && (
+          <p class="elsewhere">
+            Also posted on{" "}
+            {article.data.xUrl && (
+              <a href={article.data.xUrl} target="_blank" rel="noopener noreferrer" data-analytics="x_click">
+                X
+              </a>
+            )}
+            {article.data.xUrl && article.data.linkedinUrl && " and "}
+            {article.data.linkedinUrl && (
+              <a href={article.data.linkedinUrl} target="_blank" rel="noopener noreferrer">
+                LinkedIn
+              </a>
+            )}
+          </p>
+        )
+      }
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <footer class="entry-footer">
+      {
+        (project || buildLog) && (
+          <div class="related">
+            {project && (
+              <p>
+                Project:{" "}
+                <a class="text-link" href={`/projects/${project.slug}`} data-analytics="project_open">
+                  {project.name} →
+                </a>
+              </p>
+            )}
+            {buildLog && (
+              <p>
+                Build log:{" "}
+                <a class="text-link" href={`/build-log/${buildLog.slug}`} data-analytics="build_log_open">
+                  {buildLog.title} →
+                </a>
+              </p>
+            )}
+          </div>
+        )
+      }
+
+      <div class="pager">
+        {older ? <a href={`/articles/${older.id}`}>← {older.data.title}</a> : <span />}
+        {newer && <a class="next" href={`/articles/${newer.id}`}>{newer.data.title} →</a>}
+      </div>
+
+      <p>
+        <a class="text-link" href="/articles">← All articles</a>
+        <span aria-hidden="true"> · </span>
+        <a class="text-link" href="/rss.xml">RSS</a>
+      </p>
+    </footer>
+  </article>
+
+  <WorkWithMeCTA />
+</Layout>
+
+<style>
+  .entry {
+    max-width: 720px;
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+  }
+  h1 {
+    font-size: clamp(1.9rem, 4.5vw, 2.7rem);
+    margin-top: 0.6rem;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-family: var(--cit-font-mono);
+    font-size: 0.75rem;
+    color: var(--cit-text-muted);
+    margin-top: 1rem;
+  }
+  .desc {
+    color: var(--cit-text-secondary);
+    font-size: 1.05rem;
+    margin-top: 1.1rem;
+  }
+  .elsewhere {
+    font-size: 0.85rem;
+    color: var(--cit-text-muted);
+    margin-top: 1rem;
+  }
+  .elsewhere a {
+    color: var(--cit-accent-teal);
+  }
+
+  /* Long-form reading column. */
+  .prose {
+    margin-top: 2.5rem;
+    color: var(--cit-text-secondary);
+    line-height: 1.8;
+  }
+  .prose :global(h2) {
+    color: var(--cit-text-primary);
+    font-size: 1.3rem;
+    margin: 2.4rem 0 0.8rem;
+    scroll-margin-top: 90px;
+  }
+  .prose :global(h3) {
+    color: var(--cit-text-primary);
+    font-size: 1.08rem;
+    margin: 1.8rem 0 0.6rem;
+  }
+  .prose :global(p) {
+    margin-bottom: 1.1rem;
+  }
+  .prose :global(a) {
+    color: var(--cit-accent-teal);
+  }
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 0 0 1.2rem;
+    padding-left: 1.3rem;
+  }
+  .prose :global(li) {
+    margin-bottom: 0.4rem;
+  }
+  .prose :global(blockquote) {
+    margin: 1.5rem 0;
+    padding-left: 1.1rem;
+    border-left: 2px solid var(--cit-accent-violet);
+    color: var(--cit-text-muted);
+  }
+  .prose :global(code) {
+    font-family: var(--cit-font-mono);
+    font-size: 0.86em;
+    background: var(--cit-bg-elevated);
+    padding: 0.12em 0.35em;
+    border-radius: 4px;
+  }
+  /* Wide code must scroll inside itself, never widen the page. */
+  .prose :global(pre) {
+    background: var(--cit-bg-elevated);
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius-sm);
+    padding: 1rem;
+    overflow-x: auto;
+    margin-bottom: 1.3rem;
+  }
+  .prose :global(pre code) {
+    background: none;
+    padding: 0;
+  }
+  .prose :global(img) {
+    border-radius: var(--cit-radius-sm);
+    border: 1px solid var(--cit-border);
+  }
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin-bottom: 1.3rem;
+  }
+  .prose :global(th),
+  .prose :global(td) {
+    border: 1px solid var(--cit-border);
+    padding: 0.5rem 0.7rem;
+    text-align: left;
+  }
+
+  .entry-footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--cit-border);
+    display: grid;
+    gap: 1.2rem;
+    color: var(--cit-text-muted);
+    font-size: 0.9rem;
+  }
+  .related {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .pager {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .pager a {
+    color: var(--cit-text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    max-width: 45%;
+  }
+  .pager a:hover {
+    color: var(--cit-accent-teal);
+  }
+  .pager .next {
+    text-align: right;
+    margin-left: auto;
+  }
+</style>

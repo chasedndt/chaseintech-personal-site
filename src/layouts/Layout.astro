@@ -4,7 +4,7 @@ import { ClientRouter } from "astro:transitions";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import CommandPalette from "../components/CommandPalette.astro";
-import { site } from "../data/site.js";
+import { site, activeSocials } from "../data/site.js";
 
 interface Props {
   title?: string;
@@ -20,6 +20,7 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, site.url).href;
+const sameAs = activeSocials.map((social) => social.url);
 // PNG, not SVG: X, LinkedIn and most scrapers refuse to render SVG previews.
 const ogImage = new URL("/og-default.png", site.url).href;
 ---
@@ -51,6 +52,40 @@ const ogImage = new URL("/og-default.png", site.url).href;
     <link rel="icon" type="image/png" href="/images/pfp-pixel.png" />
     <link rel="apple-touch-icon" href="/images/pfp-pixel.png" />
     <meta name="generator" content={Astro.generator} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${site.brand} — articles and build logs`}
+      href={new URL("/rss.xml", site.url).href}
+    />
+
+    <!-- Structured data: helps search surface the right entity for the brand.
+         Only facts already stated on the site are included. -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": `${site.url}/#chase`,
+          name: "Chase",
+          alternateName: site.brand,
+          url: site.url,
+          jobTitle: "AI Engineer and Founder",
+          address: { "@type": "PostalAddress", addressLocality: "London", addressCountry: "GB" },
+          sameAs: sameAs,
+        },
+        {
+          "@type": "WebSite",
+          "@id": `${site.url}/#website`,
+          url: site.url,
+          name: site.brand,
+          description: site.description,
+          inLanguage: "en-GB",
+          publisher: { "@id": `${site.url}/#chase` },
+        },
+      ],
+    })} />
+
     <!-- Cross-fade between routes; the browser falls back to a normal
          navigation where the View Transitions API is unsupported. -->
     <ClientRouter />
