@@ -52,6 +52,7 @@ Continue the unfinished investigation of the GitHub Actions smoke-test failure a
 ```powershell
 npm run build
 npx playwright install chromium
+npx playwright test tests/smoke.spec.js:58 --project=chromium --reporter=list
 npx playwright test --project=chromium --reporter=list
 $env:CI='true'
 node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m.default.reporter)))"
@@ -73,6 +74,9 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 - Final mobile overflow subset: PASS — 11/11 routes in 36.5 seconds.
 - Refined-diagnostic production build after removing ineffective SVG clipping: PASS — 42 pages built in 7.87 seconds.
 - Refined-diagnostic mobile subset: PASS — 11/11 routes in 18.6 seconds.
+- Hero-grid repair production build: PASS — 42 pages built in 4.96 seconds and 42 pages indexed by Pagefind.
+- Hero-grid repair mobile subset: PASS — 11/11 routes, including the homepage, in 11.9 seconds.
+- Hero-grid repair full Chromium suite: PASS — 28/28 tests in 20.0 seconds.
 - An earlier local Playwright attempt failed because the newly required Chromium revision was not installed; this was an environment failure, not a regression.
 - A bounded isolated CI-mode browser invocation exceeded the local command window; the reporter configuration was then validated directly.
 - A later local build exposed an unbounded YouTube request; the hung process was stopped and the public build-time fetch path was given a 10-second deadline.
@@ -87,6 +91,8 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 - Replacement Actions run `30585252356` still measured exactly 18px on the Linux homepage after the pill repair; 27/28 tests and Lighthouse passed. The overflow assertion now emits root/body geometry and offending elements to distinguish real overflow from scrollbar-gutter accounting.
 - Diagnostic Actions run `30585670598` confirmed a real 18px overflow: viewport and client widths were both 320px, while root/body scroll width was 338px. Its first offender list was dominated by off-canvas SVG descendants already clipped by their scene wrapper, so it did not yet prove which element owned the extra scroll width.
 - Actions run `30586696434` proved that explicit SVG overflow clipping did not change the 18px result. That ineffective rule was removed, and the diagnostic now excludes clipped descendants and ranks elements nearest the actual document edge.
+- Actions run `30586999400` identified the document-edge owner: `div.container.hero-inner` rendered 338px wide in the 320px viewport while no unclipped descendant crossed the edge. The homepage hero now declares a `minmax(0, 1fr)` grid track and permits the grid item to shrink with `min-width: 0`.
+- Scheduled rebuild run `30585238797` passed every step, including the Cloudflare Pages deployment. This verifies that the operator-added GitHub repository secrets are accepted.
 - A WSL reproduction attempt resolved its temporary path incorrectly and started `npm ci` in the main checkout. It touched only ignored/generated `node_modules`, was terminated, and dependencies were restored from the lockfile before verification resumed.
 
 ## What changed
@@ -94,6 +100,7 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 - CI now emits GitHub test annotations and an HTML Playwright report.
 - Horizontal-overflow measurement now compares `scrollWidth` with `documentElement.clientWidth`, avoiding scrollbar-dependent viewport slack.
 - The homepage frontier-status pill can wrap and center at mobile widths instead of forcing Linux's wider monospace rendering beyond the identity card.
+- The homepage hero's implicit grid column can no longer expand beyond the viewport's available width.
 - YouTube RSS and format detection now time out and use the existing committed snapshot fallback instead of holding scheduled builds indefinitely.
 
 ## What did not change
@@ -103,19 +110,18 @@ node -e "import('./playwright.config.js').then(m => console.log(JSON.stringify(m
 
 ## What remains unverified
 
-- The unclipped element responsible for Linux's remaining 18px document width is still under diagnostic verification.
+- The hero-grid constraint has not yet passed its replacement GitHub-hosted Ubuntu run.
 - The new build-fetch deadline has not yet passed a replacement GitHub-hosted Ubuntu run.
-- GitHub repository secrets for the scheduled Cloudflare rebuild are not confirmed.
 
 ## Remaining open loops
 
-- Run the local suite after the mobile pill repair, push it, and inspect the replacement GitHub Actions run.
-- Have the operator add or confirm `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in GitHub repository Actions secrets, then manually dispatch Scheduled rebuild.
+- Run the local mobile suite after the hero-grid repair, push it, and inspect the replacement GitHub Actions run.
+- Manually dispatch Scheduled rebuild once more after the final CI-approved commit so production receives the complete repair.
 - Refresh stale pre-launch wording in `README.md` and `PROJECT.md` in a separate documentation pass.
 
 ## Next recommended pass
 
-Close the Ubuntu CI loop first, then verify the scheduled Cloudflare rebuild with the operator-created GitHub secrets.
+Close the Ubuntu CI loop first, then manually deploy the final CI-approved commit through the now-verified scheduled rebuild workflow.
 
 ## Links
 

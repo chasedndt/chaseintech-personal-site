@@ -7,7 +7,7 @@
 
 ## Historical change
 
-This pass converted an opaque Linux-only Playwright failure into a diagnosable CI path. GitHub Actions now publishes test annotations and retains an HTML report, while the mobile overflow assertion uses scrollbar-independent viewport geometry. The mobile identity-card status line now wraps safely. Enhanced geometry confirmed a real 18px Linux document overflow, but its first report was dominated by already-clipped ambient SVG descendants. Explicit SVG clipping did not change the result and was removed; the diagnostic now separates clipped geometry from the element that owns the document edge. A public YouTube request that hung during local verification also received a bounded deadline so the existing snapshot fallback can keep scheduled builds moving.
+This pass converted an opaque Linux-only Playwright failure into a diagnosable CI path. GitHub Actions now publishes test annotations and retains an HTML report, while the mobile overflow assertion uses scrollbar-independent viewport geometry. The mobile identity-card status line now wraps safely. Enhanced geometry confirmed a real 18px Linux document overflow and ultimately identified the 338px-wide hero grid item as the document-edge owner. The hero now uses a shrinkable `minmax(0, 1fr)` track. A public YouTube request that hung during local verification also received a bounded deadline so the existing snapshot fallback can keep scheduled builds moving.
 
 ## Why it mattered
 
@@ -26,7 +26,7 @@ No production content, route, credential, or Cloudflare configuration changed.
 
 ## Completion boundary
 
-The diagnostic implementation is verified in GitHub Actions, but the first geometry report over-attributed the result to already-clipped SVG descendants. The ineffective SVG rule was removed. The result remains PARTIAL until the enhanced unclipped-element evidence identifies and closes the remaining source.
+The diagnostic implementation and GitHub-to-Cloudflare deployment authorization are verified. The result remains PARTIAL until the hero-grid repair passes the replacement GitHub-hosted Ubuntu workflow.
 
 ## Links
 

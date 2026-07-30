@@ -33,6 +33,9 @@
 - Tested explicit SVG viewport clipping after the first geometry report implicated off-canvas SVG descendants.
 - Removed that ineffective rule when the replacement Ubuntu run remained unchanged.
 - Refined diagnostics to exclude descendants already clipped by an ancestor and rank actual document-edge candidates.
+- Used the refined Ubuntu annotation to identify `div.container.hero-inner` as the 338px document-edge owner in a 320px viewport.
+- Constrained the homepage hero to a shrinkable grid track and allowed its grid item to shrink.
+- Verified the operator-created repository secrets through a successful manually dispatched Cloudflare Pages rebuild.
 - Stopped a misdirected WSL `npm ci` that affected only generated `node_modules`, then restored dependencies from the lockfile with an isolated temporary cache.
 - Added the required session traceability records.
 
@@ -51,6 +54,7 @@ git status --short --branch
 git diff -- playwright.config.js tests/smoke.spec.js
 npm run build
 npx playwright install chromium
+npx playwright test tests/smoke.spec.js:58 --project=chromium --reporter=list
 npx playwright test --project=chromium --reporter=list
 ```
 
@@ -65,6 +69,9 @@ Public GitHub REST endpoints were read without credentials for Actions metadata.
 - 320px mobile screenshot and geometry inspection
 - Final 11-route mobile overflow subset after SVG clipping
 - Final 42-page production build after dependency restoration
+- Hero-grid repair 42-page production build
+- Hero-grid repair 11-route mobile overflow subset
+- Hero-grid repair full 28-test Chromium suite
 
 ## Approval assumptions
 
@@ -80,11 +87,10 @@ The operator explicitly asked to continue the unfinished work. This was treated 
 
 ## Boundaries not tested
 
-- GitHub repository secret presence cannot be verified from public metadata.
+- Secret values remain intentionally unreadable and were not inspected.
 - The prior GitHub-hosted test log is not publicly accessible without authentication.
-- Cloudflare deployment authorization remains unverified.
 
 ## Remaining unverified items
 
-- Replacement Ubuntu Actions result for the mobile pill repair.
-- Scheduled Cloudflare rebuild after the operator adds the two GitHub repository secrets.
+- Replacement Ubuntu Actions result for the hero-grid repair.
+- Final production deployment after the CI-approved commit.
