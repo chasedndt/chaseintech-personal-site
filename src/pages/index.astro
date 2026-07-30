@@ -76,6 +76,7 @@ const { featured: featuredVideo, recent: recentVideos } = await getContentFeed()
   <!-- Watch the Build (§21) -->
   <section class="band">
     <div class="container">
+      <div data-reveal>
       <SectionHeading
         label="Watch the build"
         title="Latest from ChaseInTech"
@@ -83,6 +84,7 @@ const { featured: featuredVideo, recent: recentVideos } = await getContentFeed()
         href="/videos"
         linkLabel="All videos"
       />
+      </div>
 
       {
         featuredVideo ? (
@@ -106,6 +108,7 @@ const { featured: featuredVideo, recent: recentVideos } = await getContentFeed()
   <!-- Selected projects (§23) -->
   <section class="band band--alt">
     <div class="container">
+      <div data-reveal>
       <SectionHeading
         label="Selected projects"
         title="Systems I've designed and shipped"
@@ -113,8 +116,15 @@ const { featured: featuredVideo, recent: recentVideos } = await getContentFeed()
         href="/projects"
         linkLabel="All projects"
       />
+      </div>
       <div class="project-grid">
-        {featuredProjects.map((project) => <ProjectCard project={project} />)}
+        {
+          featuredProjects.map((project) => (
+            <div data-reveal>
+              <ProjectCard project={project} />
+            </div>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -122,6 +132,7 @@ const { featured: featuredVideo, recent: recentVideos } = await getContentFeed()
   <!-- Engineering build log (§25) -->
   <section class="band">
     <div class="container">
+      <div data-reveal>
       <SectionHeading
         label="Engineering build log"
         title="How the decisions actually got made"
@@ -129,10 +140,11 @@ const { featured: featuredVideo, recent: recentVideos } = await getContentFeed()
         href="/build-log"
         linkLabel="All entries"
       />
+      </div>
       <ul class="log-list">
         {
           latestLogs.map((entry) => (
-            <li>
+            <li data-reveal>
               <a href={`/build-log/${entry.slug}`} data-analytics="build_log_open">
                 <h3>{entry.title}</h3>
                 <p>{entry.summary}</p>

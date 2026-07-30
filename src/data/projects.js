@@ -150,12 +150,19 @@ export const projects = [
     liveUrl: null,
     boundary:
       "No live trade execution, no financial performance guarantees, and no production signal subscription service.",
+    // StrikeZone Crypto's own presence, separate from the personal accounts.
     links: [
-      // NOTE(operator): @ChaserCrypto_ is currently wired as the PERSONAL X
-      // account in src/data/site.js, taken from the GitHub profile. If that
-      // handle actually belongs to StrikeZone Crypto rather than to
-      // ChaseInTech, move it here and supply the personal handle separately.
-      // TODO(operator): StrikeZone Discord / X / Whop URLs
+      {
+        type: "site",
+        label: "Whop",
+        url: "https://whop.com/strike-zone-crypto/",
+      },
+      { type: "x", label: "@StrikeZone_HQ", url: "https://x.com/StrikeZone_HQ" },
+      {
+        type: "discord",
+        label: "Community",
+        url: "https://discord.com/invite/BjEMPs5xY9",
+      },
     ],
     media: [],
     subProjects: [

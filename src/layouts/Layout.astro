@@ -52,6 +52,42 @@ const ogImage = new URL("/og-default.svg", site.url).href;
       <slot />
     </main>
     <SiteFooter />
+
+    <script>
+      // Scroll reveal. The hiding CSS is gated behind `.reveal-enabled`, which
+      // only JS adds — so with JS broken or disabled, nothing is ever hidden.
+      // Skipped entirely when the visitor prefers reduced motion.
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      const targets = document.querySelectorAll("[data-reveal]");
+
+      if (!prefersReduced && targets.length > 0 && "IntersectionObserver" in window) {
+        document.documentElement.classList.add("reveal-enabled");
+
+        const reveal = (el) => el.classList.add("is-revealed");
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                reveal(entry.target);
+                observer.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+        );
+
+        for (const target of targets) observer.observe(target);
+
+        // Failsafe: content must never be left invisible. If the observer
+        // never fires — background tab, non-compositing renderer, prerender,
+        // anything unexpected — reveal everything anyway.
+        setTimeout(() => targets.forEach(reveal), 2500);
+      }
+    </script>
   </body>
 </html>
 
