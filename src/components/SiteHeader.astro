@@ -1,5 +1,5 @@
 ---
-import { site, nav } from "../data/site.js";
+import { site, nav, moreNav } from "../data/site.js";
 
 const path = Astro.url.pathname;
 const isCurrent = (href) =>
@@ -27,6 +27,28 @@ const isCurrent = (href) =>
             </li>
           ))
         }
+        <li class="more">
+          <!-- details/summary: keyboard-accessible dropdown with no JS needed -->
+          <details data-more-menu>
+            <summary aria-label="More pages">
+              More <span class="caret" aria-hidden="true">▾</span>
+            </summary>
+            <ul class="more-panel">
+              {
+                moreNav.map((item) => (
+                  <li>
+                    <a
+                      href={item.href}
+                      aria-current={isCurrent(item.href) ? "page" : undefined}
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </details>
+        </li>
       </ul>
     </nav>
 
@@ -45,7 +67,7 @@ const isCurrent = (href) =>
   <nav class="mobile-nav" id="mobile-nav" aria-label="Primary" hidden data-mobile-nav>
     <ul>
       {
-        nav.map((item) => (
+        [...nav, ...moreNav].map((item) => (
           <li>
             <a href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined}>
               {item.label}
@@ -68,6 +90,15 @@ const isCurrent = (href) =>
   };
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
+
+  // Close the More dropdown on outside click or Escape.
+  const moreMenu = document.querySelector("[data-more-menu]");
+  document.addEventListener("click", (event) => {
+    if (moreMenu?.open && !moreMenu.contains(event.target)) moreMenu.open = false;
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && moreMenu?.open) moreMenu.open = false;
+  });
 
   const setOpen = (open) => {
     if (!toggle || !panel) return;
@@ -154,6 +185,69 @@ const isCurrent = (href) =>
   .desktop-nav a[aria-current="page"] {
     color: var(--cit-accent-teal);
     border-bottom-color: var(--cit-accent-teal);
+  }
+
+  /* "More" dropdown */
+  .more details {
+    position: relative;
+  }
+  .more summary {
+    list-style: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--cit-text-secondary);
+    padding: 0.35rem 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    user-select: none;
+  }
+  .more summary::-webkit-details-marker {
+    display: none;
+  }
+  .more summary:hover {
+    color: var(--cit-text-primary);
+  }
+  .caret {
+    font-size: 0.65rem;
+    transition: transform 0.15s ease;
+  }
+  .more details[open] .caret {
+    transform: rotate(180deg);
+  }
+  .more details[open] summary {
+    color: var(--cit-accent-teal);
+  }
+  .more-panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.6rem);
+    min-width: 160px;
+    list-style: none;
+    margin: 0;
+    padding: 0.4rem;
+    display: grid;
+    gap: 0.1rem;
+    background: var(--cit-bg-surface);
+    border: 1px solid var(--cit-border-strong);
+    border-radius: var(--cit-radius);
+    box-shadow: 0 18px 50px -18px rgba(0, 0, 0, 0.85);
+    z-index: 60;
+  }
+  .more-panel a {
+    display: block;
+    padding: 0.55rem 0.8rem;
+    border-radius: var(--cit-radius-sm);
+    text-decoration: none;
+    font-size: 0.88rem;
+    color: var(--cit-text-secondary);
+  }
+  .more-panel a:hover {
+    background: rgba(57, 222, 201, 0.08);
+    color: var(--cit-text-primary);
+  }
+  .more-panel a[aria-current="page"] {
+    color: var(--cit-accent-teal);
   }
 
   .menu-toggle {

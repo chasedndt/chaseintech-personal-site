@@ -95,3 +95,12 @@ export const nav = [
   { label: "Uses", href: "/uses" },
   { label: "Work With Me", href: "/work-with-me" },
 ];
+
+// Satellite pages, surfaced in the header "More" menu (desktop) and appended
+// flat to the mobile menu — nothing on the site should be footer-only.
+export const moreNav = [
+  { label: "Now", href: "/now" },
+  { label: "Press Kit", href: "/press" },
+  { label: "Links", href: "/links" },
+  { label: "Search", href: "/search" },
+];
