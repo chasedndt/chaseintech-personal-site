@@ -25,16 +25,19 @@ jobs:
       fail-fast: false # one site being down must not hide the other's result
       matrix:
         site:
-          - https://chaseintech.com/
-          - https://chaseos.ai/
+          - url: https://chaseintech.com/
+            edge_denial_is_reachable: false
+          - url: https://chaseos.ai/
+            edge_denial_is_reachable: true
     steps:
       # Retries with backoff, because a single failed probe is not an outage.
-      # Datacentre IPs also get bot-challenged (403/503) by edge protection,
-      # which is not the site being down — so only a persistent failure fails
-      # the job. A monitor that cries wolf gets muted, which is worse than none.
-      - name: Probe ${{ matrix.site }}
+      # Datacentre IPs can be challenged by edge protection. For the protected
+      # ChaseOS host only, 403/429 proves the edge is reachable; every other
+      # non-success response still retries and eventually fails the job.
+      - name: Probe ${{ matrix.site.url }}
         run: |
-          site="${{ matrix.site }}"
+          site="${{ matrix.site.url }}"
+          edge_denial_is_reachable="${{ matrix.site.edge_denial_is_reachable }}"
           for attempt in 1 2 3 4; do
             code=$(curl -s -o /dev/null -L --max-time 25 \
               -A "chaseintech-uptime/1.0 (+https://chaseintech.com)" \
@@ -42,7 +45,14 @@ jobs:
             echo "attempt $attempt: $site -> $code"
             case "$code" in
               2??|3??) echo "OK"; exit 0 ;;
-              403|429|503) echo "  edge challenge or rate limit — retrying" ;;
+              403|429)
+                if [ "$edge_denial_is_reachable" = "true" ]; then
+                  echo "::warning::$site returned $code from edge protection; host is reachable"
+                  exit 0
+                fi
+                echo "  unexpected edge denial — retrying"
+                ;;
+              503) echo "  edge unavailable — retrying" ;;
               *) echo "  unhealthy — retrying" ;;
             esac
             sleep $((attempt * 10))
