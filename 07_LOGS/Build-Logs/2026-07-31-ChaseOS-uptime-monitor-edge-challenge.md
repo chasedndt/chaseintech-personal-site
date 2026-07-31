@@ -5,7 +5,7 @@
 - Session descriptor: `uptime-monitor-edge-challenge`
 - Phase / pass: Post-launch CI reliability
 - Current branch: `codex/2026-07-31-uptime-monitor-edge-challenge`
-- Status: CONFIGURED BUT UNVERIFIED
+- Status: VERIFIED
 
 ## Task summary
 
@@ -57,7 +57,7 @@ git diff --check
 - YAML parse: PASS — workflow parses and reports `Quality checks`.
 - Probe classification assertions: PASS — protected 403/429 is edge-reachable; public 403 and all 503 responses remain failures.
 - Diff whitespace validation: PASS.
-- GitHub-hosted scheduled run: NOT RUN — the branch has not been pushed.
+- GitHub-hosted workflow dispatch: PASS — `Quality checks #33` completed both uptime matrix jobs, Lighthouse, and Playwright smoke on commit `cfdd463`.
 
 ## Verification evidence
 
@@ -80,18 +80,16 @@ git diff --check
 
 ## What remains unverified
 
-- A `workflow_dispatch` or scheduled GitHub-hosted run must pass after this branch is pushed.
-- The exact edge response can vary by GitHub runner location.
+- The first automatic schedule after the verified patch reaches the default branch.
 
 ## Remaining open loops
 
-- Obtain operator approval to push the branch.
-- Run `Quality checks` manually and confirm uptime, Lighthouse, and smoke are green.
+- Promote the verified branch to the default branch.
 - Recheck Search Console crawl processing.
 
 ## Next recommended pass
 
-Push this focused CI repair, verify one complete manual workflow run, then check Search Console processing and Cloudflare Web Analytics.
+Confirm the first automatic scheduled run on `main`, then check Search Console processing and Cloudflare Web Analytics.
 
 ## Links
 

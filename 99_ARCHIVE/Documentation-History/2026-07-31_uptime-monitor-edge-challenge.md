@@ -3,7 +3,7 @@
 - Date: 2026-07-31
 - Runtime: Codex
 - Pass type: Implementation and verification
-- Status: CONFIGURED BUT UNVERIFIED
+- Status: VERIFIED
 
 ## Historical change
 
@@ -18,7 +18,7 @@ The workflow now carries a per-site policy. The public portfolio remains strict,
 
 ## Completion boundary
 
-The repository change and local validation are complete. Live GitHub verification is deferred until the branch is approved and pushed.
+The repository change, local validation, and GitHub-hosted verification are complete. `Quality checks #33` passed both uptime jobs, Lighthouse, and Playwright smoke on the patched commit.
 
 ## Links
 
