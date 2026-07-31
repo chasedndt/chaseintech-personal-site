@@ -21,17 +21,34 @@ jobs:
   uptime:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false # one site being down must not hide the other's result
+      matrix:
+        site:
+          - https://chaseintech.com/
+          - https://chaseos.ai/
     steps:
-      - name: chaseintech.com
+      # Retries with backoff, because a single failed probe is not an outage.
+      # Datacentre IPs also get bot-challenged (403/503) by edge protection,
+      # which is not the site being down — so only a persistent failure fails
+      # the job. A monitor that cries wolf gets muted, which is worse than none.
+      - name: Probe ${{ matrix.site }}
         run: |
-          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 https://chaseintech.com/)
-          echo "chaseintech.com -> $code"
-          [ "$code" = "200" ]
-      - name: chaseos.ai
-        run: |
-          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 https://chaseos.ai/)
-          echo "chaseos.ai -> $code"
-          [ "$code" = "200" ]
+          site="${{ matrix.site }}"
+          for attempt in 1 2 3 4; do
+            code=$(curl -s -o /dev/null -L --max-time 25 \
+              -A "chaseintech-uptime/1.0 (+https://chaseintech.com)" \
+              -w "%{http_code}" "$site" || echo "000")
+            echo "attempt $attempt: $site -> $code"
+            case "$code" in
+              2??|3??) echo "OK"; exit 0 ;;
+              403|429|503) echo "  edge challenge or rate limit — retrying" ;;
+              *) echo "  unhealthy — retrying" ;;
+            esac
+            sleep $((attempt * 10))
+          done
+          echo "::error::$site failed 4 consecutive probes (last code: $code)"
+          exit 1
 
   lighthouse:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
