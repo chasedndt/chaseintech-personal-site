@@ -78,7 +78,11 @@ export const activeSocials = socials.filter((s) => s.url);
 // are invisible everywhere. The operator registers the accounts (account
 // creation is theirs alone); URLs get added here as they exist.
 export const freelancePlatforms = [
-  { id: "upwork", label: "Upwork", url: null },
+  {
+    id: "upwork",
+    label: "Upwork",
+    url: "https://www.upwork.com/freelancers/~01d263e874cb34f2cc",
+  },
   { id: "fiverr", label: "Fiverr", url: null },
   { id: "contra", label: "Contra", url: null },
   { id: "toptal", label: "Toptal", url: null },
