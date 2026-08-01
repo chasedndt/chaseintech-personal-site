@@ -6,6 +6,7 @@ const routes = [
   "/projects/",
   "/projects/chaseos/",
   "/articles/",
+  "/articles/kimi-k3-vendor-benchmarks-independent-workflow-test/",
   "/videos/",
   "/build-log/",
   "/links/",
@@ -45,6 +46,7 @@ const mobileRoutes = [
   "/projects/",
   "/projects/chaseos/",
   "/articles/",
+  "/articles/kimi-k3-vendor-benchmarks-independent-workflow-test/",
   "/videos/",
   "/build-log/",
   "/build-log/chaseos-cloud-metering-architecture/",
@@ -154,6 +156,17 @@ test("articles feed is valid and article pages render", async ({ page }) => {
   const body = await rss.text();
   expect(body).toContain("<rss");
   expect(body).toContain("content:encoded");
+});
+
+test("Kimi K3 ChaseOS Digest article renders its series and hero", async ({ page }) => {
+  await page.goto("/articles/kimi-k3-vendor-benchmarks-independent-workflow-test/");
+  await expect(page.locator("article > header > .section-label")).toHaveText("ChaseOS Digest");
+  const hero = page.locator("article > header > .hero img");
+  await expect(hero).toBeVisible();
+  await expect(hero).toHaveAttribute(
+    "src",
+    "/images/articles/kimi-k3-vendor-benchmarks-independent-workflow-test.png",
+  );
 });
 
 test("video page mounts click-to-play without loading YouTube", async ({ page }) => {
