@@ -9,8 +9,14 @@ const articles = (await getCollection("articles", ({ data }) => !data.draft)).so
   (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf(),
 );
 
-const thumbFor = (id) =>
-  existsSync(`public/og/articles/${id}.png`) ? `/og/articles/${id}.png` : null;
+// Same precedence as the article page: a generated OG card if one exists,
+// otherwise the piece's own hero artwork. Without the heroImage fallback,
+// articles that ship bespoke artwork instead of a generated card render the
+// placeholder glyph here.
+const thumbFor = (article) =>
+  existsSync(`public/og/articles/${article.id}.png`)
+    ? `/og/articles/${article.id}.png`
+    : (article.data.heroImage ?? null);
 
 const fmt = (date) =>
   date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
@@ -39,9 +45,9 @@ const fmt = (date) =>
             <li data-reveal>
               <article class="entry-card">
                 <a class="thumb" href={`/articles/${article.id}`} aria-hidden="true" tabindex="-1">
-                  {thumbFor(article.id) ? (
+                  {thumbFor(article) ? (
                     <img
-                      src={thumbFor(article.id)}
+                      src={thumbFor(article)}
                       alt=""
                       width="1200"
                       height="630"
