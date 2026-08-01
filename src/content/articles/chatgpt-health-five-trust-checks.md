@@ -2,10 +2,13 @@
 title: "ChatGPT Health can connect to your medical records. Check these five things first"
 description: "ChatGPT Health can bring medical records and wellness data into an AI workspace. Check permissions, retention, deletion, sources and professional handoff before connecting."
 publishedAt: 2026-08-01
+updatedAt: 2026-08-01
 draft: false
 series: "ChaseInTech Digest"
 heroImage: "/images/articles/chatgpt-health-five-trust-checks.png"
 heroAlt: "ChaseInTech editorial poster for ChatGPT Health, using first-party or rights-cleared source media."
+xUrl: "https://x.com/ChaserCrypto_/status/2083620156618555593"
+linkedinUrl: "https://www.linkedin.com/feed/update/urn:li:activity:7489388492859375616/"
 tags:
   - ChatGPT Health
   - health data
