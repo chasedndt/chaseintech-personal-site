@@ -39,7 +39,9 @@ import { existsSync } from "node:fs";
 const ogPath = `/og/articles/${article.id}.png`;
 const ogImage = existsSync(`public${ogPath}`)
   ? new URL(ogPath, site.url).href
-  : undefined;
+  : article.data.heroImage
+    ? new URL(article.data.heroImage, site.url).href
+    : undefined;
 
 // Article structured data for search (§SEO priority).
 const articleLd = {
@@ -63,7 +65,7 @@ const articleLd = {
   <script type="application/ld+json" set:html={JSON.stringify(articleLd)} />
   <article class="container entry">
     <header>
-      <p class="section-label">Article</p>
+      <p class="section-label">{article.data.series ?? "Article"}</p>
       <h1>{article.data.title}</h1>
       <p class="meta">
         <time datetime={article.data.publishedAt.toISOString()}>
@@ -79,6 +81,21 @@ const articleLd = {
         }
       </p>
       <p class="desc">{article.data.description}</p>
+
+      {
+        article.data.heroImage && (
+          <figure class="hero">
+            <img
+              src={article.data.heroImage}
+              alt={article.data.heroAlt ?? article.data.title}
+              width="1600"
+              height="900"
+              loading="eager"
+              decoding="async"
+            />
+          </figure>
+        )
+      }
 
       {
         (article.data.xUrl || article.data.linkedinUrl) && (
@@ -167,6 +184,16 @@ const articleLd = {
     color: var(--cit-text-secondary);
     font-size: 1.05rem;
     margin-top: 1.1rem;
+  }
+  .hero {
+    margin: 2rem 0 0;
+  }
+  .hero img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius);
   }
   .elsewhere {
     font-size: 0.85rem;
