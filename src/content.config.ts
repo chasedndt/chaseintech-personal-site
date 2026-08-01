@@ -17,6 +17,10 @@ const articles = defineCollection({
     updatedAt: z.coerce.date().optional(),
     draft: z.boolean().default(false),
     tags: z.array(z.string()).default([]),
+    /** Optional editorial series and hero artwork for long-form pieces. */
+    series: z.string().optional(),
+    heroImage: z.string().optional(),
+    heroAlt: z.string().optional(),
     /** Where this was also posted, for cross-referencing. */
     canonicalUrl: z.string().url().optional(),
     xUrl: z.string().url().optional(),
