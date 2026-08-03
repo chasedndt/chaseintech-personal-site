@@ -196,6 +196,46 @@ export const buildLogs = [
     ],
   },
   {
+    slug: "tradesync-preview-before-execution",
+    title: "TradeSync: making the preview more important than the execute button",
+    publishedAt: "2026-08-03",
+    updatedAt: null,
+    status: "published",
+    source:
+      "Public repository: chasedndt/TradeSync (README, preview/risk contracts and dated change records)",
+    relatedProject: "tradesync",
+    relatedVideos: [],
+    tags: ["architecture", "trading-systems", "risk", "dry-run"],
+    summary:
+      "How TradeSync separates scoring, risk review and execution authority—and why its public cockpit had to distinguish demo data from paper operation before live trading could even be discussed.",
+    sections: [
+      {
+        heading: "Context",
+        body: "TradeSync turns funding, open interest, cumulative volume delta, price structure and technical indicators into inspectable directional scores. The difficult part is not producing a long or short label. It is preserving enough evidence and state around that label for a person to understand what the system believes, what could invalidate it and whether an execution path is allowed to proceed.",
+      },
+      {
+        heading: "One scoring and risk pipeline",
+        body: "The public Phase 3D record documents a shared tradesync_core library for scoring, risk and symbol normalisation. Services import that canonical logic, while an offline replay runner sends historical JSONL events through the same calculate-score, enhanced-score and RiskGuardian sequence. That avoids the dangerous version of a backtest: one that quietly evaluates different rules from the live-facing services.",
+      },
+      {
+        heading: "Preview before authority",
+        body: "The execution contract gives preview its own first-class endpoint. A preview returns a proposed plan, an allow-or-block risk verdict, machine-readable block codes and execution-risk evidence such as spread, estimated impact and market depth. The point is to make the decision inspectable before any executor is considered—not to use a confirmation dialog as decoration around an opaque order request.",
+      },
+      {
+        heading: "A truthful cockpit is part of the safety system",
+        body: "A March 2026 public audit removed hard-coded flow metrics and fake event lines, replaced a static dry-run badge with backend-derived state, separated DEMO from PAPER and LIVE, and disabled Copilot and source-upload surfaces that did not exist yet. Those fixes matter because a trading dashboard that cannot distinguish mock positions from connected paper operation is not merely unfinished; it gives the operator the wrong mental model.",
+      },
+      {
+        heading: "Current boundary",
+        body: "TradeSync remains an engineering and research system. Its public README describes the cockpit as mock/dry-run, states that no real venue keys are configured, and marks wallet authority and later AI surfaces as future work. The repository contains execution-shaped contracts and services, but this site does not convert those shapes into a claim of live trade execution, autonomous authority or financial performance.",
+      },
+      {
+        heading: "Next proof",
+        body: "The next credible milestone is not a louder autonomy claim. It is a reproducible paper evaluation where the same versioned scoring and risk rules produce a reviewable preview, a blocked-or-allowed result and an outcome record—without silently crossing into live execution.",
+      },
+    ],
+  },
+  {
     slug: "strikezone-market-intelligence-pack",
     title: "Packaging a market-intelligence workflow so it runs on someone else's machine",
     publishedAt: null,

@@ -365,7 +365,7 @@ export const projects = [
       },
     ],
     relatedVideos: [],
-    relatedBuildLogs: [],
+    relatedBuildLogs: ["tradesync-preview-before-execution"],
   },
   {
     slug: "hypelist",
