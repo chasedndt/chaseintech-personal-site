@@ -154,7 +154,10 @@ export const projects = [
       },
     ],
     relatedVideos: [],
-    relatedBuildLogs: ["chaseos-control-plane-boundaries"],
+    relatedBuildLogs: [
+      "chaseos-control-plane-boundaries",
+      "chaseos-cloud-metering-architecture",
+    ],
   },
   {
     slug: "chaser-agent",
@@ -246,7 +249,7 @@ export const projects = [
       },
     ],
     relatedVideos: [],
-    relatedBuildLogs: [],
+    relatedBuildLogs: ["chaseos-web-early-access-boundaries"],
   },
   {
     slug: "strikezone-crypto",
@@ -256,9 +259,9 @@ export const projects = [
     status: "research",
     role: "Systems Designer and Researcher",
     summary:
-      "A structured trading-systems R&D workspace and signal-delivery infrastructure.",
+      "A private trading-systems R&D workspace for indicator, market-intelligence and signal-delivery research.",
     outcome:
-      "Reproducible experiment discipline across indicator development, market-intelligence workflows and Discord signal delivery.",
+      "A research framework for reproducible experiments across indicator development, market intelligence and governed delivery workflows.",
     technologies: ["Pine Script", "Python", "Discord infrastructure", "ChaseOS workflow pack"],
     repositoryUrl: null,
     liveUrl: null,
@@ -310,19 +313,19 @@ export const projects = [
       },
       {
         heading: "Indicator engineering as reviewed software",
-        body: "The Pine Script v6 indicator suite — market-structure analysis, fair-value-gap detection, equal-high/low sweep detection, session clocks and killzones, bias and risk-regime tools — is developed with per-indicator audit folders, so a change to detection logic leaves a review trail the same way application code would.",
+        body: "The private research design treats indicator changes as reviewed software, with audit material intended to preserve why detection logic changed. No public repository is currently declared on this portfolio, so individual indicators and their validation state are not presented here as independently verified releases.",
       },
       {
         heading: "The automation layer",
-        body: "The StrikeZone Market Intelligence pack runs the daily research loop on ChaseOS: governed evidence acquisition with manifest validation, macro and derivatives context, thesis drafting, and publication to Discord with fetch-back proof that what posted is what was approved. Roughly thirty-five scheduled jobs are the workflow, with paper evaluation on public Hyperliquid data and, by hard rule, no execution authority.",
+        body: "Private project materials describe a governed research loop spanning evidence acquisition, context gathering, thesis drafting and reviewed delivery. Those implementation details remain outside the public evidence set, and nothing on this page grants execution authority or converts internal workflow notes into a public performance claim.",
       },
       {
         heading: "Where it is now",
-        body: "An active R&D workspace with a public indicator repository, dated market-analysis archives, Discord signal-delivery infrastructure and Whop distribution. No live trade execution, no performance guarantees, no production signal-subscription claims — the discipline is the product.",
+        body: "A private research workspace with no public repository currently linked here. The portfolio publishes the research boundary, not an implementation audit: no live trade execution, performance guarantee, validated public track record or production subscription service is claimed.",
       },
     ],
     relatedVideos: [],
-    relatedBuildLogs: ["strikezone-market-intelligence-pack"],
+    relatedBuildLogs: [],
   },
   {
     // Promoted to a standalone project by operator decision 2026-07-30 —
@@ -405,7 +408,7 @@ export const projects = [
       },
     ],
     relatedVideos: [],
-    relatedBuildLogs: [],
+    relatedBuildLogs: ["hypelist-dual-mode-storage"],
   },
   {
     slug: "greytheory-ai",
@@ -449,7 +452,7 @@ export const projects = [
       },
     ],
     relatedVideos: [],
-    relatedBuildLogs: [],
+    relatedBuildLogs: ["greytheory-proof-before-finding"],
   },
   {
     slug: "toolshape-studio",
@@ -501,17 +504,17 @@ export const projects = [
     name: "Toolshape Voice",
     featured: false,
     category: categories.creative,
-    status: "development",
+    status: "planned",
     role: "Architect and Engineer",
     summary:
-      "A local-first Windows dictation and writing-intelligence application.",
+      "A planned local-first Windows dictation and writing-intelligence application.",
     outcome:
-      "System-wide dictation with Dictionary, Snippets, Voice Styles and Transforms, an agent-first Voice Hub and a packaged desktop build.",
+      "The architecture targets system-wide dictation, Dictionary, Snippets, Voice Styles, Transforms and an agent-first Voice Hub.",
     technologies: ["TypeScript", "Electron", "SQLite", "Windows speech APIs"],
     repositoryUrl: "https://github.com/chasedndt/toolshape-voice",
     liveUrl: null,
     boundary:
-      "Not claiming production signed packaging, cloud distribution, or a benchmark-selected transcription provider.",
+      "The linked public repository is currently empty, so implementation and packaged-build claims are withheld pending a fresh public-safe evidence pass.",
     links: [
       {
         type: "github",
@@ -527,15 +530,15 @@ export const projects = [
       },
       {
         heading: "Architecture",
-        body: "An executable SQLite-backed semantic kernel under a deterministic transcript pipeline, with a native Voice Bar companion: a system-wide held Ctrl+Win trigger that opens the capture device only while held. Dictionary, Snippets, Voice Styles and Transforms all run revision-checked lifecycles, previews are digest-bound with protected-span evidence, and custom styles fail closed until a rewrite provider actually exists.",
+        body: "The intended design places an SQLite-backed semantic kernel beneath a deterministic transcript pipeline and a native Voice Bar companion. Dictionary, Snippets, Voice Styles and Transforms are specified as revision-checked workflows, with previews and protected-span evidence designed to keep transformations inspectable.",
       },
       {
         heading: "The hard part nobody plans for",
-        body: "The workstation's Windows application-control policy blocks newly compiled unsigned executables — which killed the original launcher design. The shipped answer works with the policy instead of around it: a packaged application target, regenerated shortcuts, and a launcher test that verifies a real Explorer launch with zero Code Integrity blocks. Secure fields are refused before capture, and guarded input is revalidated with UI Automation readback.",
+        body: "Windows application-control policy is a real packaging constraint for any future launcher. Earlier project notes described designing around that boundary instead of weakening it, but the current public repository does not expose the implementation or verification artifacts needed to present that work as independently proven.",
       },
       {
         heading: "Where it is now",
-        body: "Packaged desktop build in daily local use, with Word, terminals, remote desktop, a benchmark-selected transcription provider and production signing all explicitly marked not built. The README's capability table is kept honest enough to be the case study.",
+        body: "Planned in the public portfolio. The linked repository currently contains no auditable source or validation record, so the site does not claim a working desktop build, production signing, provider selection or verified integrations.",
       },
     ],
     relatedVideos: [],

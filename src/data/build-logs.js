@@ -132,10 +132,13 @@ export const buildLogs = [
   {
     slug: "toolshape-voice-code-integrity-launcher",
     title: "Toolshape Voice: shipping a launcher the OS is trying to block",
-    publishedAt: "2026-07-30",
-    updatedAt: null,
-    status: "published",
-    source: "Public repository: chasedndt/toolshape-voice",
+    publishedAt: null,
+    updatedAt: "2026-08-04",
+    // DRAFT — the linked public repository is currently empty. Keep this
+    // unpublished until fresh public-safe implementation evidence is available.
+    status: "draft",
+    source:
+      "Previously attributed to chasedndt/toolshape-voice; repository currently empty — operator evidence review required",
     relatedProject: "toolshape-voice",
     relatedVideos: [],
     tags: ["windows", "packaging", "security"],
@@ -232,6 +235,82 @@ export const buildLogs = [
       {
         heading: "Next proof",
         body: "The next credible milestone is not a louder autonomy claim. It is a reproducible paper evaluation where the same versioned scoring and risk rules produce a reviewable preview, a blocked-or-allowed result and an outcome record—without silently crossing into live execution.",
+      },
+    ],
+  },
+  {
+    slug: "chaseos-web-early-access-boundaries",
+    title: "ChaseOS Web: making Early Access a technical boundary",
+    publishedAt: "2026-08-04",
+    updatedAt: null,
+    status: "published",
+    source:
+      "ChaseOS Web repository README, route/configuration surfaces and public chaseos.ai deployment (privacy-screened)",
+    relatedProject: "chaseos-web",
+    relatedVideos: [],
+    tags: ["web", "cloudflare", "product-boundaries", "early-access"],
+    summary:
+      "How the ChaseOS front door exposes a real waitlist and product story while keeping downloads, checkout, admin export and managed-agent claims behind explicit gates.",
+    sections: [
+      {
+        heading: "Context",
+        body: "A governance-first product is unusually easy to misrepresent on a marketing site. The interesting features are often the boundaries: which surfaces are genuinely live, which are previews, and which actions the public deployment must refuse. ChaseOS Web treats those distinctions as implementation state rather than footer disclaimers.",
+      },
+      {
+        heading: "Static story, narrow dynamic edge",
+        body: "The public shell is a Vite/React application deployed through Cloudflare Pages. Dynamic behaviour is deliberately narrow: Pages Functions handle the edges that need server authority, while the waitlist uses Turnstile verification and D1 storage. Ordinary local builds and smoke tests do not need Cloudflare, credentials, DNS or production data.",
+      },
+      {
+        heading: "Disabled means disabled",
+        body: "The public admin route is a stub, not a hidden control panel. Export requires an explicit enable flag, the correct storage mode, authorization and an approved database binding. Downloads, marketplace payments and managed agents remain blocked. The page copy and the backend gates describe the same state, which prevents a marketing promise from quietly getting ahead of the system.",
+      },
+      {
+        heading: "Route boundaries are product boundaries",
+        body: "Studio, Forge, standards, pricing, docs, security, roadmap and support each have a public route, but the existence of a route is not treated as proof that every underlying service ships. The website can explain a product surface, collect interest or expose reviewed metadata without implying an installer, transaction path or managed runtime exists.",
+      },
+      {
+        heading: "Current boundary",
+        body: "ChaseOS Web is live on chaseos.ai as an Early Access website with a verified waitlist path. It is not a public installer, live marketplace checkout or managed-agent service. The next proof for each gated surface must come from its own implementation and acceptance evidence before the website promotes it from preview to live.",
+      },
+    ],
+  },
+  {
+    slug: "greytheory-proof-before-finding",
+    title: "GreyTheory AI: a signal is not a vulnerability",
+    publishedAt: "2026-08-04",
+    updatedAt: null,
+    status: "published",
+    source:
+      "Public repository: chasedndt/GreyTheory-Research (README, scope policy, product boundary map and safe local proof plan)",
+    relatedProject: "greytheory-ai",
+    relatedVideos: [],
+    tags: ["security", "architecture", "governance", "agent-safety"],
+    summary:
+      "How GreyTheory separates raw signals, deterministic validation, model-assisted reasoning and human authority—before anything can become a reportable finding.",
+    sections: [
+      {
+        heading: "Context",
+        body: "AI-assisted security tools can generate convincing explanations long before they have evidence. GreyTheory starts by refusing that shortcut. Its public architecture treats a version match, exposed path or unusual response as a signal to investigate—not a vulnerability, impact claim or report.",
+      },
+      {
+        heading: "A finding has to earn its name",
+        body: "The shared taxonomy moves evidence through Informational, Contextual, Candidate, Validated and Report-Ready states. A candidate cannot advance because a model sounds confident: it needs a deterministic check, reproducible evidence and a human decision. Severity and remediation remain provisional until the underlying condition has actually been validated.",
+      },
+      {
+        heading: "The model reasons; hard tools prove",
+        body: "The intended labour split is explicit. Deterministic components own scope checks, requests, parsing, binary pass/fail decisions and audit records. The model interprets evidence, explains confidence factors and drafts human-readable rationale. That boundary keeps probabilistic reasoning useful without letting it silently become execution authority or proof.",
+      },
+      {
+        heading: "Authority is a hard input",
+        body: "GreyTheory's active scope policy defaults to local repo, documentation and toy-demo work. External scanning, live target interaction, credential validation, disclosure and public claims about real findings remain blocked unless a separate approval packet names the owner, written authorization, exact assets, allowed actions, limits, data handling and required audit artifact. Missing authority means hold, not improvise.",
+      },
+      {
+        heading: "Build public proof without touching a target",
+        body: "The safe proof plan uses intentionally local fixtures: mocked high-authority actions, prompt-injection samples and fictional finding records. Each demo must avoid external targets, real credentials and third-party data while producing a reproducible command or screenshot, an explicit local-only banner and a public-safe summary. That creates something inspectable before expanding the system's authority.",
+      },
+      {
+        heading: "Current boundary",
+        body: "GreyTheory remains an incubation and architecture lane. The public repository contains policies, schemas, product boundaries and proof plans; it does not establish a live scanner, autonomous exploit engine, real-world finding or security outcome. The next credible milestone is a reproducible local defensive demo that proves the scope and evidence gates behave as designed.",
       },
     ],
   },
