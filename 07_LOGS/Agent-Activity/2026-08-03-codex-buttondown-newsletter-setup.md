@@ -27,6 +27,8 @@
 - Verified the production `/newsletter` route, sitemap entry, CSP allowance, and exact Buttondown form destination.
 - Saved the ChaseInTech Dispatch name, description, author identity, username, and `#39dec9` accent colour in Buttondown.
 - Verified the saved branding on the public Buttondown page.
+- Submitted `chase@chaseintech.com` through the live production form after explicit action-time approval.
+- Verified Buttondown accepted the submission and reported sending its double-opt-in confirmation email.
 
 ## Files written
 
@@ -58,7 +60,7 @@ curl.exe -I -L --max-time 20 https://buttondown.com/ChaseInTech
 
 ## Approval assumptions
 
-The operator explicitly approved the newsletter work, proposed ChaseInTech Dispatch branding, promotion to production, and the manual rebuild. No paid add-on, subscriber submission, or secret access was inferred from that approval.
+The operator explicitly approved the newsletter work, proposed ChaseInTech Dispatch branding, promotion to production, the manual rebuild, and the controlled subscription submission. No paid add-on or secret access was inferred from that approval.
 
 ## Boundaries respected
 
@@ -70,9 +72,9 @@ The operator explicitly approved the newsletter work, proposed ChaseInTech Dispa
 
 ## Boundaries not tested
 
-- No real subscriber address was submitted.
-- No confirmation email or newsletter delivery was tested.
+- The mailbox confirmation link was not clicked.
+- Confirmed-subscriber state and campaign delivery were not tested.
 
 ## Remaining unverified items
 
-- End-to-end double-opt-in and delivery
+- Confirmation-link completion and subsequent campaign delivery

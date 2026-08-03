@@ -23,7 +23,7 @@ The site had full-content RSS but no email audience path. Readers can now discov
 
 ## Completion boundary
 
-Site implementation, production deployment, and public Buttondown branding are VERIFIED. A real double-opt-in delivery cycle remains deliberately untested because it sends an external confirmation email.
+Site implementation, production deployment, public Buttondown branding, and live subscription submission are VERIFIED. Buttondown reported sending the confirmation email to `chase@chaseintech.com`; the confirmation click and subsequent campaign delivery remain unverified.
 
 ## Links
 

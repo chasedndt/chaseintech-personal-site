@@ -76,6 +76,7 @@ curl.exe -I -L --max-time 20 https://buttondown.com/ChaseInTech
 - GitHub Scheduled rebuild #12: PASS - commit `9b6a515`, 39 seconds.
 - Production newsletter route: PASS - HTTP 200 with the expected form, sitemap entry, and CSP allowance.
 - Public Buttondown branding: PASS - ChaseInTech Dispatch name and description are visible; computed accent colour is `rgb(57, 222, 201)` (`#39dec9`).
+- Live subscription submission: PASS - Buttondown accepted `chase@chaseintech.com` and reported that it sent the double-opt-in confirmation email.
 - `npm run check`: NOT RUN - Astro offered to install missing optional `@astrojs/check` and `typescript` packages interactively, so no static-check result is claimed.
 
 ## Verification evidence
@@ -105,16 +106,16 @@ curl.exe -I -L --max-time 20 https://buttondown.com/ChaseInTech
 
 ## What remains unverified
 
-- A real double-opt-in subscription and delivery cycle has not been performed because it sends a confirmation email and requires separate action-time approval.
+- The mailbox confirmation link has not yet been clicked, so the subscriber's confirmed state and subsequent campaign delivery remain unverified.
 
 ## Remaining open loops
 
-- Perform one controlled test subscription after deployment.
+- Confirm the pending subscription from the email delivered to `chase@chaseintech.com`.
 - Decide later whether the paid RSS-to-email automation is valuable enough to enable.
 
 ## Next recommended pass
 
-Verify the live `/newsletter` form with one controlled subscription after explicit approval to send the confirmation email.
+Click the Buttondown confirmation link in `chase@chaseintech.com`, then verify the subscriber is confirmed.
 
 ## Links
 
