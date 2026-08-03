@@ -15,6 +15,7 @@ const routes = [
   "/uses/",
   "/press/",
   "/search/",
+  "/newsletter/",
   "/privacy/",
 ];
 
@@ -54,6 +55,7 @@ const mobileRoutes = [
   "/press/",
   "/work-with-me/",
   "/links/",
+  "/newsletter/",
 ];
 
 for (const route of mobileRoutes) {
@@ -156,6 +158,17 @@ test("articles feed is valid and article pages render", async ({ page }) => {
   const body = await rss.text();
   expect(body).toContain("<rss");
   expect(body).toContain("content:encoded");
+});
+
+test("newsletter form uses the public Buttondown embed endpoint", async ({ page }) => {
+  await page.goto("/newsletter/");
+  const form = page.locator("[data-newsletter-form]");
+  await expect(form).toHaveAttribute(
+    "action",
+    "https://buttondown.com/api/emails/embed-subscribe/ChaseInTech",
+  );
+  await expect(form.locator('input[name="email"]')).toHaveAttribute("required", "");
+  await expect(form.locator('input[name="embed"]')).toHaveValue("1");
 });
 
 test("Kimi K3 ChaseOS Digest article renders its series and hero", async ({ page }) => {

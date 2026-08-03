@@ -20,6 +20,20 @@ export const site = {
 export const emailOperational = true;
 export const email = "chase@chaseintech.com";
 
+// Newsletter configuration. The public form posts directly to Buttondown's
+// documented embed endpoint, so no API key or client-side SDK is required.
+export const newsletter = {
+  active: true,
+  provider: "Buttondown",
+  username: "ChaseInTech",
+  name: "ChaseInTech Dispatch",
+  description:
+    "AI news and analysis, technical deep dives, independent model studies, and practical build notes from ChaseInTech.",
+  url: "https://buttondown.com/ChaseInTech",
+  subscribeEndpoint:
+    "https://buttondown.com/api/emails/embed-subscribe/ChaseInTech",
+};
+
 // Personal social links — all confirmed by the operator on 2026-07-30.
 // Only entries with a non-null `url` render anywhere on the site.
 export const socials = [
@@ -104,6 +118,12 @@ export const nav = [
 // flat to the mobile menu — nothing on the site should be footer-only.
 export const moreNav = [
   { id: "now", label: "Now", href: "/now", hint: "Current focus, dated" },
+  {
+    id: "newsletter",
+    label: "Newsletter",
+    href: "/newsletter",
+    hint: "AI analysis and build notes",
+  },
   { id: "press", label: "Press Kit", href: "/press", hint: "Bio, imagery, links" },
   { id: "links", label: "Links", href: "/links", hint: "The compact card" },
   { id: "search", label: "Search", href: "/search", hint: "Full-text, on-device" },

@@ -1,0 +1,137 @@
+---
+import { newsletter } from "../data/site.js";
+
+interface Props {
+  compact?: boolean;
+  heading?: string;
+}
+
+const {
+  compact = false,
+  heading = "Get the next ChaseInTech dispatch",
+} = Astro.props;
+---
+
+<section class:list={["newsletter-signup", compact && "newsletter-signup--compact"]}>
+  <div>
+    <p class="eyebrow">Newsletter</p>
+    <h2>{heading}</h2>
+    <p class="intro">{newsletter.description}</p>
+  </div>
+
+  <form
+    action={newsletter.subscribeEndpoint}
+    method="post"
+    class="signup-form"
+    data-newsletter-form
+  >
+    <label for={compact ? "newsletter-email-compact" : "newsletter-email"}>
+      Email address
+    </label>
+    <div class="fields">
+      <input
+        id={compact ? "newsletter-email-compact" : "newsletter-email"}
+        type="email"
+        name="email"
+        placeholder="you@example.com"
+        autocomplete="email"
+        inputmode="email"
+        required
+      />
+      <input type="hidden" name="embed" value="1" />
+      <button class="btn btn-primary" type="submit" data-analytics="newsletter_subscribe">
+        Subscribe
+      </button>
+    </div>
+    <p class="fine-print">
+      Double opt-in. No spam. Unsubscribe at any time. Buttondown processes the
+      address for delivery. Read the <a href="/privacy">privacy notice</a>.
+    </p>
+  </form>
+</section>
+
+<style>
+  .newsletter-signup {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr);
+    align-items: center;
+    gap: clamp(2rem, 6vw, 5rem);
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius-lg);
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    background:
+      radial-gradient(circle at 12% 20%, rgba(57, 222, 201, 0.1), transparent 36%),
+      var(--cit-bg-surface);
+  }
+  .newsletter-signup--compact {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+  h2 {
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    margin-top: 0.55rem;
+  }
+  .intro {
+    color: var(--cit-text-secondary);
+    margin-top: 0.8rem;
+    max-width: 62ch;
+  }
+  .signup-form {
+    min-width: 0;
+  }
+  label {
+    display: block;
+    font-family: var(--cit-font-mono);
+    color: var(--cit-text-secondary);
+    font-size: 0.76rem;
+    margin-bottom: 0.5rem;
+  }
+  .fields {
+    display: flex;
+    gap: 0.65rem;
+    min-width: 0;
+  }
+  input[type="email"] {
+    min-width: 0;
+    flex: 1;
+    border: 1px solid var(--cit-border-strong);
+    border-radius: var(--cit-radius-sm);
+    background: var(--cit-bg-deep);
+    color: var(--cit-text-primary);
+    padding: 0.78rem 0.9rem;
+    font: inherit;
+  }
+  input[type="email"]::placeholder {
+    color: var(--cit-text-muted);
+  }
+  input[type="email"]:focus {
+    border-color: var(--cit-accent-teal);
+  }
+  button {
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .fine-print {
+    margin-top: 0.65rem;
+    color: var(--cit-text-muted);
+    font-size: 0.76rem;
+    line-height: 1.55;
+  }
+  .fine-print a {
+    color: var(--cit-text-secondary);
+  }
+  @media (max-width: 760px) {
+    .newsletter-signup {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+  @media (max-width: 480px) {
+    .fields {
+      flex-direction: column;
+    }
+    .fields .btn {
+      width: 100%;
+    }
+  }
+</style>

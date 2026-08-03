@@ -8,6 +8,7 @@ import SectionHeading from "../components/SectionHeading.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import VideoCard from "../components/VideoCard.astro";
 import WorkWithMeCTA from "../components/WorkWithMeCTA.astro";
+import NewsletterSignup from "../components/NewsletterSignup.astro";
 import { site } from "../data/site.js";
 import { featuredProjects, frontierProject } from "../data/projects.js";
 import { getContentFeed } from "../data/videos.js";
@@ -158,6 +159,12 @@ const { featured: featuredVideo, recent: recentVideos } = await getContentFeed()
           ))
         }
       </ul>
+    </div>
+  </section>
+
+  <section class="band band--alt">
+    <div class="container" data-reveal>
+      <NewsletterSignup />
     </div>
   </section>
 

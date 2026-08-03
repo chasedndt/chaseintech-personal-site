@@ -21,6 +21,7 @@ export async function GET() {
     "/uses",
     "/press",
     "/search",
+    "/newsletter",
     "/privacy",
     ...projects.map((p) => `/projects/${p.slug}`),
     ...articles.map((a) => `/articles/${a.id}`),
