@@ -12,6 +12,9 @@
 name: Scheduled rebuild
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     # 07:00 and 19:00 UTC daily. Cron here is UTC and not guaranteed to the
     # minute; GitHub may delay runs under load.
