@@ -236,6 +236,46 @@ export const buildLogs = [
     ],
   },
   {
+    slug: "toolshape-studio-semantic-kernel-before-ui",
+    title: "Toolshape Studio: designing the operation before the interface",
+    publishedAt: "2026-08-03",
+    updatedAt: null,
+    status: "published",
+    source:
+      "Public repository: chasedndt/toolshape-studio (architecture constitution, reference architecture, Studio PRD and validation report)",
+    relatedProject: "toolshape-studio",
+    relatedVideos: [],
+    tags: ["architecture", "agent-native", "creative-tools", "local-first"],
+    summary:
+      "Why Toolshape Studio starts with a semantic kernel, typed operations and state-based verification instead of teaching an agent to click around a creative editor.",
+    sections: [
+      {
+        heading: "Context",
+        body: "Creative software is usually built screen-first: the application knows what a layer, timeline and export are, but automation sees buttons and coordinates. Toolshape Studio's public architecture pack begins from the opposite direction. A professional human editor still matters, but the durable product is the semantic system beneath it.",
+      },
+      {
+        heading: "Natural language proposes; typed operations mutate",
+        body: "An agent may interpret a brief and assemble a plan, but model output cannot grant itself authority or write directly into domain state. Each meaningful change is expressed as a typed, revision-aware operation with declared inputs, risk, retention, authorization and provenance. That makes preview, exact approval, retries and recovery properties of the application boundary rather than conventions hidden in prompts.",
+      },
+      {
+        heading: "One kernel, several control surfaces",
+        body: "The design routes the operator UI, MCP, SDK, HTTP/IPC and CLI through the same application services and result schemas. Generate captions should mean the same state transition whether a human presses a button or a harness invokes a capability. Adapter-parity tests are therefore supposed to compare resulting state and envelopes, not merely successful HTTP responses.",
+      },
+      {
+        heading: "Operations are not memory",
+        body: "The operation envelope records who requested a state transition and what happened. Learned style belongs somewhere else: versioned profiles, approved examples, correction events and retrieval indexes with explicit retention. Keeping those stores separate prevents an audit trail from becoming an opaque memory dump and makes a preference change inspectable, attributable and reversible.",
+      },
+      {
+        heading: "Local-first is an architectural boundary",
+        body: "The reference design starts as a modular monolith with local application services, SQLite, content-addressed assets and local render/model workers. Hosted services may add sync, collaboration or paid compute, but they must not become hidden dependencies of features declared offline. Process boundaries are earned by isolation, scaling, security or lifecycle requirements—not by turning every toolbar section into a microservice.",
+      },
+      {
+        heading: "Current boundary",
+        body: "This is a design and handover milestone, not a product launch. The public validation report passes document structure, JSON/schema examples, links, diagrams and common secret-pattern checks across 137 files. It explicitly does not certify product implementation, Windows compatibility, model quality, privacy compliance or legal clearance. The next honest proof is a narrow golden workflow implemented through the shared kernel and verified from resulting state.",
+      },
+    ],
+  },
+  {
     slug: "strikezone-market-intelligence-pack",
     title: "Packaging a market-intelligence workflow so it runs on someone else's machine",
     publishedAt: null,

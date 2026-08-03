@@ -456,17 +456,17 @@ export const projects = [
     name: "Toolshape Studio",
     featured: false,
     category: categories.creative,
-    status: "development",
+    status: "planned",
     role: "Architect and Engineer",
     summary:
-      "A visual-design and video-editing application with a semantic agent control plane.",
+      "An architecture and product-definition pack for a visual-design and video-editing application with a semantic agent control plane.",
     outcome:
-      "Unified scene/timeline project with typed edit operations, revision enforcement, undo/redo, SQLite restart recovery and verified render output.",
-    technologies: ["TypeScript", "React", "SQLite", "Media pipelines"],
+      "A validated 137-file handover defining the shared semantic kernel, typed operation contracts, risk boundaries, local-first deployment model and implementation workstreams.",
+    technologies: ["JSON Schema", "Python validation", "MCP", "Local-first architecture"],
     repositoryUrl: "https://github.com/chasedndt/toolshape-studio",
     liveUrl: null,
     boundary:
-      "Milestones 1–5 verified locally. Native shell, signed packaging and broad feature parity remain deferred.",
+      "Architecture and product definition only. The public validation proves document structure and schemas, not product implementation, Windows compatibility or model quality.",
     links: [
       {
         type: "github",
@@ -478,23 +478,23 @@ export const projects = [
     caseStudy: [
       {
         heading: "The problem",
-        body: "Design and video tools weren't built for a world where an agent is a second pair of hands. Toolshape Studio is a visual-design and video-editing application designed from the start with an agent control plane — every edit an agent can make is a typed operation a human can inspect, not a blob of UI automation.",
+        body: "Design and video tools weren't built for a world where an agent is a second pair of hands. Toolshape Studio is being designed from the start around a semantic control plane: natural language can propose work, but only typed operations may change application state.",
       },
       {
         heading: "Architecture",
-        body: "A unified scene/timeline project model where all mutations flow through typed edit operations with revision enforcement — which is what makes undo/redo, agent auditability and SQLite-backed restart recovery fall out of one design decision instead of three features. A scalable React editor shell sits on top; render output is verified rather than assumed.",
+        body: "The public design specifies one unified scene/timeline project model and one application-service boundary shared by the human UI, MCP, SDK, HTTP/IPC and CLI adapters. Commands are revision-aware and auditable; long work becomes a durable job; resulting state and artifacts must be verified rather than accepted on an agent's word.",
       },
       {
         heading: "Trade-offs",
-        body: "Typed operations and revision checks make every feature slower to add than direct state mutation would be. That cost buys the property the product exists for: an agent and a human editing the same project without either being able to corrupt it silently.",
+        body: "Typed operations, previews and revision checks make the implementation slower than direct UI or database mutation. That cost is deliberate: it creates one inspectable boundary for human edits and agent edits instead of maintaining a fragile automation layer beside the application.",
       },
       {
         heading: "Where it is now",
-        body: "Milestones one through five verified locally. The native Tauri shell, signed packaging and full feature parity are deferred and say so — the repository's own validation docs are the source of truth for what is proven.",
+        body: "The public repository is an implementation-ready architecture and product-definition pack. Its validation report passes structure, JSON/schema, link, diagram and secret-pattern checks across 137 files, while explicitly stating that it does not certify a working product, Windows compatibility, model quality or legal clearance.",
       },
     ],
     relatedVideos: [],
-    relatedBuildLogs: [],
+    relatedBuildLogs: ["toolshape-studio-semantic-kernel-before-ui"],
   },
   {
     slug: "toolshape-voice",
