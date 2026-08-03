@@ -1,7 +1,5 @@
 # Guessable-URL hygiene (Cloudflare Pages redirects).
 # Internal conveniences first, then social shortcuts.
-/build-log/toolshape-voice-code-integrity-launcher   /projects/toolshape-voice  302
-/build-log/toolshape-voice-code-integrity-launcher/  /projects/toolshape-voice  302
 /blog        /articles      301
 /article     /articles      301
 /writing     /articles      301

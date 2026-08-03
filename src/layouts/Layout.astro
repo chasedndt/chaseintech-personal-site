@@ -13,6 +13,8 @@ interface Props {
   bare?: boolean;
   /** Absolute URL of a page-specific social preview image. */
   image?: string;
+  /** Keep withdrawn or administrative pages out of search indexes. */
+  noindex?: boolean;
 }
 
 const {
@@ -20,6 +22,7 @@ const {
   description = site.description,
   bare = false,
   image,
+  noindex = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, site.url).href;
@@ -34,6 +37,7 @@ const ogImage = image ?? new URL("/og-default.png", site.url).href;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
 
     <meta property="og:type" content="website" />

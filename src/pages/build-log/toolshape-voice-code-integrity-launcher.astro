@@ -1,0 +1,51 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { site } from "../../data/site.js";
+---
+
+<Layout
+  title={`Withdrawn build log — ${site.brand}`}
+  description="This build log is not currently published because its public evidence source is unavailable."
+  noindex
+>
+  <div class="container withdrawn" data-pagefind-ignore>
+    <p class="section-label">Withdrawn build log</p>
+    <h1>This build log is not currently published</h1>
+    <p>
+      The public repository previously cited for this Toolshape Voice log is
+      currently empty. Until fresh, public-safe implementation evidence is
+      available, the earlier launcher claims remain withdrawn.
+    </p>
+    <p>
+      The project page now records the evidence boundary without claiming a
+      working build, verified integrations or production packaging.
+    </p>
+    <div class="actions">
+      <a class="btn btn-primary" href="/projects/toolshape-voice">View Toolshape Voice</a>
+      <a class="btn btn-secondary" href="/build-log">View published build logs</a>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .withdrawn {
+    max-width: 680px;
+    padding-top: 6rem;
+    padding-bottom: 5rem;
+  }
+  h1 {
+    font-size: clamp(1.9rem, 5vw, 2.6rem);
+    margin-top: 0.6rem;
+  }
+  p:not(.section-label) {
+    color: var(--cit-text-secondary);
+    margin-top: 1rem;
+    line-height: 1.7;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 2rem;
+  }
+</style>
