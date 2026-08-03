@@ -23,7 +23,7 @@ The site had full-content RSS but no email audience path. Readers can now discov
 
 ## Completion boundary
 
-Site implementation, production deployment, public Buttondown branding, and live subscription submission are VERIFIED. Buttondown reported sending the confirmation email to `chase@chaseintech.com`; the confirmation click and subsequent campaign delivery remain unverified.
+Site implementation, production deployment, public Buttondown branding, live subscription submission, and double-opt-in confirmation are VERIFIED. Buttondown lists `chase@chaseintech.com` as an active `Regular` subscriber. Future campaign delivery remains outside this pass.
 
 ## Links
 

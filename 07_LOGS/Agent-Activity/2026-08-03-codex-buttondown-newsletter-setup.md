@@ -29,6 +29,7 @@
 - Verified the saved branding on the public Buttondown page.
 - Submitted `chase@chaseintech.com` through the live production form after explicit action-time approval.
 - Verified Buttondown accepted the submission and reported sending its double-opt-in confirmation email.
+- Verified the completed confirmation in Buttondown's subscriber list: `chase@chaseintech.com` has status `Regular`.
 
 ## Files written
 
@@ -72,9 +73,9 @@ The operator explicitly approved the newsletter work, proposed ChaseInTech Dispa
 
 ## Boundaries not tested
 
-- The mailbox confirmation link was not clicked.
-- Confirmed-subscriber state and campaign delivery were not tested.
+- No campaign email was created or sent.
+- Future campaign delivery was not tested.
 
 ## Remaining unverified items
 
-- Confirmation-link completion and subsequent campaign delivery
+- First campaign drafting, approval, and delivery
