@@ -1,6 +1,6 @@
 # Documentation History Index
 
-- [2026-08-03 - Buttondown newsletter setup](2026-08-03_buttondown-newsletter-setup.md) - PARTIAL
+- [2026-08-03 - Buttondown newsletter setup](2026-08-03_buttondown-newsletter-setup.md) - VERIFIED
 
 - [2026-07-31 - Search Console business account and Web Analytics](2026-07-31_search-console-business-account-analytics.md) - VERIFIED
 

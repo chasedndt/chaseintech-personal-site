@@ -6,7 +6,7 @@
 - Access mode: repo-aware coding agent with user-confirmed Windows browser control
 - Authority: bounded editor and operator for the requested newsletter setup
 - Task type: `repo.inspect`, `code.patch`, `external.inspect`, `test.run`
-- Status: PARTIAL
+- Status: VERIFIED
 
 ## Inputs read
 
@@ -23,6 +23,10 @@
 - Updated privacy, sitemap, CSP, and smoke tests.
 - Confirmed the public Buttondown username page returns HTTP 200.
 - Paused browser control when operator activity was detected instead of interrupting the active session.
+- Promoted commit `9b6a515` to `main` and manually triggered Scheduled rebuild #12.
+- Verified the production `/newsletter` route, sitemap entry, CSP allowance, and exact Buttondown form destination.
+- Saved the ChaseInTech Dispatch name, description, author identity, username, and `#39dec9` accent colour in Buttondown.
+- Verified the saved branding on the public Buttondown page.
 
 ## Files written
 
@@ -39,6 +43,9 @@ npm run check
 npm run build
 npx playwright test tests/smoke.spec.js --project=chromium
 curl.exe -I -L --max-time 20 https://buttondown.com/ChaseInTech
+# Production HTTP probes for /newsletter, /sitemap.xml, and /
+# GitHub Actions Scheduled rebuild #12 browser verification
+# Buttondown public name, description, and computed accent-colour verification
 ```
 
 ## Tests run
@@ -51,7 +58,7 @@ curl.exe -I -L --max-time 20 https://buttondown.com/ChaseInTech
 
 ## Approval assumptions
 
-The operator explicitly approved beginning the newsletter work and the proposed ChaseInTech Dispatch branding. No paid add-on, deployment, or secret access was inferred from that approval.
+The operator explicitly approved the newsletter work, proposed ChaseInTech Dispatch branding, promotion to production, and the manual rebuild. No paid add-on, subscriber submission, or secret access was inferred from that approval.
 
 ## Boundaries respected
 
@@ -65,10 +72,7 @@ The operator explicitly approved beginning the newsletter work and the proposed 
 
 - No real subscriber address was submitted.
 - No confirmation email or newsletter delivery was tested.
-- No production deployment was performed.
 
 ## Remaining unverified items
 
-- Saved Buttondown dashboard branding
-- Production `/newsletter` behavior
 - End-to-end double-opt-in and delivery

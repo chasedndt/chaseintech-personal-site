@@ -4,7 +4,7 @@
 - Runtime: Codex
 - Session descriptor: `buttondown-newsletter-setup`
 - Phase / pass: Audience and publishing infrastructure
-- Status: PARTIAL
+- Status: VERIFIED
 
 ## Task summary
 
@@ -73,6 +73,9 @@ curl.exe -I -L --max-time 20 https://buttondown.com/ChaseInTech
 - Playwright smoke suite: PASS - 34/34 tests, including newsletter route health, 320px overflow, and the Buttondown form contract.
 - Built-artifact inspection: PASS - newsletter route, sitemap entry, exact subscribe endpoint, and Buttondown CSP allowance are present.
 - Public Buttondown page: PASS - HTTP 200.
+- GitHub Scheduled rebuild #12: PASS - commit `9b6a515`, 39 seconds.
+- Production newsletter route: PASS - HTTP 200 with the expected form, sitemap entry, and CSP allowance.
+- Public Buttondown branding: PASS - ChaseInTech Dispatch name and description are visible; computed accent colour is `rgb(57, 222, 201)` (`#39dec9`).
 - `npm run check`: NOT RUN - Astro offered to install missing optional `@astrojs/check` and `typescript` packages interactively, so no static-check result is claimed.
 
 ## Verification evidence
@@ -82,6 +85,8 @@ curl.exe -I -L --max-time 20 https://buttondown.com/ChaseInTech
 - The CSP allows form submission to Buttondown while retaining the existing restrictions.
 - The newsletter description matches the actual published editorial catalogue: AI news and analysis, technical deep dives, independent model studies, and practical build notes.
 - The public Buttondown page for `ChaseInTech` returns HTTP 200.
+- The production deployment completed successfully through GitHub Actions run `30832871243`.
+- Buttondown publicly renders the saved newsletter identity and approved teal accent colour.
 
 ## What changed
 
@@ -100,19 +105,16 @@ curl.exe -I -L --max-time 20 https://buttondown.com/ChaseInTech
 
 ## What remains unverified
 
-- Final public branding fields in the Buttondown dashboard were not saved during this pass because the shared browser was in active operator use.
-- A real double-opt-in subscription and delivery cycle has not been performed.
-- The new route has not yet been deployed to production from this branch.
+- A real double-opt-in subscription and delivery cycle has not been performed because it sends a confirmation email and requires separate action-time approval.
 
 ## Remaining open loops
 
-- Save the approved Buttondown name, author, description, and `#39dec9` brand colour in the provider dashboard.
 - Perform one controlled test subscription after deployment.
 - Decide later whether the paid RSS-to-email automation is valuable enough to enable.
 
 ## Next recommended pass
 
-Save the Buttondown branding, deploy this branch, then verify the live `/newsletter` form with one controlled subscription.
+Verify the live `/newsletter` form with one controlled subscription after explicit approval to send the confirmation email.
 
 ## Links
 

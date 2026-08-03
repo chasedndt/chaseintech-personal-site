@@ -3,7 +3,7 @@
 - Date: 2026-08-03
 - Runtime: Codex
 - Pass type: Implementation, documentation, and verification
-- Status: PARTIAL
+- Status: VERIFIED
 
 ## Historical change
 
@@ -23,7 +23,7 @@ The site had full-content RSS but no email audience path. Readers can now discov
 
 ## Completion boundary
 
-Site implementation and local verification are COMPLETE. The overall pass remains PARTIAL until the approved public branding is saved in Buttondown, the branch is deployed, and one real double-opt-in flow is verified.
+Site implementation, production deployment, and public Buttondown branding are VERIFIED. A real double-opt-in delivery cycle remains deliberately untested because it sends an external confirmation email.
 
 ## Links
 

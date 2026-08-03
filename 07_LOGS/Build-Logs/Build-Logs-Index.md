@@ -1,6 +1,6 @@
 # Build Logs Index
 
-- [2026-08-03 - Buttondown newsletter setup](2026-08-03-ChaseOS-buttondown-newsletter-setup.md) - PARTIAL
+- [2026-08-03 - Buttondown newsletter setup](2026-08-03-ChaseOS-buttondown-newsletter-setup.md) - VERIFIED
 
 - [2026-07-31 - Search Console business account and Web Analytics](2026-07-31-ChaseOS-search-console-business-account-analytics.md) - VERIFIED
 
