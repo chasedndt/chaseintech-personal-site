@@ -89,13 +89,13 @@ const videoLd = {
     <footer class="entry-footer">
       <div class="pager">
         {older ? (
-          <a href={`/videos/${older.id}`}>← {older.youtube.title}</a>
+          <a href={`/videos/${older.id}/`}>← {older.youtube.title}</a>
         ) : (
           <span />
         )}
-        {newer && <a class="next" href={`/videos/${newer.id}`}>{newer.youtube.title} →</a>}
+        {newer && <a class="next" href={`/videos/${newer.id}/`}>{newer.youtube.title} →</a>}
       </div>
-      <p><a class="text-link" href="/videos">← All videos</a></p>
+      <p><a class="text-link" href="/videos/">← All videos</a></p>
     </footer>
   </article>
 

@@ -9,20 +9,20 @@ import { publishedBuildLogs } from "../data/build-logs.js";
 const entries = [
   ...nav.map((item) => ({ label: item.label, href: item.href, group: "Pages" })),
   { label: "Home", href: "/", group: "Pages" },
-  { label: "Links", href: "/links", group: "Pages" },
-  { label: "Now", href: "/now", group: "Pages" },
-  { label: "Search", href: "/search", group: "Pages" },
-  { label: "Press kit", href: "/press", group: "Pages" },
-  { label: "Newsletter", href: "/newsletter", group: "Pages" },
-  { label: "Uses", href: "/uses", group: "Pages" },
+  { label: "Links", href: "/links/", group: "Pages" },
+  { label: "Now", href: "/now/", group: "Pages" },
+  { label: "Search", href: "/search/", group: "Pages" },
+  { label: "Press kit", href: "/press/", group: "Pages" },
+  { label: "Newsletter", href: "/newsletter/", group: "Pages" },
+  { label: "Uses", href: "/uses/", group: "Pages" },
   ...projects.map((p) => ({
     label: p.name,
-    href: `/projects/${p.slug}`,
+    href: `/projects/${p.slug}/`,
     group: "Projects",
   })),
   ...publishedBuildLogs.map((e) => ({
     label: e.title,
-    href: `/build-log/${e.slug}`,
+    href: `/build-log/${e.slug}/`,
     group: "Build log",
   })),
   ...activeSocials.map((s) => ({

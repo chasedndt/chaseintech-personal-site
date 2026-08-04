@@ -20,14 +20,14 @@ const github = find("github");
 
 const buttons = [
   { label: "Portfolio Home", href: "/", icon: "home" },
-  { label: "Explore ChaseOS", href: "/projects/chaseos", icon: "spark", event: "hero_chaseos_click" },
+  { label: "Explore ChaseOS", href: "/projects/chaseos/", icon: "spark", event: "hero_chaseos_click" },
   featuredVideo && {
     label: "Latest Video",
-    href: `/videos/${featuredVideo.id}`,
+    href: `/videos/${featuredVideo.id}/`,
     icon: "play",
     event: "video_open",
   },
-  { label: "View Projects", href: "/projects", icon: "folder", event: "hero_projects_click" },
+  { label: "View Projects", href: "/projects/", icon: "folder", event: "hero_projects_click" },
   github && { label: "GitHub / Builds", href: github.url, icon: "github", external: true, event: github.event },
   x && { label: "Follow on X", href: x.url, icon: "x", external: true, event: x.event },
   youtube?.url && {
@@ -53,7 +53,7 @@ const buttons = [
   },
 ].filter(Boolean);
 
-const canonical = new URL("/links", site.url).href;
+const canonical = new URL("/links/", site.url).href;
 ---
 
 <html lang="en">

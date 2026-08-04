@@ -20,7 +20,7 @@ const logs = buildLogsForProject(p.slug);
         <p class="boundary">{p.boundary}</p>
 
         <div class="actions">
-          <a class="btn btn-primary" href={`/projects/${p.slug}`} data-analytics="hero_chaseos_click">
+          <a class="btn btn-primary" href={`/projects/${p.slug}/`} data-analytics="hero_chaseos_click">
             Read the ChaseOS case study
           </a>
           <a
@@ -38,7 +38,7 @@ const logs = buildLogsForProject(p.slug);
           logs.length > 0 && (
             <p class="related">
               Related build log:{" "}
-              <a class="text-link" href={`/build-log/${logs[0].slug}`} data-analytics="build_log_open">
+              <a class="text-link" href={`/build-log/${logs[0].slug}/`} data-analytics="build_log_open">
                 {logs[0].title}
               </a>
             </p>

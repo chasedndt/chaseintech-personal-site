@@ -251,7 +251,7 @@ const relatedArticles = (
             <ul class="related">
               {logs.map((entry) => (
                 <li>
-                  <a href={`/build-log/${entry.slug}`} data-analytics="build_log_open">
+                  <a href={`/build-log/${entry.slug}/`} data-analytics="build_log_open">
                     {entry.title}
                   </a>
                 </li>
@@ -268,7 +268,7 @@ const relatedArticles = (
             <ul class="related">
               {relatedArticles.map((entry) => (
                 <li>
-                  <a href={`/articles/${entry.id}`}>{entry.data.title}</a>
+                  <a href={`/articles/${entry.id}/`}>{entry.data.title}</a>
                 </li>
               ))}
             </ul>
@@ -277,12 +277,12 @@ const relatedArticles = (
       }
 
       <nav class="project-pager" aria-label="More projects">
-        <a href={`/projects/${prev.slug}`}>← {prev.name}</a>
-        <a class="next" href={`/projects/${next.slug}`}>{next.name} →</a>
+        <a href={`/projects/${prev.slug}/`}>← {prev.name}</a>
+        <a class="next" href={`/projects/${next.slug}/`}>{next.name} →</a>
       </nav>
 
       <p class="back">
-        <a class="text-link" href="/projects">← All projects</a>
+      <a class="text-link" href="/projects/">← All projects</a>
       </p>
     </div>
   </article>

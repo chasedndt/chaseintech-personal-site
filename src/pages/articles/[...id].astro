@@ -128,7 +128,7 @@ const articleLd = {
             {project && (
               <p>
                 Project:{" "}
-                <a class="text-link" href={`/projects/${project.slug}`} data-analytics="project_open">
+                <a class="text-link" href={`/projects/${project.slug}/`} data-analytics="project_open">
                   {project.name} →
                 </a>
               </p>
@@ -136,7 +136,7 @@ const articleLd = {
             {buildLog && (
               <p>
                 Build log:{" "}
-                <a class="text-link" href={`/build-log/${buildLog.slug}`} data-analytics="build_log_open">
+                <a class="text-link" href={`/build-log/${buildLog.slug}/`} data-analytics="build_log_open">
                   {buildLog.title} →
                 </a>
               </p>
@@ -146,14 +146,14 @@ const articleLd = {
       }
 
       <div class="pager">
-        {older ? <a href={`/articles/${older.id}`}>← {older.data.title}</a> : <span />}
-        {newer && <a class="next" href={`/articles/${newer.id}`}>{newer.data.title} →</a>}
+        {older ? <a href={`/articles/${older.id}/`}>← {older.data.title}</a> : <span />}
+        {newer && <a class="next" href={`/articles/${newer.id}/`}>{newer.data.title} →</a>}
       </div>
 
       <p>
-        <a class="text-link" href="/articles">← All articles</a>
+        <a class="text-link" href="/articles/">← All articles</a>
         <span aria-hidden="true"> · </span>
-        <a class="text-link" href="/newsletter">Newsletter</a>
+        <a class="text-link" href="/newsletter/">Newsletter</a>
         <span aria-hidden="true"> · </span>
         <a class="text-link" href="/rss.xml">RSS</a>
       </p>

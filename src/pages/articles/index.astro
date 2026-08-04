@@ -35,7 +35,7 @@ const fmt = (date) =>
       LinkedIn points back to these pages.
     </p>
     <div class="subscribe-links">
-      <a class="text-link" href="/newsletter">Subscribe by email →</a>
+      <a class="text-link" href="/newsletter/">Subscribe by email →</a>
       <a class="text-link" href="/rss.xml">RSS feed</a>
     </div>
   </div>
@@ -47,7 +47,7 @@ const fmt = (date) =>
           {articles.map((article) => (
             <li data-reveal>
               <article class="entry-card">
-                <a class="thumb" href={`/articles/${article.id}`} aria-hidden="true" tabindex="-1">
+                <a class="thumb" href={`/articles/${article.id}/`} aria-hidden="true" tabindex="-1">
                   {thumbFor(article) ? (
                     <img
                       src={thumbFor(article)}
@@ -68,7 +68,7 @@ const fmt = (date) =>
                     </time>
                   </p>
                   <h2>
-                    <a href={`/articles/${article.id}`}>{article.data.title}</a>
+                    <a href={`/articles/${article.id}/`}>{article.data.title}</a>
                   </h2>
                   <p class="desc">{article.data.description}</p>
                   <div class="entry-foot">

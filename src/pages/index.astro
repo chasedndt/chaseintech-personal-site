@@ -40,7 +40,7 @@ const { featured: featuredVideo, recent: recentVideos } = await getContentFeed()
           them.
         </p>
 
-        <a class="frontier-status" href={`/projects/${frontierProject.slug}`}>
+        <a class="frontier-status" href={`/projects/${frontierProject.slug}/`}>
           <span class="status-dot" aria-hidden="true"></span>
           <span class="status-label">Current frontier project</span>
           <span class="status-value">{frontierProject.name}</span>
@@ -49,17 +49,17 @@ const { featured: featuredVideo, recent: recentVideos } = await getContentFeed()
         <div class="hero-actions">
           <a
             class="btn btn-primary"
-            href={`/projects/${frontierProject.slug}`}
+            href={`/projects/${frontierProject.slug}/`}
             data-analytics="hero_chaseos_click"
           >
             Explore ChaseOS
           </a>
-          <a class="btn btn-secondary" href="/projects" data-analytics="hero_projects_click">
+          <a class="btn btn-secondary" href="/projects/" data-analytics="hero_projects_click">
             View Projects
           </a>
         </div>
 
-        <a class="btn-quiet work-link" href="/work-with-me" data-analytics="work_with_me_click">
+        <a class="btn-quiet work-link" href="/work-with-me/" data-analytics="work_with_me_click">
           Work with me
         </a>
       </div>
@@ -82,7 +82,7 @@ const { featured: featuredVideo, recent: recentVideos } = await getContentFeed()
         label="Watch the build"
         title="Latest from ChaseInTech"
         intro="Build sessions, technical walkthroughs and work-in-progress from the systems on this page."
-        href="/videos"
+          href="/videos/"
         linkLabel="All videos"
       />
       </div>
@@ -114,7 +114,7 @@ const { featured: featuredVideo, recent: recentVideos } = await getContentFeed()
         label="Selected projects"
         title="Systems I've designed and shipped"
         intro="A curated set — the full portfolio, including archived and research work, lives on the projects page."
-        href="/projects"
+          href="/projects/"
         linkLabel="All projects"
       />
       </div>
@@ -138,7 +138,7 @@ const { featured: featuredVideo, recent: recentVideos } = await getContentFeed()
         label="Engineering build log"
         title="How the decisions actually got made"
         intro="Architecture, trade-offs, failures and corrections — written from the repositories rather than from memory."
-        href="/build-log"
+          href="/build-log/"
         linkLabel="All entries"
       />
       </div>
@@ -146,7 +146,7 @@ const { featured: featuredVideo, recent: recentVideos } = await getContentFeed()
         {
           latestLogs.map((entry) => (
             <li data-reveal>
-              <a href={`/build-log/${entry.slug}`} data-analytics="build_log_open">
+              <a href={`/build-log/${entry.slug}/`} data-analytics="build_log_open">
                 <h3>{entry.title}</h3>
                 <p>{entry.summary}</p>
                 <ul class="tags">

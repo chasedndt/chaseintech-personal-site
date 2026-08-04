@@ -41,7 +41,7 @@ const fmt = (iso) =>
                 <time datetime={entry.publishedAt}>{fmt(entry.publishedAt)}</time>
                 {project && <span class="proj">{project.name}</span>}
               </div>
-              <a class="milestone-card" href={`/build-log/${entry.slug}`} data-analytics="build_log_open">
+              <a class="milestone-card" href={`/build-log/${entry.slug}/`} data-analytics="build_log_open">
                 <h2>{entry.title}</h2>
                 <p>{entry.summary}</p>
                 <ul class="tags">

@@ -105,26 +105,26 @@ export const freelancePlatforms = [
 export const activeFreelancePlatforms = freelancePlatforms.filter((p) => p.url);
 
 export const nav = [
-  { label: "Projects", href: "/projects" },
-  { label: "Articles", href: "/articles" },
-  { label: "Videos", href: "/videos" },
-  { label: "Build Log", href: "/build-log" },
-  { label: "About", href: "/about" },
-  { label: "Uses", href: "/uses" },
-  { label: "Work With Me", href: "/work-with-me" },
+  { label: "Projects", href: "/projects/" },
+  { label: "Articles", href: "/articles/" },
+  { label: "Videos", href: "/videos/" },
+  { label: "Build Log", href: "/build-log/" },
+  { label: "About", href: "/about/" },
+  { label: "Uses", href: "/uses/" },
+  { label: "Work With Me", href: "/work-with-me/" },
 ];
 
 // Satellite pages, surfaced in the header "More" menu (desktop) and appended
 // flat to the mobile menu — nothing on the site should be footer-only.
 export const moreNav = [
-  { id: "now", label: "Now", href: "/now", hint: "Current focus, dated" },
+  { id: "now", label: "Now", href: "/now/", hint: "Current focus, dated" },
   {
     id: "newsletter",
     label: "Newsletter",
-    href: "/newsletter",
+    href: "/newsletter/",
     hint: "AI analysis and build notes",
   },
-  { id: "press", label: "Press Kit", href: "/press", hint: "Bio, imagery, links" },
-  { id: "links", label: "Links", href: "/links", hint: "The compact card" },
-  { id: "search", label: "Search", href: "/search", hint: "Full-text, on-device" },
+  { id: "press", label: "Press Kit", href: "/press/", hint: "Bio, imagery, links" },
+  { id: "links", label: "Links", href: "/links/", hint: "The compact card" },
+  { id: "search", label: "Search", href: "/search/", hint: "Full-text, on-device" },
 ];
