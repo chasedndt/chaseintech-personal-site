@@ -52,7 +52,11 @@ export const groups = [
       { name: "Python", detail: "ChaseOS runtime, Chaser Agent, TradeSync, Flask services." },
       { name: "TypeScript", detail: "Toolshape Studio and Voice, front-end work." },
       { name: "React", detail: "ChaseOS Web, Hypelist, Toolshape Studio editor shell." },
-      { name: "Astro", detail: "This site." },
+      {
+        name: "Astro",
+        detail:
+          "Default for content-shaped web builds — this site, and the stack I reach for when a React SPA would be overkill.",
+      },
       { name: "Vite", detail: "Build tooling across the front ends." },
       { name: "Pine Script", detail: "StrikeZone Crypto indicators and strategies." },
     ],
@@ -84,6 +88,11 @@ export const groups = [
       { name: "CapCut", detail: "Short-form editing." },
       { name: "Photoshop", detail: "Image work and thumbnails." },
       { name: "Canva", detail: "Fast graphics and social assets." },
+      {
+        name: "Figma",
+        detail:
+          "Learning it now for interface and product design work. Not yet used on a shipped project — it will move up this page when it has been.",
+      },
     ],
   },
   {

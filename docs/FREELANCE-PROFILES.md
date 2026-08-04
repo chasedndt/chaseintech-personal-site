@@ -173,8 +173,40 @@ on a platform full of people promising everything is easy.
 Fiverr is **gig-based**, not profile-based. Sell productised outcomes with a
 fixed scope, not your time.
 
+### Freelancer profile
+
+**Display name:** `Chase I.`
+
+**Professional title:** `AI Engineer | Agentic Systems & Automation`
+
+**Profile description:**
+```
+I build agentic AI systems that are useful, reviewable and safe enough to
+deploy. My work covers AI agent development, workflow automation, approval
+gates, evaluation harnesses and AI-enabled full-stack products.
+
+I am the builder of ChaseOS and the open-source Chaser Agent harness. My code,
+case studies and engineering build logs are public at chaseintech.com.
+
+I work honestly: I will tell you what is straightforward, what carries risk,
+and whether your project is a good fit before you order.
+```
+
+**Profile setup:** individual freelancer · London, United Kingdom · working
+part-time initially · use the real profile photo · add `chaseintech.com` as the
+website.
+
+Current publishing requirements: verified email and phone, completed personal
+and business information/KYC, a display name, all Gig sections, and at least
+one original Gig image. Gig creation and editing must be completed on desktop.
+
+**Gig 1 cover image:**
+`public/freelance/ai-agent-workflow-cover.png` (1280×769, Fiverr-ready)
+
 ### Gig 1 — highest value
-**Title:** `I will build an AI agent workflow with human approval gates`
+**Title shown:** `I will build an AI agent workflow with human approval gates`
+**Text to enter after Fiverr's prefilled “I will”:**
+`build an AI agent workflow with human approval gates`
 **Category:** Programming & Tech → AI Development → AI Agents
 **Search tags:** `ai agent`, `automation`, `python`, `llm`, `workflow`
 
@@ -229,12 +261,43 @@ a polished landing page rather than a lead source.
 **Headline:** `AI Engineer building agentic systems with governance built in`
 **Services:** AI Agent Development · Workflow Automation · Technical
 Architecture · AI System Audit
-Reuse the Upwork overview and the same four portfolio items. Link every project
-to its case study on chaseintech.com.
+
+**Bio (under Contra's 400-character limit):**
+```
+I build agentic AI systems that are safe enough to deploy: approval gates,
+permission boundaries, evaluation harnesses and workflow automation. I’m the
+builder of ChaseOS and Chaser Agent, with public code and engineering write-ups
+at chaseintech.com. Available for AI agent development, automation, system
+architecture and technical audits.
+```
+
+**Starting rate:** `$65/hour`
+
+**Social link:** `https://chaseintech.com`
+
+**Four required work items:** reuse the four portfolio entries from the Upwork
+section: Chaser Agent, ChaseOS, StrikeZone Market Intelligence and Toolshape
+Studio. Link every project to its ChaseInTech case study and use its existing
+project OG card as the initial visual.
+
+**Profile cover:** use `public/freelance/ai-agent-workflow-cover.png` initially.
+Replace it only when the single deferred project-media task is completed.
+
+**Services to publish:**
+1. `AI agent workflow with human approval gates`
+2. `Business workflow automation with Python and AI`
+3. `AI system architecture audit and technical report`
+4. `Agent harness and evaluation engineering`
+
+Contra discovery requires the cover, four work items, rate, social link, and
+identity/wallet setup to be completed. Use the free account; Contra Pro is not
+required for launch.
 
 ---
 
 ## 4. Toptal — do this last, or not yet
+
+**Operator decision (2026-08-04): skip Toptal for this launch.**
 
 Toptal is **not a self-serve profile**. It's a multi-stage screening gauntlet:
 English interview → timed algorithm test → technical deep-dive interview →

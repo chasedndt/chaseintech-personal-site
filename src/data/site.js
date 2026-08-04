@@ -71,8 +71,8 @@ export const socials = [
   {
     id: "linkedin",
     label: "LinkedIn",
-    handle: "john-idowu",
-    url: "https://uk.linkedin.com/in/john-idowu-03044a175",
+    handle: "johnidowu-chaseos",
+    url: "https://www.linkedin.com/in/johnidowu-chaseos",
     event: "linkedin_click",
   },
   {
@@ -97,8 +97,9 @@ export const freelancePlatforms = [
     label: "Upwork",
     url: "https://www.upwork.com/freelancers/~01d263e874cb34f2cc",
   },
-  { id: "fiverr", label: "Fiverr", url: null },
-  { id: "contra", label: "Contra", url: null },
+  { id: "fiverr", label: "Fiverr", url: "https://www.fiverr.com/chaseintech" },
+  { id: "contra", label: "Contra", url: "https://contra.com/chase_in_tech_3c1qpk30" },
+  { id: "wellfound", label: "Wellfound", url: "https://wellfound.com/u/john-idowu-5" },
   { id: "toptal", label: "Toptal", url: null },
 ];
 
