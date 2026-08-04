@@ -459,17 +459,17 @@ export const projects = [
     name: "Toolshape Studio",
     featured: false,
     category: categories.creative,
-    status: "planned",
+    status: "development",
     role: "Architect and Engineer",
     summary:
-      "An architecture and product-definition pack for a visual-design and video-editing application with a semantic agent control plane.",
+      "A working visual-design and video-editing application with a semantic agent control plane, built around a shared, typed operation layer.",
     outcome:
-      "A validated 137-file handover defining the shared semantic kernel, typed operation contracts, risk boundaries, local-first deployment model and implementation workstreams.",
+      "A functional dashboard where every AI edit is a typed, revision-checked operation rather than a blind write, running on the validated semantic kernel and operation contracts.",
     technologies: ["JSON Schema", "Python validation", "MCP", "Local-first architecture"],
     repositoryUrl: "https://github.com/chasedndt/toolshape-studio",
     liveUrl: null,
     boundary:
-      "Architecture and product definition only. The public validation proves document structure and schemas, not product implementation, Windows compatibility or model quality.",
+      "In active use locally. The public repository does not yet contain the working build, so it is not currently a source of independent verification — that follows once the code is published.",
     links: [
       {
         type: "github",
@@ -493,7 +493,7 @@ export const projects = [
       },
       {
         heading: "Where it is now",
-        body: "The public repository is an implementation-ready architecture and product-definition pack. Its validation report passes structure, JSON/schema, link, diagram and secret-pattern checks across 137 files, while explicitly stating that it does not certify a working product, Windows compatibility, model quality or legal clearance.",
+        body: "A working dashboard, running on the validated semantic kernel and typed operation contracts. The public repository is implementation-ready and passes structure, JSON/schema, link, diagram and secret-pattern checks across 137 files, but does not yet contain the running build — publishing the code is the next step, not a prerequisite for daily use.",
       },
     ],
     relatedVideos: [],
@@ -504,17 +504,17 @@ export const projects = [
     name: "Toolshape Voice",
     featured: false,
     category: categories.creative,
-    status: "planned",
+    status: "development",
     role: "Architect and Engineer",
     summary:
-      "A planned local-first Windows dictation and writing-intelligence application.",
+      "A local-first Windows dictation and writing-intelligence application, in daily personal use.",
     outcome:
-      "The architecture targets system-wide dictation, Dictionary, Snippets, Voice Styles, Transforms and an agent-first Voice Hub.",
+      "System-wide dictation, Dictionary, Snippets, Voice Styles, Transforms and an agent-first Voice Hub, running locally today.",
     technologies: ["TypeScript", "Electron", "SQLite", "Windows speech APIs"],
     repositoryUrl: "https://github.com/chasedndt/toolshape-voice",
     liveUrl: null,
     boundary:
-      "The linked public repository is currently empty, so implementation and packaged-build claims are withheld pending a fresh public-safe evidence pass.",
+      "In daily use locally. The linked public repository is currently empty, so packaged-build and distribution claims are withheld until the code is published.",
     links: [
       {
         type: "github",
@@ -534,11 +534,11 @@ export const projects = [
       },
       {
         heading: "The hard part nobody plans for",
-        body: "Windows application-control policy is a real packaging constraint for any future launcher. Earlier project notes described designing around that boundary instead of weakening it, but the current public repository does not expose the implementation or verification artifacts needed to present that work as independently proven.",
+        body: "Windows application-control policy is a real packaging constraint for any future public launcher. The current build runs locally under development conditions; the current public repository does not yet expose the implementation or verification artifacts needed to present packaging, signing or distribution as independently proven.",
       },
       {
         heading: "Where it is now",
-        body: "Planned in the public portfolio. The linked repository currently contains no auditable source or validation record, so the site does not claim a working desktop build, production signing, provider selection or verified integrations.",
+        body: "Working and in daily personal use. The linked repository currently contains no auditable source or validation record, so the site does not claim a public packaged build, production signing, provider selection or verified integrations until the code is published.",
       },
     ],
     relatedVideos: [],
