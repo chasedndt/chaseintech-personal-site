@@ -9,11 +9,12 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run audit:projects && astro build && pagefind --site dist",
+    "build": "npm run audit:projects && astro build && npm run audit:links && pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
     "audit:projects": "node scripts/validate-project-publications.mjs",
+    "audit:links": "node scripts/validate-generated-links.mjs",
     "test:e2e": "playwright test"
   },
   "keywords": [
