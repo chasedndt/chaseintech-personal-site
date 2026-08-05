@@ -514,7 +514,7 @@ export const projects = [
     summary:
       "An agent-native content studio for screen capture, video editing and visual design, where an AI agent operates the same typed operation surface a person does.",
     outcome:
-      "A running editor plus an authenticated MCP server exposing ten capabilities, so a networked agent completes an inspect, preview, apply and verify loop over the same kernel the interface uses — no screen-scraping, no separate automation path.",
+      "A running editor and an authenticated MCP server sharing one kernel, so an agent edits a project while a person watches the same interface update — one revision sequence, every change attributed, and any single change reversible without rewinding the rest.",
     technologies: ["TypeScript", "React", "MCP", "SQLite", "FFmpeg", "JSON Schema", "Local-first architecture"],
     repositoryUrl: "https://github.com/chasedndt/toolshape-studio",
     liveUrl: null,
@@ -528,6 +528,14 @@ export const projects = [
       },
     ],
     media: [
+      {
+        type: "video",
+        src: "/images/projects/toolshape-studio/demo-agent-live.mp4",
+        poster: "/images/projects/toolshape-studio/demo-agent-live-poster.webp",
+        alt: "An AI agent editing a Toolshape Studio project over MCP while the editor updates live",
+        caption:
+          "An agent rewrites the headline twice over MCP while the editor is open. The canvas and the history update live, and every change is attributed — agent or you — in one revision sequence. Recorded by driving the running application.",
+      },
       {
         src: "/images/projects/toolshape-studio/workspace-home.webp",
         alt: "Toolshape Studio home dashboard showing project stats and the live agent capability surface",
