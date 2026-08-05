@@ -196,12 +196,14 @@ export const projects = [
     media: [
       {
         src: "/images/projects/chaseos-core/authority-pipeline.svg",
+        fit: "contain",
         alt: "The ChaseOS Core authority pipeline: a request is routed by modality, checked by the approval gateway, executed within a bounded write scope and recorded as evidence, with a deny path when no gateway is bound",
         caption:
           "The authority pipeline. A request is routed by modality, gated, bounded and evidenced — and with no authority provider bound it denies rather than proceeds. Canonical knowledge is reached only through an explicit promotion gate, never by direct agent writeback.",
       },
       {
         src: "/images/projects/chaseos-core/chaseos-core-banner.svg",
+        fit: "contain",
         alt: "ChaseOS Core banner showing the ChaseOS mark with the tagline: governed, local-first framework for hybrid-intelligence systems",
         caption:
           "MIT licensed, approval-gated, fail-closed — the three properties the framework is built to guarantee.",
