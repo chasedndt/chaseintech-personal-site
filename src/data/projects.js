@@ -296,6 +296,18 @@ export const projects = [
           "The same suite on SOL. Captured by the agent driving a scoped research browser over the DevTools protocol, not screenshotted by hand.",
       },
       {
+        src: "/images/projects/strikezone-crypto/structure-15m.webp",
+        alt: "BTCUSDT 15m chart with break-of-structure, change-of-character and order-block markers at intraday scale",
+        caption:
+          "The same detection dropped to 15m, which is where the entries actually get taken. Denser structure, same rules.",
+      },
+      {
+        src: "/images/projects/strikezone-crypto/alt-risk-regime-table.webp",
+        alt: "Alt Risk Regime table reporting bearish regime and a score of minus two across 15m, 1H and 4H",
+        caption:
+          "The Alt Risk Regime index, which publishes a verdict rather than a line: regime, score and spike state agreed across three timeframes at once.",
+      },
+      {
         src: "/images/projects/strikezone-crypto/pine-source-alertjson.webp",
         alt: "Pine Script source open beside the chart, showing the buildAlertJson call that creates a webhook payload",
         caption:
