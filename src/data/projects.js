@@ -386,7 +386,7 @@ export const projects = [
     role: "Full-Stack Developer",
     summary: "The public product website and front door for chaseos.ai.",
     outcome:
-      "Cloudflare-deployed public site with a Vite/React shell, implemented route map, D1-backed waitlist path and Early Access boundaries.",
+      "Cloudflare-deployed public site with a Vite/React shell, implemented route map, Stripe-backed subscriptions and credit top-ups, a D1-backed waitlist path, and Early Access boundaries.",
     technologies: ["Vite", "React", "Cloudflare Pages", "Pages Functions", "D1"],
     repositoryUrl: null,
     liveUrl: "https://chaseos.ai",
@@ -427,6 +427,12 @@ export const projects = [
         alt: "Studio command-surface section in light mode",
         caption: "The same section in light mode.",
       },
+      {
+        src: "/images/projects/chaseos-web/chaseos-web-account-billing.webp",
+        alt: "ChaseOS account page showing an active Pro subscription, available credits and a top-up action",
+        caption:
+          "The account and billing surface: Stripe-backed subscriptions and credit top-ups, live on a Pro account with 10,000 credits available. Name and email redacted for privacy.",
+      },
     ],
     caseStudy: [
       {
@@ -442,8 +448,12 @@ export const projects = [
         body: "Every public surface is driven from a structured content file that carries not just the copy but the operator boundary for that surface — what the page may claim as live, what is gated, and what proof comes next. Marketing copy and governance rules live in the same object, so the site cannot drift into overclaiming without the diff showing it.",
       },
       {
+        heading: "Billing, live",
+        body: "Account and billing run on Stripe: real subscriptions (Community, Pro, Studio Max, Teams), a metered credits balance that powers Cloud agent runs and knowledge-graph compute, and a top-up flow for buying credits outside the monthly allowance. This isn't a pricing page describing a future state — it's the account surface an active Pro subscriber sees today.",
+      },
+      {
         heading: "Where it is now",
-        body: "Live on chaseos.ai behind Cloudflare with a hardening pass documented. Forge and pricing are public; checkout and managed services deliberately are not, and the site says so in its own words.",
+        body: "Live on chaseos.ai behind Cloudflare with a hardening pass documented. Forge, pricing, and Stripe-backed billing are public and working; managed Cloud execution beyond metered credits is still Early Access, and the site says so in its own words.",
       },
     ],
     relatedVideos: [],
