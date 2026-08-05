@@ -689,7 +689,7 @@ relatedBuildLogs: [],
       },
       {
         heading: "Where it is now",
-body: "The source is public and running. Shipped: the unified project model, typed operations with revision checks and idempotency, a multi-track timeline with frame-snapped direct editing, media ingestion that quarantines and probes untrusted bytes before they reach the trusted store, durable render jobs with progress and cancellation, an authenticated MCP server exposing ten capabilities over stdio and HTTP, and a visible activity history where any single past operation can be reversed without rewinding the ones after it. Verified by 130 tests, an eleven-check end-to-end smoke over real HTTP, and browser QA. Screen capture, the desktop shell and the design pillar are specified and not built.",
+body: "The source is public and running. Shipped: the unified project model, typed operations with revision checks and idempotency, a a multi-track timeline with frame-snapped direct editing, assembly (move, reorder, delete, duplicate, merge) and exact rational speed, media ingestion that quarantines and probes untrusted bytes before they reach the trusted store, durable render jobs with progress and cancellation, an authenticated MCP server exposing ten capabilities over stdio and HTTP, and a visible activity history where any single past operation can be reversed without rewinding the ones after it. Verified by 130 tests, an eleven-check end-to-end smoke over real HTTP, and browser QA. Screen capture, the desktop shell and the design pillar are specified and not built.",
       },
     ],
     relatedVideos: [],
