@@ -127,6 +127,24 @@ export const projects = [
           "The graph is an instrument, not a picture. Agent overlays replay what runtimes touched and when, focus scopes narrow the view to a time window, and maintenance can be handed to an agent — which is itself a governed run rather than a direct mutation.",
       },
       {
+        src: "/images/projects/chaseos/26-docs-inspector-chaseos-home.webp",
+        alt: "Docs and Inspector panel showing a personal ChaseOS home page with a live status board for each domain the operator runs",
+        caption:
+          "Docs / Inspector is where a vault file becomes an addressable object rather than a loose note. This is the control tower of a real personal instance — a live status board covering trading, projects, study, security research and content, each row linking into the graph. Not a demo tenant: the institution name is masked, and nothing else here is staged.",
+      },
+      {
+        src: "/images/projects/chaseos/27-docs-inspector-personal-domain-map.webp",
+        alt: "Personal domain map organising a ChaseOS instance into pillars, infrastructure, trading, projects and knowledge domains",
+        caption:
+          "Further down the same page, the instance is organised by life domain instead of by app — pillars and core areas, system and infrastructure, trading, projects, knowledge. Every entry is a live link into the graph, so the way someone thinks about their work and the way the system stores it are the same structure.",
+      },
+      {
+        src: "/images/projects/chaseos/25-docs-inspector-university-system.webp",
+        alt: "ChaseOS Inspector showing a university study operating system with weekly folders, module maps and outline, links and provenance tabs",
+        caption:
+          "A concrete real-world use: ChaseOS running a computer-science degree. The document defines a 15-hour-per-week study system — 53 weekly folders, module maps for every year, and generated lesson, lab, question and agent-prompt pages. The Inspector rail on the right (outline, links, backlinks, provenance, properties) is what makes each study note a first-class graph object, so an agent can revise against the real syllabus instead of a pasted summary.",
+      },
+      {
         src: "/images/projects/chaseos/11-approvals-human-in-the-loop.webp",
         alt: "ChaseOS approvals queue with the headline 'nothing runs without you' and an empty waiting list",
         caption:
