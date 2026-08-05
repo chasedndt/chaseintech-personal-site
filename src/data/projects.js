@@ -27,10 +27,6 @@ export const categories = {
 // NEVER invent a URL. A project with no verified account simply has fewer
 // entries — an empty row is honest, a guessed handle is not.
 //
-// TODO(operator): supply per-project accounts where they exist. Known gap:
-// ChaseOS, StrikeZone Crypto and TradeSync were each described as having their
-// own socials, but no URLs have been provided.
-
 export const projects = [
   {
     slug: "chaseos",
@@ -263,7 +259,7 @@ export const projects = [
     outcome:
       "A research framework for reproducible experiments across indicator development, market intelligence and governed delivery workflows.",
     technologies: ["Pine Script", "Python", "Discord infrastructure", "ChaseOS workflow pack"],
-    repositoryUrl: null,
+    repositoryUrl: "https://github.com/chasedndt/Strikezone-Crypto-Pinescript-V6-Indicators",
     liveUrl: null,
     boundary:
       "No live trade execution, no financial performance guarantees, and no production signal subscription service.",
@@ -279,6 +275,11 @@ export const projects = [
         type: "discord",
         label: "Community",
         url: "https://discord.com/invite/BjEMPs5xY9",
+      },
+      {
+        type: "github",
+        label: "Pine Script Indicators",
+        url: "https://github.com/chasedndt/Strikezone-Crypto-Pinescript-V6-Indicators",
       },
     ],
     media: [],
