@@ -881,6 +881,12 @@ body: "The source is public and running. Shipped: the unified project model, typ
           "The home view. Every dictation is written to local history before insertion is attempted, which is why one is never lost when the target application cannot accept it.",
       },
       {
+        src: "/images/projects/toolshape-voice/logo-dark.webp",
+        alt: "The Toolshape Voice mark: a waveform in a blue-to-violet rounded square, above the product name",
+        caption:
+          "The mark is the waveform the Voice Bar draws while it is listening. It is the icon Windows shows in the taskbar, in Alt-Tab and on the executable itself.",
+      },
+      {
         src: "/images/projects/toolshape-voice/voicebar-listening.webp",
         alt: "The Voice Bar while listening, showing a live waveform with cancel and accept controls",
         caption:
