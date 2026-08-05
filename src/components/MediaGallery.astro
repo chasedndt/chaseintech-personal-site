@@ -1,10 +1,19 @@
 ---
 // Media strip for a project (screenshots, diagrams, demo clips).
 //
-// Deliberately calm: a fixed 16:9 aspect grid that caps at three tiles per row
-// so a project page never turns into a congested wall of thumbnails. When no
-// media is supplied it renders a single quiet reserved slot instead of
-// disappearing — it reads as "coming", not as a broken layout.
+// Two modes, chosen by the data rather than a flag:
+//
+//  * Flat — the original behaviour. A calm auto-fit grid. Used by every
+//    project that supplies a handful of assets.
+//  * Grouped — when items carry `group`, the gallery splits into labelled
+//    runs. A 25-shot tour of an application is not a media strip, it is a
+//    walkthrough; without headings it reads as a wall of thumbnails and the
+//    reader has no idea what they are looking at or when it ends.
+//
+// Every tile opens in a lightbox. These assets are 1920px screenshots whose
+// whole point is fine detail — node labels, table rows, risk tiers. At tile
+// size that detail is present but unreadable, which makes the gallery
+// decorative. Click-to-enlarge is what makes it evidence.
 //
 // Media shape:
 // { src: "/images/projects/<slug>/shot-1.webp", alt: "...", caption: "..." }
@@ -14,57 +23,117 @@
 // Pass fit: "cover" for an asset that genuinely reads as a background and is
 // safe to crop. Pass wide: true for artwork that needs the full row —
 // diagrams and very wide strips lose their detail at a third of a row.
+// Pass feature: true to give an item the full width at a larger size; use it
+// for the one asset that should be seen before any other.
+interface MediaItem {
+  src: string;
+  alt: string;
+  caption?: string;
+  type?: string;
+  poster?: string;
+  fit?: "cover" | "contain";
+  wide?: boolean;
+  feature?: boolean;
+  group?: string;
+}
 interface Props {
-  media?: Array<{
-    src: string;
-    alt: string;
-    caption?: string;
-    type?: string;
-    fit?: "cover" | "contain";
-    wide?: boolean;
-  }>;
+  media?: MediaItem[];
   label?: string;
 }
 const { media = [], label = "Media" } = Astro.props;
+
+// Preserve first-seen order so the walkthrough reads in the order it was
+// written, not alphabetically.
+const grouped = media.some((m) => m.group);
+const groups: Array<{ name: string; items: MediaItem[] }> = [];
+for (const item of media) {
+  const name = item.group ?? "";
+  let bucket = groups.find((g) => g.name === name);
+  if (!bucket) {
+    bucket = { name, items: [] };
+    groups.push(bucket);
+  }
+  bucket.items.push(item);
+}
 ---
 
 <section class="media">
-  <h2>{label}</h2>
+  <div class="media-head">
+    <h2>{label}</h2>
+    {media.length > 3 && <p class="hint">Select any frame to enlarge</p>}
+  </div>
 
   {
     media.length > 0 ? (
-      <ul class="grid">
-        {media.map((item) => (
-          <li class={item.wide ? "wide" : undefined}>
-            <figure>
-              <div class="frame">
-                {item.type === "video" ? (
-                  <video
-                    src={item.src}
-                    poster={item.poster}
-                    controls
-                    preload="none"
-                    class={item.fit === "cover" ? "fit-cover" : undefined}
-                  />
-                ) : (
-                  <img
-                    src={item.src}
-                    alt={item.alt}
-                    loading="lazy"
-                    decoding="async"
-                    class={item.fit === "cover" ? "fit-cover" : undefined}
-                  />
-                )}
-              </div>
-              {item.caption && <figcaption>{item.caption}</figcaption>}
-            </figure>
-          </li>
+      <div class="runs">
+        {groups.map((group) => (
+          <div class="run">
+            {grouped && group.name && <h3 class="run-title">{group.name}</h3>}
+            <ul class="grid">
+              {group.items.map((item) => (
+                <li
+                  class:list={[
+                    item.wide ? "wide" : undefined,
+                    item.feature ? "feature" : undefined,
+                  ]}
+                >
+                  <figure>
+                    {item.type === "video" ? (
+                      <div class="frame">
+                        <video
+                          src={item.src}
+                          poster={item.poster}
+                          controls
+                          muted
+                          loop
+                          playsinline
+                          preload="metadata"
+                          class={item.fit === "cover" ? "fit-cover" : undefined}
+                        />
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        class="frame frame--button"
+                        data-lightbox-open
+                        data-src={item.src}
+                        data-caption={item.caption ?? item.alt}
+                        aria-label={`Enlarge: ${item.alt}`}
+                      >
+                        <img
+                          src={item.src}
+                          alt={item.alt}
+                          loading="lazy"
+                          decoding="async"
+                          class={item.fit === "cover" ? "fit-cover" : undefined}
+                        />
+                        <span class="zoom" aria-hidden="true">
+                          <svg
+                            width="15"
+                            height="15"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          >
+                            <circle cx="11" cy="11" r="7" />
+                            <path d="M20 20l-3.5-3.5M11 8v6M8 11h6" />
+                          </svg>
+                        </span>
+                      </button>
+                    )}
+                    {item.caption && <figcaption>{item.caption}</figcaption>}
+                  </figure>
+                </li>
+              ))}
+            </ul>
+          </div>
         ))}
-      </ul>
+      </div>
     ) : (
       <div class="reserved">
         <div class="frame frame--empty">
-          <span class="mark" aria-hidden="true"></span>
+          <span class="mark" aria-hidden="true" />
         </div>
         <p>
           Screenshots and demo clips for this project will appear here once
@@ -75,22 +144,88 @@ const { media = [], label = "Media" } = Astro.props;
   }
 </section>
 
+{
+  media.some((m) => m.type !== "video") && (
+    <dialog class="lightbox" aria-label="Enlarged media">
+      <button
+        type="button"
+        class="lb-close"
+        data-lightbox-close
+        aria-label="Close"
+      >
+        ×
+      </button>
+      <button
+        type="button"
+        class="lb-nav lb-prev"
+        data-lightbox-prev
+        aria-label="Previous"
+      >
+        ‹
+      </button>
+      <figure class="lb-figure">
+        <img src="" alt="" />
+        <figcaption />
+      </figure>
+      <button
+        type="button"
+        class="lb-nav lb-next"
+        data-lightbox-next
+        aria-label="Next"
+      >
+        ›
+      </button>
+    </dialog>
+  )
+}
+
 <style>
+  .media-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.9rem;
+  }
   .media h2 {
     font-size: 0.78rem;
     font-family: var(--cit-font-mono);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--cit-accent-teal);
-    margin-bottom: 0.9rem;
+    margin: 0;
+  }
+  .hint {
+    margin: 0;
+    font-size: 0.72rem;
+    color: var(--cit-text-muted);
+  }
+  .runs {
+    display: grid;
+    gap: 2.4rem;
+  }
+  /* A run heading is a signpost, not a section header — it sits quietly above
+     its own tiles and never competes with the page's real headings. */
+  .run-title {
+    font-size: 0.72rem;
+    font-family: var(--cit-font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cit-text-muted);
+    margin: 0 0 0.8rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--cit-border);
   }
   .grid {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
-    gap: 1rem;
+    /* Wider than a thumbnail on purpose. These are dense application
+       screenshots; below roughly 340px the reader cannot tell one panel from
+       another, which defeats the point of showing them at all. */
+    grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+    gap: 1.15rem 1rem;
   }
   figure {
     margin: 0;
@@ -103,6 +238,41 @@ const { media = [], label = "Media" } = Astro.props;
     background: var(--cit-bg-surface);
     display: grid;
     place-items: center;
+    position: relative;
+  }
+  .frame--button {
+    width: 100%;
+    padding: 0;
+    cursor: zoom-in;
+    color: inherit;
+    font: inherit;
+    transition:
+      border-color 0.18s ease,
+      transform 0.18s ease;
+  }
+  .frame--button:hover,
+  .frame--button:focus-visible {
+    border-color: var(--cit-accent-teal);
+    transform: translateY(-2px);
+  }
+  .zoom {
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    width: 26px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid var(--cit-border);
+    color: var(--cit-text-muted);
+    opacity: 0;
+    transition: opacity 0.18s ease;
+  }
+  .frame--button:hover .zoom,
+  .frame--button:focus-visible .zoom {
+    opacity: 1;
   }
   /* Never crop by default.
      The tile is a fixed 16:9 for layout calm, but real assets are not: app
@@ -137,9 +307,23 @@ const { media = [], label = "Media" } = Astro.props;
     height: auto;
     max-height: 30rem;
   }
+  /* The one asset worth seeing before any other. Full row, and tall enough
+     that its detail survives without a click. */
+  .grid > li.feature {
+    grid-column: 1 / -1;
+  }
+  .grid > li.feature .frame {
+    aspect-ratio: 16 / 10;
+    max-height: 34rem;
+  }
+  .grid > li.feature figcaption {
+    font-size: 0.84rem;
+    max-width: 62ch;
+  }
   figcaption {
     margin-top: 0.55rem;
     font-size: 0.78rem;
+    line-height: 1.55;
     color: var(--cit-text-muted);
   }
 
@@ -171,4 +355,149 @@ const { media = [], label = "Media" } = Astro.props;
     font-size: 0.8rem;
     color: var(--cit-text-muted);
   }
+
+  /* ---- Lightbox ---- */
+  .lightbox {
+    border: none;
+    background: transparent;
+    padding: 0;
+    max-width: 100vw;
+    max-height: 100vh;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .lightbox::backdrop {
+    background: rgba(4, 6, 10, 0.92);
+  }
+  .lightbox[open] {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.5rem;
+    padding: clamp(1rem, 4vw, 3rem);
+  }
+  .lb-figure {
+    margin: 0;
+    display: grid;
+    gap: 0.9rem;
+    justify-items: center;
+    min-width: 0;
+  }
+  .lb-figure img {
+    max-width: 100%;
+    max-height: 78vh;
+    object-fit: contain;
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius);
+    background: var(--cit-bg-surface);
+  }
+  .lb-figure figcaption {
+    font-size: 0.84rem;
+    line-height: 1.6;
+    color: var(--cit-text-muted);
+    max-width: 78ch;
+    text-align: center;
+  }
+  .lb-close,
+  .lb-nav {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--cit-border);
+    color: var(--cit-text);
+    border-radius: 999px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .lb-close {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+  .lb-nav {
+    width: 44px;
+    height: 44px;
+    font-size: 1.8rem;
+  }
+  .lb-close:hover,
+  .lb-nav:hover {
+    border-color: var(--cit-accent-teal);
+  }
+  @media (max-width: 640px) {
+    .lb-nav {
+      width: 36px;
+      height: 36px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .frame--button,
+    .zoom {
+      transition: none;
+    }
+    .frame--button:hover,
+    .frame--button:focus-visible {
+      transform: none;
+    }
+  }
 </style>
+
+<script>
+  // Scoped per gallery instance so several galleries on one page cannot
+  // fight over the same dialog.
+  document.querySelectorAll<HTMLElement>("section.media").forEach((section) => {
+    const dialog = section.nextElementSibling as HTMLDialogElement | null;
+    if (!dialog || !dialog.classList.contains("lightbox")) return;
+
+    const triggers = Array.from(
+      section.querySelectorAll<HTMLButtonElement>("[data-lightbox-open]"),
+    );
+    if (!triggers.length) return;
+
+    const img = dialog.querySelector("img") as HTMLImageElement;
+    const caption = dialog.querySelector("figcaption") as HTMLElement;
+    let index = 0;
+
+    const show = (i: number) => {
+      index = (i + triggers.length) % triggers.length;
+      const trigger = triggers[index];
+      img.src = trigger.dataset.src ?? "";
+      img.alt = trigger.querySelector("img")?.alt ?? "";
+      caption.textContent = trigger.dataset.caption ?? "";
+    };
+
+    triggers.forEach((trigger, i) => {
+      trigger.addEventListener("click", () => {
+        show(i);
+        dialog.showModal();
+      });
+    });
+
+    dialog
+      .querySelector("[data-lightbox-close]")
+      ?.addEventListener("click", () => dialog.close());
+    dialog
+      .querySelector("[data-lightbox-prev]")
+      ?.addEventListener("click", () => show(index - 1));
+    dialog
+      .querySelector("[data-lightbox-next]")
+      ?.addEventListener("click", () => show(index + 1));
+
+    // Clicking the backdrop closes. The figure swallows its own clicks so a
+    // click on the image itself does not dismiss what you just opened.
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    dialog.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        show(index + 1);
+      } else if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        show(index - 1);
+      }
+    });
+  });
+</script>

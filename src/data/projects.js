@@ -91,151 +91,186 @@ export const projects = [
     // are real operator surfaces against a real vault, not mockups.
     media: [
       {
+        type: "video",
+        src: "/images/projects/chaseos/chaseos-graph-demo.mp4",
+        poster: "/images/projects/chaseos/chaseos-graph-demo-poster.jpg",
+        feature: true,
+        group: "See it running",
+        alt: "Screen recording of the ChaseOS knowledge graph with agent work-beams, opening into a companion runtime profile",
+        caption:
+          "The graph as a live surface: 450 nodes drawn from a 52,353-file vault, work-beams fanning out as agents reach into the documents they're working on, then straight into one companion's runtime profile and the roster behind it. Real capture, replayed faster than real time so the motion reads cleanly.",
+      },
+      {
         src: "/images/projects/chaseos/01-home-dashboard.webp",
+        group: "See it running",
         alt: "ChaseOS Studio home dashboard showing active runs, pending approvals, review queue and knowledge-graph size",
         caption:
           "The operator's morning view. One screen answers what is running, what is waiting on a human decision, what needs review, and how large the knowledge graph has grown (7,306 nodes across 10,107 edges). Everything below it — needs-attention items, quick launch, recent agent activity — is derived live from the vault rather than typed in by hand.",
       },
       {
         src: "/images/projects/chaseos/08-graph-wide-450-nodes.webp",
+        group: "The knowledge graph",
         alt: "Knowledge graph rendering 450 nodes and 511 edges drawn from a 52,353-file vault",
         caption:
           "The knowledge graph is the substrate the agents actually reason over. This view renders 450 nodes and 511 edges selected from a 52,353-file vault — documents, projects, runtime profiles and decisions as a single connected structure, so an agent asked about a project can traverse to its files, its history and its owning runtime.",
       },
       {
         src: "/images/projects/chaseos/09-graph-zoomed-readable-labels.webp",
+        group: "The knowledge graph",
         alt: "Knowledge graph zoomed in so individual node labels are readable, showing runtime profiles and routing documents",
         caption:
           "Zoomed in, the structure becomes legible: runtime profiles (Archon, Hermes, OpenClaw, Codex Bus Worker, Claude) sit alongside the routing contracts and vault maps that govern them. Agents are first-class nodes in the same graph as the knowledge they act on — which is what lets governance and context share one source of truth.",
       },
       {
         src: "/images/projects/chaseos/10-graph-filtered-runtime-profiles.webp",
+        group: "The knowledge graph",
         alt: "Knowledge graph filtered to 21 runtime-profile nodes, isolating every agent runtime in the system",
         caption:
           "Searching the graph collapses it to just what matters — here, the 21 runtime-profile nodes that define every agent in the system. The live companion rail on the right shows which of those runtimes are actually online at that moment, tying the static map to real runtime state.",
       },
       {
         src: "/images/projects/chaseos/06-graph-filters-taxonomy.webp",
+        group: "The knowledge graph",
         alt: "Graph filter panel showing node types, families, subtypes and trust states including quarantined documents",
         caption:
           "Nothing enters the graph untyped. Every node carries a family, a subtype and a trust state — and that last one matters most: 441 raw, 8 archived, 1 quarantined. Quarantine is how unverified material stays visible without being treated as fact by anything downstream.",
       },
       {
         src: "/images/projects/chaseos/07-graph-controls-smart-agents-focus.webp",
+        group: "The knowledge graph",
         alt: "Graph control panel with smart view suggestions, agent overlays, source selection, focus scopes and maintenance actions",
         caption:
           "The graph is an instrument, not a picture. Agent overlays replay what runtimes touched and when, focus scopes narrow the view to a time window, and maintenance can be handed to an agent — which is itself a governed run rather than a direct mutation.",
       },
       {
         src: "/images/projects/chaseos/26-docs-inspector-chaseos-home.webp",
+        group: "A real personal instance",
         alt: "Docs and Inspector panel showing a personal ChaseOS home page with a live status board for each domain the operator runs",
         caption:
           "Docs / Inspector is where a vault file becomes an addressable object rather than a loose note. This is the control tower of a real personal instance — a live status board covering trading, projects, study, security research and content, each row linking into the graph. Not a demo tenant: the institution name is masked, and nothing else here is staged.",
       },
       {
         src: "/images/projects/chaseos/27-docs-inspector-personal-domain-map.webp",
+        group: "A real personal instance",
         alt: "Personal domain map organising a ChaseOS instance into pillars, infrastructure, trading, projects and knowledge domains",
         caption:
           "Further down the same page, the instance is organised by life domain instead of by app — pillars and core areas, system and infrastructure, trading, projects, knowledge. Every entry is a live link into the graph, so the way someone thinks about their work and the way the system stores it are the same structure.",
       },
       {
         src: "/images/projects/chaseos/25-docs-inspector-university-system.webp",
+        group: "A real personal instance",
         alt: "ChaseOS Inspector showing a university study operating system with weekly folders, module maps and outline, links and provenance tabs",
         caption:
           "A concrete real-world use: ChaseOS running a computer-science degree. The document defines a 15-hour-per-week study system — 53 weekly folders, module maps for every year, and generated lesson, lab, question and agent-prompt pages. The Inspector rail on the right (outline, links, backlinks, provenance, properties) is what makes each study note a first-class graph object, so an agent can revise against the real syllabus instead of a pasted summary.",
       },
       {
         src: "/images/projects/chaseos/11-approvals-human-in-the-loop.webp",
+        group: "Governance and approvals",
         alt: "ChaseOS approvals queue with the headline 'nothing runs without you' and an empty waiting list",
         caption:
           "The governance boundary, stated plainly: nothing runs without you. Requests from Studio, the runtimes, Discord and scheduled work all converge here, and an agent cannot self-authorise past it. Approval can be granted once, for a session, or as bounded autonomy — and every decision is logged.",
       },
       {
         src: "/images/projects/chaseos/03-chat-session-with-companions.webp",
+        group: "Agents and runtimes",
         alt: "ChaseOS chat panel with a saved agent session and a roster of five agent runtimes",
         caption:
           "Chat is multi-runtime rather than single-assistant. The same conversation surface addresses Claude Code, Codex, Hermes, OpenClaw or Chaser Agent, with 66 saved sessions organised into projects — so work with an agent is retained context, not a disposable window.",
       },
       {
         src: "/images/projects/chaseos/02-chat-with-embedded-terminal.webp",
+        group: "Agents and runtimes",
         alt: "Chat panel with an embedded PowerShell terminal attached to the vault working directory",
         caption:
           "A live shell sits inside the chat lane, attached to the vault working directory. The operator and the agent look at the same terminal state, so a proposed command can be inspected and run in place rather than copied between windows.",
       },
       {
         src: "/images/projects/chaseos/12-terminal-runtime-launchers.webp",
+        group: "Agents and runtimes",
         alt: "Dedicated terminal panel with keyboard launchers for five agent runtimes and a history and policy tab",
         caption:
           "The full terminal surface launches any runtime under a keystroke and keeps its own History / Policy tab. Sessions are recorded as auditable runs, which is what makes agent-initiated shell work reviewable after the fact instead of invisible.",
       },
       {
         src: "/images/projects/chaseos/19-agent-bus-coordination.webp",
+        group: "Agents and runtimes",
         alt: "Agent bus coordination panel showing two live gateways, heartbeats and all-time work lifecycle counters",
         caption:
           "The agent bus is how runtimes coordinate rather than collide. Two gateways are live with fresh heartbeats, routing across 490 and 16 channels. The all-time lifecycle counters are deliberately unflattering — 248 done against 210 expired, 124 cancelled and 22 blocked — because expiry and blocking are the safety behaviour working, not failures being hidden.",
       },
       {
         src: "/images/projects/chaseos/17-companions-creature-evolution.webp",
+        group: "Agents and runtimes",
         alt: "Companion panel showing five agent runtimes as raiseable companions with an evolution track and aura tiers",
         caption:
           "Every runtime is also a companion you raise. Form, rank and aura advance only on clean runs — 25 of them for the next evolution — so the progression is a direct readout of how reliably that agent has behaved. It makes operational trustworthiness legible instead of abstract.",
       },
       {
         src: "/images/projects/chaseos/18-memory-manager.webp",
+        group: "Agents and runtimes",
         alt: "Memory manager showing per-agent retained memory, character traits and learned insights with teach and reflect controls",
         caption:
           "Memory is per-agent, inspectable and editable. Each runtime accumulates character traits and distilled insights with the source conversations cited, and the operator can teach, reflect or delete any entry — so an agent's second brain never becomes a black box.",
       },
       {
         src: "/images/projects/chaseos/13-workspaces-derived-from-vault.webp",
+        group: "Where the work lives",
         alt: "Workspaces panel listing 27 project workspaces derived from vault activity with crons and runtimes attached",
         caption:
           "Workspaces are derived from the vault, not created by hand: 27 projects surfaced from real activity signals, each carrying its own document count, run history, bound cron jobs and assigned runtime. ChaseOS proposes new ones and flags stale ones; the operator decides.",
       },
       {
         src: "/images/projects/chaseos/14-missions-kanban.webp",
+        group: "Where the work lives",
         alt: "Missions board with triage to archived columns and live runtime cards showing queue state",
         caption:
           "Missions give agent work a board a human recognises — triage through review to done. The runtime cards above it expose real queue state, including a stalled queue, so work that is quietly not progressing is visible rather than assumed.",
       },
       {
         src: "/images/projects/chaseos/15-my-workflows.webp",
+        group: "Where the work lives",
         alt: "Workflow library showing 17 installed workflows with declared outputs, permissions and safe-by-default posture",
         caption:
           "Workflows are declared units of automation, not prompts. Each one publishes its outputs, its permission scope and its posture — the tripwire scan shown here is log-only and mutates no runtime state. Seventeen are installed, thirteen written locally.",
       },
       {
         src: "/images/projects/chaseos/16-marketplace-workflow-packs.webp",
+        group: "Where the work lives",
         alt: "Marketplace of six installable workflow packs across business, content, research, runtime and software categories",
         caption:
           "The marketplace distributes those workflows as installable packs. Installing makes a pack runnable on this machine and nothing more — it still has to clear approval before it acts, which is the difference between sharing automation and handing over control.",
       },
       {
         src: "/images/projects/chaseos/21-schedules-cron-routines.webp",
+        group: "Where the work lives",
         alt: "Unified schedule view showing 103 routines across runtimes with cadences and declared fallbacks",
         caption:
           "Every recurring job across every runtime in one plane: 88 on, 15 off, 103 routines executed by a single runtime with a declared fallback for each. Toggling one is a real config change that the runtime picks up — so it routes through the same approval gate as everything else.",
       },
       {
         src: "/images/projects/chaseos/22-site-skills-governed-browser.webp",
+        group: "Governance and approvals",
         alt: "Site skills catalogue with per-skill risk tiers, dry-run and shadow-proof modes and 316 recorded browser runs",
         caption:
           "What agents may do on real websites, governed per skill. Each carries a risk tier and an execution mode — dry-run only, shadow proof only, activation held, never run — across 316 recorded browser runs and 32 approvals. Nothing touches a live site until it clears a governed lane.",
       },
       {
         src: "/images/projects/chaseos/24-intake-review-queue.webp",
+        group: "Governance and approvals",
         alt: "Intake review queue holding 25 quarantined captures awaiting approval before joining the knowledge graph",
         caption:
           "The front door to the knowledge graph. Everything captured by the operator or collected by a runtime waits here, quarantined, until it is approved — 25 items pending. This is what stops agent-gathered material from silently becoming institutional truth.",
       },
       {
         src: "/images/projects/chaseos/23-research-collections.webp",
+        group: "Governance and approvals",
         alt: "Research collections panel proposing groupings from the knowledge graph, each requiring explicit approval to create",
         caption:
           "ChaseOS proposes structure it can see but will not impose it. Candidate collections are assembled from the graph, recent chats and agent activity — one spanning 1,974 records — and every one is labelled create · needs approval.",
       },
       {
         src: "/images/projects/chaseos/20-history-audit-12k-records.webp",
+        group: "Evidence",
         alt: "Searchable audit timeline of 12,135 records spanning build logs, docs history, agent activity and runtime audits",
         caption:
           "The receipt for all of it. 12,135 read-only records — 7,042 agent-activity entries, 2,864 build logs, 2,151 documentation changes, plus terminal runs, desktop runs, runtime audits and handovers — in one searchable timeline. Governance is only real if it leaves evidence.",
