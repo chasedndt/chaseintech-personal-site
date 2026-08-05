@@ -456,6 +456,54 @@ export const projects = [
         caption:
           "The delivery side. One channel per signal per timeframe, so a member follows only the feeds they trade.",
       },
+      {
+        src: "/images/projects/strikezone-crypto/market-thesis-full.webp",
+        alt: "Discord market thesis desk showing a full StrikeZone market thesis for BTC, ETH and SOL with an attached multi-timeframe chart composite",
+        caption:
+          "The market thesis desk, which is the system's flagship output. Every thesis carries the evidence timestamp it was built from — here 2026-07-24T11:55:43Z — then per-asset price, 24h range position, funding and open interest, then a posture with the exact levels that would upgrade or invalidate it. The chart composite above the text is assembled in the same run.",
+      },
+      {
+        src: "/images/projects/strikezone-crypto/market-thesis-hold.webp",
+        alt: "The same channel showing consecutive automated notices stating no validated change to the active market read",
+        caption:
+          "The same channel refusing. When the scheduled refresh cannot validate a complete evidence set, it publishes a hold notice instead of a thesis — no forced signal and no invented levels. This is the more important screenshot of the two: a system that only ever shows you its good days is not telling you what it does.",
+      },
+      {
+        src: "/images/projects/strikezone-crypto/discord-btc-daily-update.webp",
+        alt: "BTC daily update channel showing consolidation path, bearish path, level response plan and funding with open interest confluence",
+        caption:
+          "One asset, read in full. Consolidation and bearish paths are stated as conditions rather than predictions, and the level response plan says in advance what each outcome would mean — written before price resolves, so it cannot be rewritten afterwards.",
+      },
+      {
+        src: "/images/projects/strikezone-crypto/discord-key-levels.webp",
+        alt: "Key levels and invalidations channel",
+        caption:
+          "Levels and their invalidations kept in their own channel, so the price that would prove a read wrong is as visible as the read itself.",
+      },
+      {
+        src: "/images/projects/strikezone-crypto/discord-session-opens.webp",
+        alt: "Session opens channel posting Asia, London and New York session context",
+        caption:
+          "Session opens. Crypto trades continuously but does not behave uniformly, so the session boundary is published as context rather than left implied.",
+      },
+      {
+        src: "/images/projects/strikezone-crypto/discord-bias-flip.webp",
+        alt: "Bias flip alerts channel",
+        caption:
+          "Bias flip alerts on their own feed. Separating them means a member can subscribe to a change of direction without subscribing to every structure event.",
+      },
+      {
+        src: "/images/projects/strikezone-crypto/discord-liquidity-sweeps.webp",
+        alt: "Liquidity sweeps channel",
+        caption:
+          "Liquidity sweeps. Same routing rule as every other feed — one signal type per channel, so nothing arrives mixed.",
+      },
+      {
+        src: "/images/projects/strikezone-crypto/discord-btc-daily-close.webp",
+        alt: "BTC daily close channel",
+        caption:
+          "The daily close, which is what the next morning's thesis is measured against.",
+      },
     ],
     subProjects: [
       {
@@ -481,26 +529,12 @@ export const projects = [
         repositoryUrl: null,
       },
     ],
-    caseStudy: [
-      {
-        heading: "The problem",
-        body: "Trading content is the least trustworthy corner of the internet, because claims are cheap and evidence is optional. StrikeZone is run as the opposite experiment: a trading-systems workspace where everything is an audited artifact — and where no live trade execution exists to overclaim about.",
-      },
-      {
-        heading: "Indicator engineering as reviewed software",
-        body: "The private research design treats indicator changes as reviewed software, with audit material intended to preserve why detection logic changed. No public repository is currently declared on this portfolio, so individual indicators and their validation state are not presented here as independently verified releases.",
-      },
-      {
-        heading: "The automation layer",
-        body: "Private project materials describe a governed research loop spanning evidence acquisition, context gathering, thesis drafting and reviewed delivery. Those implementation details remain outside the public evidence set, and nothing on this page grants execution authority or converts internal workflow notes into a public performance claim.",
-      },
-      {
-        heading: "Where it is now",
-        body: "A private research workspace with no public repository currently linked here. The portfolio publishes the research boundary, not an implementation audit: no live trade execution, performance guarantee, validated public track record or production subscription service is claimed.",
-      },
-    ],
     relatedVideos: [],
     caseStudy: [
+      {
+        heading: "The market thesis desk",
+        body: "The flagship output is a full market read, not an alert. Each thesis opens with the evidence timestamp it was built from, then gives per-asset price, position within the 24h range, funding and open interest for BTC, ETH and SOL, then a posture stated with the exact levels that would upgrade or invalidate it — a reclaim above one price, a loss of another. The chart composite is assembled in the same run, so the picture and the text describe the same moment rather than being paired after the fact. When the scheduled refresh cannot validate a complete evidence set, it publishes a hold notice instead: no forced signal, no invented levels, and an explicit statement that the previous read still stands until validation passes.",
+      },
       {
         heading: "Two engines, one server",
         body: "The member-facing half is a suite of proprietary TradingView indicators — market structure, scored fair-value gaps, liquidity sweeps, EMA crossovers, session killzones and an alt risk-regime index. Each one builds a JSON alert payload and fires it at bar close into its own Discord webhook, so a member subscribes to exactly the signals they trade rather than one firehose. The second half is a research runtime that reads evidence, drafts market analysis, and grades itself.",
