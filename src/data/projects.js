@@ -316,7 +316,41 @@ export const projects = [
     boundary:
       "Not claiming a public installer, live marketplace transactions, or a managed-agent service.",
     links: [{ type: "site", label: "chaseos.ai", url: "https://chaseos.ai" }],
-    media: [],
+    media: [
+      {
+        src: "/images/projects/chaseos-web/chaseos-web-dark-hero.webp",
+        alt: "ChaseOS Web homepage hero in dark mode, showing the inputs-project-outputs graph",
+        caption:
+          "The homepage in dark mode — the default theme, framing the product as one private command layer over work, memory, agents and execution.",
+      },
+      {
+        src: "/images/projects/chaseos-web/chaseos-web-light-hero.webp",
+        alt: "ChaseOS Web homepage hero in light mode, showing the inputs-project-outputs graph",
+        caption: "The same hero in light mode. Theme preference is saved per visitor.",
+      },
+      {
+        src: "/images/projects/chaseos-web/chaseos-web-dark-live-graph.webp",
+        alt: "Live agent knowledge-graph visualization showing runtime profiles, projects and approval waiting states",
+        caption:
+          "\"See it live\": real footage of the knowledge graph as an operating surface — runtime profiles (OpenClaw, Codex, Claude Code) parked on nodes, work-beams into the projects they're touching, and a pending-approvals badge rendered live.",
+      },
+      {
+        src: "/images/projects/chaseos-web/chaseos-web-light-live-graph.webp",
+        alt: "Live agent knowledge-graph visualization in light mode",
+        caption: "The same live graph view in light mode.",
+      },
+      {
+        src: "/images/projects/chaseos-web/chaseos-web-dark-studio.webp",
+        alt: "Studio command-surface section listing runtime lanes and the approvals review boundary",
+        caption:
+          "The Studio, Runtime Lanes and Approvals sections, each tagged with its real status (configured, gated, planned) rather than uniform marketing language.",
+      },
+      {
+        src: "/images/projects/chaseos-web/chaseos-web-light-studio.webp",
+        alt: "Studio command-surface section in light mode",
+        caption: "The same section in light mode.",
+      },
+    ],
     caseStudy: [
       {
         heading: "The problem",
