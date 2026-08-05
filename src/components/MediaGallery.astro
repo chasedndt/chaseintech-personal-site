@@ -10,10 +10,10 @@
 // { src: "/images/projects/<slug>/shot-1.webp", alt: "...", caption: "..." }
 // or { type: "video", src: "...", poster: "...", alt: "..." }
 //
-// `fit: "contain"` shows the whole asset inside the 16:9 tile instead of
-// cropping to fill. Screenshots default to "cover" because cropping a UI shot
-// is harmless, but a diagram cropped is a diagram ruined — wide architecture
-// artwork must opt into "contain" or it loses its outer boxes.
+// Nothing is cropped by default: assets are shown whole inside the tile.
+// Pass fit: "cover" for an asset that genuinely reads as a background and is
+// safe to crop. Pass wide: true for artwork that needs the full row —
+// diagrams and very wide strips lose their detail at a third of a row.
 interface Props {
   media?: Array<{
     src: string;
@@ -21,6 +21,7 @@ interface Props {
     caption?: string;
     type?: string;
     fit?: "cover" | "contain";
+    wide?: boolean;
   }>;
   label?: string;
 }
@@ -34,18 +35,24 @@ const { media = [], label = "Media" } = Astro.props;
     media.length > 0 ? (
       <ul class="grid">
         {media.map((item) => (
-          <li>
+          <li class={item.wide ? "wide" : undefined}>
             <figure>
               <div class="frame">
                 {item.type === "video" ? (
-                  <video src={item.src} poster={item.poster} controls preload="none" />
+                  <video
+                    src={item.src}
+                    poster={item.poster}
+                    controls
+                    preload="none"
+                    class={item.fit === "cover" ? "fit-cover" : undefined}
+                  />
                 ) : (
                   <img
                     src={item.src}
                     alt={item.alt}
                     loading="lazy"
                     decoding="async"
-                    class={item.fit === "contain" ? "fit-contain" : undefined}
+                    class={item.fit === "cover" ? "fit-cover" : undefined}
                   />
                 )}
               </div>
@@ -97,17 +104,38 @@ const { media = [], label = "Media" } = Astro.props;
     display: grid;
     place-items: center;
   }
+  /* Never crop by default.
+     The tile is a fixed 16:9 for layout calm, but real assets are not: app
+     screenshots run 16:10, panel details are near-square, and timeline strips
+     are extremely wide. Filling the tile silently discarded a lot of them —
+     measured at 10% for a typical screenshot and up to 69% for a wide strip,
+     which is not a crop, it is a different image. `contain` letterboxes
+     instead, so what ships is what was captured. Opt back in per item with
+     fit: "cover" when an asset genuinely is a background. */
   .frame img,
   .frame video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  /* Diagrams: show the whole artwork rather than filling the tile. */
-  .frame img.fit-contain {
     object-fit: contain;
-    padding: 0.5rem;
+    display: block;
+    padding: 0.4rem;
+  }
+  .frame img.fit-cover,
+  .frame video.fit-cover {
+    object-fit: cover;
+    padding: 0;
+  }
+  /* Wide artwork (diagrams, timeline strips) gets the full row rather than a
+     third of one, so detail inside it stays legible. */
+  .grid > li.wide {
+    grid-column: 1 / -1;
+  }
+  .grid > li.wide .frame {
+    aspect-ratio: auto;
+  }
+  .grid > li.wide .frame img {
+    height: auto;
+    max-height: 30rem;
   }
   figcaption {
     margin-top: 0.55rem;

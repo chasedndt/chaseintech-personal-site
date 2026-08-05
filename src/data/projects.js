@@ -173,7 +173,10 @@ export const projects = [
       "Installable from PyPI as chaseos-core and usable inside any Python project. ChaseOS is the framework's own proving ground — the same package is the substrate the wider system runs on, so the governance model is demonstrated in production rather than described in a README.",
     technologies: ["Python 3.11+", "MIT licence", "PyPI", "Ports and adapters", "YAML policy manifests"],
     repositoryUrl: "https://github.com/chasedndt/ChaseOS-Core",
-    liveUrl: "https://pypi.org/project/chaseos-core/",
+    // No liveUrl: this is a library, not a hosted product, and the primary
+    // "Visit live product" CTA would be wrong. The repository is the
+    // destination; PyPI is where you install from and sits in the link row.
+    liveUrl: null,
     boundary:
       "Alpha and pre-1.0. Core ships no workflow manifests, so workflow execution escalates rather than running, and it deliberately denies gated operations until an authority provider is registered. It is not a production autonomy runtime, a hosted service, or a model.",
     links: [
@@ -184,26 +187,41 @@ export const projects = [
       },
       {
         type: "docs",
-        label: "PyPI — chaseos-core",
+        label: "Install from PyPI",
         url: "https://pypi.org/project/chaseos-core/",
       },
       {
         type: "docs",
-        label: "Architecture and decision records",
+        label: "Start here — concepts",
+        url: "https://github.com/chasedndt/ChaseOS-Core/tree/main/docs/concepts",
+      },
+      {
+        type: "docs",
+        label: "Architecture",
         url: "https://github.com/chasedndt/ChaseOS-Core/blob/main/docs/ARCHITECTURE.md",
+      },
+      {
+        type: "docs",
+        label: "Runnable examples",
+        url: "https://github.com/chasedndt/ChaseOS-Core/tree/main/examples",
+      },
+      {
+        type: "docs",
+        label: "Decision records",
+        url: "https://github.com/chasedndt/ChaseOS-Core/tree/main/docs/adr",
       },
     ],
     media: [
       {
         src: "/images/projects/chaseos-core/authority-pipeline.svg",
-        fit: "contain",
+        wide: true,
         alt: "The ChaseOS Core authority pipeline: a request is routed by modality, checked by the approval gateway, executed within a bounded write scope and recorded as evidence, with a deny path when no gateway is bound",
         caption:
           "The authority pipeline. A request is routed by modality, gated, bounded and evidenced — and with no authority provider bound it denies rather than proceeds. Canonical knowledge is reached only through an explicit promotion gate, never by direct agent writeback.",
       },
       {
         src: "/images/projects/chaseos-core/chaseos-core-banner.svg",
-        fit: "contain",
+        wide: true,
         alt: "ChaseOS Core banner showing the ChaseOS mark with the tagline: governed, local-first framework for hybrid-intelligence systems",
         caption:
           "MIT licensed, approval-gated, fail-closed — the three properties the framework is built to guarantee.",
@@ -755,48 +773,56 @@ body: "The source is public and running. Shipped: the unified project model, typ
     media: [
       {
         src: "/images/projects/toolshape-voice/dictation-dark.webp",
+        fit: "contain",
         alt: "Toolshape Voice dictation history grouped by day, with per-application word counts",
         caption:
           "The home view. Every dictation is written to local history before insertion is attempted, which is why one is never lost when the target application cannot accept it.",
       },
       {
         src: "/images/projects/toolshape-voice/voicebar-listening.webp",
+        fit: "contain",
         alt: "The Voice Bar while listening, showing a live waveform with cancel and accept controls",
         caption:
           "The Voice Bar while the hotkey is held. The waveform is the real microphone level, so it is visible whether the machine is actually hearing anything.",
       },
       {
         src: "/images/projects/toolshape-voice/insights-dark.webp",
+        fit: "contain",
         alt: "Insights showing total words, speed, activity streak and a per-application breakdown",
         caption:
           "Usage analytics are content-free by construction: counts and categories only, never transcript text. An automated test fails the build if a dictated canary string reaches the analytics table.",
       },
       {
         src: "/images/projects/toolshape-voice/languages-dark.webp",
+        fit: "contain",
         alt: "Language picker listing thirty languages, each shown in its own script",
         caption:
           "Thirty languages, each shown in its own script. The list is what the local model handles well rather than everything it claims, because a language it transcribes badly is worse than one not offered at all.",
       },
       {
         src: "/images/projects/toolshape-voice/settings-dark.webp",
+        fit: "contain",
         alt: "General settings showing the activation shortcut, microphone, dictation language, clipboard copy and theme",
         caption:
           "The settings that decide how a dictation behaves, in one pane: the hold shortcut, which microphone, which language, and whether every transcript is also copied to the clipboard.",
       },
       {
         src: "/images/projects/toolshape-voice/style-dark.webp",
+        fit: "contain",
         alt: "Voice styles offering built-in profiles that preview their changes before applying",
         caption:
           "Voice styles match tone to the application being dictated into. Built-in profiles preview their exact changes; custom instructions fail closed until a provider exists rather than silently doing nothing.",
       },
       {
         src: "/images/projects/toolshape-voice/transforms-dark.webp",
+        fit: "contain",
         alt: "Transform recipes bound to hotkeys, each showing its plan and protected spans before applying",
         caption:
           "Transforms rewrite a dictation after the fact. Each previews its plan, its protected placeholders and the revision it expects, so a rewrite is inspected before it is trusted.",
       },
       {
         src: "/images/projects/toolshape-voice/dictation-light.webp",
+        fit: "contain",
         alt: "The same dictation history in light mode",
         caption:
           "Light and dark follow the Windows theme.",
