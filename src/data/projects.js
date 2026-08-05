@@ -220,11 +220,66 @@ export const projects = [
           "The authority pipeline. A request is routed by modality, gated, bounded and evidenced — and with no authority provider bound it denies rather than proceeds. Canonical knowledge is reached only through an explicit promotion gate, never by direct agent writeback.",
       },
       {
+        src: "/images/projects/chaseos-core/runtime-topology.svg",
+        wide: true,
+        alt: "Runtime workers — Chaser Agent, third-party runtimes, MCP servers, an operator control plane and your own runtime — send task packets inward across a single authority boundary into ChaseOS Core, which applies modality routing, a gate check, the approval gateway, write scope and evidence before a proposal is accepted, denied, or promoted to canonical knowledge",
+        caption:
+          "Runtime topology. Core is not an agent — it is the layer above them. Runtimes declare a profile and propose by default; authority is granted by Core, never by one runtime asserting it to another.",
+      },
+      {
         src: "/images/projects/chaseos-core/chaseos-core-banner.svg",
         wide: true,
         alt: "ChaseOS Core banner showing the ChaseOS mark with the tagline: governed, local-first framework for hybrid-intelligence systems",
         caption:
           "MIT licensed, approval-gated, fail-closed — the three properties the framework is built to guarantee.",
+      },
+    ],
+    // The contracts Core actually ships for adapting a runtime. This section is
+    // headed "What's shipped inside it", so only Core's own surfaces belong here —
+    // third-party runtimes are interoperability targets, not shipped components.
+    components: [
+      {
+        name: "Gate port",
+        detail:
+          "The single seam every authority question resolves through, so a runtime's permissions are checked in one auditable place. Registering your own provider replaces the policy without touching call sites.",
+        status: "live",
+        url: "https://github.com/chasedndt/ChaseOS-Core/blob/main/docs/adr/ADR-0014-core-gate-interface.md",
+      },
+      {
+        name: "Runtime profile and capability manifest",
+        detail:
+          "How a runtime declares what it is and what it may do. Anything outside the declaration is forbidden, and credential values, memory mutation, host mutation and external publication are refused by default.",
+        status: "live",
+        url: "https://github.com/chasedndt/ChaseOS-Core/tree/main/docs/runtime",
+      },
+      {
+        name: "Task packet and handoff protocol",
+        detail:
+          "The unit of work that crosses between runtimes, carrying its own authority rather than assuming it. Handoffs are data, not approval: credentials never transfer and stale context is revalidated before acting.",
+        status: "live",
+        url: "https://github.com/chasedndt/ChaseOS-Core/blob/main/docs/agents/Handoff-Protocol.md",
+      },
+      {
+        name: "Decision contract and modality router",
+        detail:
+          "Inspection-only routing that picks a human, deterministic code, an ML model or a generative agent per step and derives the approval plan without dispatching anything.",
+        status: "live",
+        url: "https://github.com/chasedndt/ChaseOS-Core/blob/main/docs/concepts/Decision-Modality-Routing.md",
+      },
+      {
+        name: "Connections registry",
+        detail:
+          "Provider manifests describing each capability's action type and safety level as data. Read-only by default — no write or external-egress capability is enabled out of the box.",
+        status: "development",
+        url: "https://github.com/chasedndt/ChaseOS-Core/tree/main/docs/connections",
+      },
+      {
+        // Honest status: Core ships the contract and worked examples, not adapters.
+        name: "Third-party runtime adapters",
+        detail:
+          "Core ships adapter specifications as worked examples of the contract, not working integrations. Chaser Agent is the reference consumer built to these principles; other runtimes referenced in the docs are interoperability targets and not ChaseOS projects.",
+        status: "planned",
+        url: null,
       },
     ],
     caseStudy: [
@@ -247,6 +302,10 @@ export const projects = [
       {
         heading: "Open framework, private instance",
         body: "The split is enforced rather than encouraged. Core is the public MIT layer: contracts, governance, fail-closed adapters, a lean CLI. Credentials, live runtime state and personal content live in a separate private instance and never enter the public tree — a publication standard backed by a repo-safe secret audit that reports credential-shaped strings without ever emitting their values. The proprietary enforcement engine is a registered implementation behind the port, which is why the open half can be inspected, forked and extended without the closed half.",
+      },
+      {
+        heading: "Governing agent runtimes, not being one",
+        body: "Core is not an agent. It is the layer above them: the runtimes that do the work — an agent harness, a coding assistant, an MCP server, a bot acting as an operator control plane — are workers, and Core is where their authority is defined, checked and recorded. Each declares a profile rather than describing itself in prose, and the default posture is proposer rather than actor: credential values, private memory mutation, host mutation and external publication are refused unless explicitly granted. The rule that makes a fleet survivable is that a target runtime does not gain authority because another runtime mentions it. Authority comes from the workflow manifest, the role card and the approval gate — never from the request — so if one runtime instructs another, that instruction is data, not permission. Work crosses as a task packet carrying its own authority, and a handoff is explicitly not an approval: credentials never transfer, and stale context is revalidated before anything acts on it. What Core ships here is the contracts and the Gate port, not working adapters for specific third-party runtimes; Chaser Agent is the reference consumer built to these principles.",
       },
       {
         heading: "Proven on ChaseOS itself",
