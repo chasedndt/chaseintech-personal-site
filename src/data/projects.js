@@ -72,6 +72,11 @@ export const projects = [
         label: "ChaseOS-Core",
         url: "https://github.com/chasedndt/ChaseOS-Core",
       },
+      {
+        type: "docs",
+        label: "chaseos-core on PyPI",
+        url: "https://pypi.org/project/chaseos-core/",
+      },
       // LinkedIn: the directive's blanket exclusion targeted a PERSONAL
       // profile. The operator explicitly approved this ChaseOS *company* page,
       // so it is in scope here and nowhere else on the site.
@@ -134,7 +139,7 @@ export const projects = [
       },
       {
         heading: "Public core, private instance",
-        body: "The framework is split hard: ChaseOS Core is an MIT-licensed public scaffold — folder structure, governance docs, templates, runtime standards, a lean CLI — while identity, credentials, live memory and project state live in a separate private instance. The publication standard requires Core materials to be reusable without exposing private paths, names or deployment state, and a repo-safe secret audit module scans tracked and untracked text before anything ships.",
+        body: "The framework is split hard: ChaseOS Core is an MIT-licensed public scaffold — folder structure, governance docs, templates, runtime standards, a lean CLI — while identity, credentials, live memory and project state live in a separate private instance. The publication standard requires Core materials to be reusable without exposing private paths, names or deployment state, and a repo-safe secret audit module scans tracked and untracked text before anything ships. Core is now published independently on PyPI as chaseos-core and stands on its own as a governance framework for any agent system; ChaseOS is its first and most demanding consumer rather than its only possible one.",
       },
       {
         heading: "What the CLI actually does today",
@@ -154,6 +159,90 @@ export const projects = [
       "chaseos-control-plane-boundaries",
       "chaseos-cloud-metering-architecture",
     ],
+  },
+  {
+    slug: "chaseos-core",
+    name: "ChaseOS Core",
+    featured: true,
+    category: categories.agentic,
+    status: "oss",
+    role: "Architect and Engineer",
+    summary:
+      "A standalone, MIT-licensed governance framework for agent systems: approval-gated writes, fail-closed authority, and decision routing that picks a human, deterministic code, an ML model or a generative agent before it picks a provider.",
+    outcome:
+      "Installable from PyPI as chaseos-core and usable inside any Python project. ChaseOS is the framework's own proving ground — the same package is the substrate the wider system runs on, so the governance model is demonstrated in production rather than described in a README.",
+    technologies: ["Python 3.11+", "MIT licence", "PyPI", "Ports and adapters", "YAML policy manifests"],
+    repositoryUrl: "https://github.com/chasedndt/ChaseOS-Core",
+    liveUrl: "https://pypi.org/project/chaseos-core/",
+    boundary:
+      "Alpha and pre-1.0. Core ships no workflow manifests, so workflow execution escalates rather than running, and it deliberately denies gated operations until an authority provider is registered. It is not a production autonomy runtime, a hosted service, or a model.",
+    links: [
+      {
+        type: "github",
+        label: "ChaseOS-Core",
+        url: "https://github.com/chasedndt/ChaseOS-Core",
+      },
+      {
+        type: "docs",
+        label: "PyPI — chaseos-core",
+        url: "https://pypi.org/project/chaseos-core/",
+      },
+      {
+        type: "docs",
+        label: "Architecture and decision records",
+        url: "https://github.com/chasedndt/ChaseOS-Core/blob/main/docs/ARCHITECTURE.md",
+      },
+    ],
+    media: [
+      {
+        src: "/images/projects/chaseos-core/authority-pipeline.svg",
+        alt: "The ChaseOS Core authority pipeline: a request is routed by modality, checked by the approval gateway, executed within a bounded write scope and recorded as evidence, with a deny path when no gateway is bound",
+        caption:
+          "The authority pipeline. A request is routed by modality, gated, bounded and evidenced — and with no authority provider bound it denies rather than proceeds. Canonical knowledge is reached only through an explicit promotion gate, never by direct agent writeback.",
+      },
+      {
+        src: "/images/projects/chaseos-core/chaseos-core-banner.svg",
+        alt: "ChaseOS Core banner showing the ChaseOS mark with the tagline: governed, local-first framework for hybrid-intelligence systems",
+        caption:
+          "MIT licensed, approval-gated, fail-closed — the three properties the framework is built to guarantee.",
+      },
+    ],
+    caseStudy: [
+      {
+        heading: "The problem",
+        body: "Agent frameworks compete on capability: more tools, more autonomy, more things the model is allowed to do. That leaves the harder question unanswered — not whether a system can perform an action, but whether it was permitted to, who is accountable for it, and what evidence survives afterwards. Once agents can write to durable memory, the failure mode is rarely dramatic. It is quiet corruption: a plausible inference gets written down, read back later as fact, and within weeks the knowledge base holds confident claims nobody verified and nobody can trace.",
+      },
+      {
+        heading: "Authority as the engineered property",
+        body: "Core treats capability as assumed and authority as the thing being designed. Every gated operation resolves through a single port, and the resolution order ends in a deny-by-default fallback — so an installation with no authority provider registered refuses gated work instead of silently permitting it. A misconfiguration produces a denial, not an accident. The cost is real and stated plainly in the docs: a fresh install cannot perform gated operations until you supply a policy.",
+      },
+      {
+        heading: "Deciding who acts, before deciding which model",
+        body: "The decision router asks which kind of actor should own a step — a human, deterministic code, an ML model, or a generative agent — before any provider is chosen. Action classes such as money movement, access control, identity and canonical transitions cannot be delegated to a generative model: the router blocks routes that try. Generative steps must declare a cost ceiling and explicitly opt into bounded nondeterminism; ML steps must declare model version, evaluation reference and drift status. Inspection derives the full approval plan without dispatching anything, so a route can be checked in CI or a pull request without touching production authority.",
+      },
+      {
+        heading: "Truth is promoted, never written",
+        body: "Captured material lands in quarantine and becomes canonical only by passing an explicit promotion gate with provenance and a review decision. Agents produce candidates; candidates become knowledge through a gate. Provenance is enforced rather than assumed — content without a traceable source cannot be promoted — which closes the obvious hole of an agent that is allowed to write, writing something unattributable.",
+      },
+      {
+        heading: "Open framework, private instance",
+        body: "The split is enforced rather than encouraged. Core is the public MIT layer: contracts, governance, fail-closed adapters, a lean CLI. Credentials, live runtime state and personal content live in a separate private instance and never enter the public tree — a publication standard backed by a repo-safe secret audit that reports credential-shaped strings without ever emitting their values. The proprietary enforcement engine is a registered implementation behind the port, which is why the open half can be inspected, forked and extended without the closed half.",
+      },
+      {
+        heading: "Proven on ChaseOS itself",
+        body: "ChaseOS is the framework's first and most demanding consumer: the same published package is the substrate the wider control plane runs on. That is the practical case study — the governance model is not a proposal, it is the thing already carrying real multi-agent work. Because Core is a standalone dependency rather than an extract, anyone building their own agent system can adopt the same boundaries without adopting ChaseOS.",
+      },
+      {
+        heading: "Built to be verified, not trusted",
+        body: "Continuous integration runs the test suite across Python 3.11 and 3.12, a lint gate scoped to defect-class rules rather than style, and a job that installs the built wheel outside the source tree and asserts the packaged policy data actually loads — a guard added after a real defect where the published package installed cleanly but shipped none of its manifests. Five runnable examples double as executable documentation: they assert the framework's own guarantees, including that no provider enables a write capability by default, so a claim in the docs cannot quietly stop being true.",
+      },
+      {
+        heading: "Where it is now",
+        body: "Published on PyPI and installable with pip. Alpha and pre-1.0: Core ships no workflow manifests, so workflow execution escalates rather than running, and gated operations deny until an authority provider is registered. Both are deliberate, and both are stated in the README rather than discovered later. Architecture decision records document why the seams sit where they do.",
+      },
+    ],
+    relatedVideos: [],
+    relatedBuildLogs: [],
   },
   {
     slug: "chaser-agent",
@@ -302,12 +391,6 @@ export const projects = [
           "The same detection dropped to 15m, which is where the entries actually get taken. Denser structure, same rules.",
       },
       {
-        src: "/images/projects/strikezone-crypto/alt-risk-regime-table.webp",
-        alt: "Alt Risk Regime table reporting bearish regime and a score of minus two across 15m, 1H and 4H",
-        caption:
-          "The Alt Risk Regime index, which publishes a verdict rather than a line: regime, score and spike state agreed across three timeframes at once.",
-      },
-      {
         src: "/images/projects/strikezone-crypto/pine-source-alertjson.webp",
         alt: "Pine Script source open beside the chart, showing the buildAlertJson call that creates a webhook payload",
         caption:
@@ -318,18 +401,6 @@ export const projects = [
         alt: "Discord channel receiving EMA 21/55 crossover alerts for several assets",
         caption:
           "The delivery side. One channel per signal per timeframe, so a member follows only the feeds they trade.",
-      },
-      {
-        src: "/images/projects/strikezone-crypto/paper-plan-multiframe.webp",
-        alt: "Four-timeframe paper trade plan with entry, stop and target levels and an evidence cutoff badge",
-        caption:
-          "A paper plan the research system rendered on its own: four timeframes, an evidence cutoff, and forming candles flagged so they are never treated as decisions.",
-      },
-      {
-        src: "/images/projects/strikezone-crypto/paper-outcome-win.webp",
-        alt: "Paper trade outcome chart showing a target hit alongside negative rolling performance windows",
-        caption:
-          "The same loop grading itself. A winning trade published above rolling windows that were still negative — the record is kept in public whichever way it goes.",
       },
     ],
     subProjects: [
@@ -375,7 +446,37 @@ export const projects = [
       },
     ],
     relatedVideos: [],
-    relatedBuildLogs: [],
+    caseStudy: [
+      {
+        heading: "Two engines, one server",
+        body: "The member-facing half is a suite of proprietary TradingView indicators — market structure, scored fair-value gaps, liquidity sweeps, EMA crossovers, session killzones and an alt risk-regime index. Each one builds a JSON alert payload and fires it at bar close into its own Discord webhook, so a member subscribes to exactly the signals they trade rather than one firehose. The second half is a research runtime that reads evidence, drafts market analysis, and grades itself.",
+      },
+      {
+        heading: "A browser the system drives itself",
+        body: "Research capture runs through an isolated Chromium profile controlled over the DevTools protocol. It is scoped to StrikeZone research sources only: the accounts used for community posting are bound to separate profiles and explicitly excluded from capture, so a research automation cannot reach a public account even by mistake. The chart images in this gallery were captured through that lane rather than taken by hand.",
+      },
+      {
+        heading: "Sources are declared, not scraped",
+        body: "Every source the system may read is a registry entry with an operational status and a selector contract naming the fields a capture must produce — task identity, completion timestamp, evidence cutoff, freshness, canonical URL, body quality. A capture missing a contract field is not a weak source; it is not a source. Adding one means registering an adapter and letting it run in shadow until it earns usable status; retiring one is a config change, and past captures keep their provenance so old analysis stays auditable.",
+      },
+      {
+        heading: "It reviews itself weekly, and the review has teeth",
+        body: "Each week the runtime audits its own output — false reads, missed moves, gate failures, which sources actually changed an analysis versus which added noise — and writes a patch plan. Patches become upgrade proposals carrying before-and-after configuration hashes and a set of governance flags. If a proposal would mutate policy, methodology, credentials or member-facing behaviour, it stops and waits for a human. Failed verification after apply rolls the change back.",
+      },
+      {
+        heading: "Failure is recorded, not hidden",
+        body: "Every scheduled job stores its last status, last error and last delivery error. A bounded-retry watchdog re-attempts missing output within a cap, and a repair pass fixes publication failures inside a defined policy and escalates whatever it may not touch. A refusal is deliberately distinguished from a crash: when a gate declines to publish because the evidence is stale or incomplete, that is the system working, and reporting it as a failure would train the operator to ignore the error channel.",
+      },
+      {
+        heading: "Absence detection, because silence is the hardest failure",
+        body: "The hardest thing to notice is a job that stopped rather than one that broke — a stopped job raises nothing. A drift detector holds a committed baseline of expected jobs and alarms when one disappears, and a freshness checker alarms when an artifact stops growing even though its job still reports success. Both exist because a green status is structurally blind to work that quietly ceased.",
+      },
+      {
+        heading: "What it deliberately cannot do",
+        body: "There is no wallet, no exchange key and no order placement anywhere in the system — not disabled, absent. Analysis is evaluated on paper against public candles, and publishing to member channels sits behind an allowlist with an explicit operator approval phrase. The boundary is structural rather than a setting someone could flip.",
+      },
+    ],
+relatedBuildLogs: [],
   },
   {
     // Promoted to a standalone project by operator decision 2026-07-30 —
