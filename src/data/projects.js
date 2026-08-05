@@ -723,7 +723,7 @@ body: "The source is public and running. Shipped: the unified project model, typ
         src: "/images/projects/toolshape-voice/dictation-dark.webp",
         alt: "Toolshape Voice dictation history grouped by day, with per-application word counts",
         caption:
-          "Every dictation is written to local history before insertion is attempted, which is why one is never lost when the target application cannot accept it.",
+          "The home view. Every dictation is written to local history before insertion is attempted, which is why one is never lost when the target application cannot accept it.",
       },
       {
         src: "/images/projects/toolshape-voice/voicebar-listening.webp",
@@ -742,6 +742,24 @@ body: "The source is public and running. Shipped: the unified project model, typ
         alt: "Language picker listing thirty languages, each shown in its own script",
         caption:
           "Thirty languages, each shown in its own script. The list is what the local model handles well rather than everything it claims, because a language it transcribes badly is worse than one not offered at all.",
+      },
+      {
+        src: "/images/projects/toolshape-voice/settings-dark.webp",
+        alt: "General settings showing the activation shortcut, microphone, dictation language, clipboard copy and theme",
+        caption:
+          "The settings that decide how a dictation behaves, in one pane: the hold shortcut, which microphone, which language, and whether every transcript is also copied to the clipboard.",
+      },
+      {
+        src: "/images/projects/toolshape-voice/style-dark.webp",
+        alt: "Voice styles offering built-in profiles that preview their changes before applying",
+        caption:
+          "Voice styles match tone to the application being dictated into. Built-in profiles preview their exact changes; custom instructions fail closed until a provider exists rather than silently doing nothing.",
+      },
+      {
+        src: "/images/projects/toolshape-voice/transforms-dark.webp",
+        alt: "Transform recipes bound to hotkeys, each showing its plan and protected spans before applying",
+        caption:
+          "Transforms rewrite a dictation after the fact. Each previews its plan, its protected placeholders and the revision it expects, so a rewrite is inspected before it is trusted.",
       },
       {
         src: "/images/projects/toolshape-voice/dictation-light.webp",
