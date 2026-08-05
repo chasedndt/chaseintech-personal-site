@@ -773,56 +773,48 @@ body: "The source is public and running. Shipped: the unified project model, typ
     media: [
       {
         src: "/images/projects/toolshape-voice/dictation-dark.webp",
-        fit: "contain",
         alt: "Toolshape Voice dictation history grouped by day, with per-application word counts",
         caption:
           "The home view. Every dictation is written to local history before insertion is attempted, which is why one is never lost when the target application cannot accept it.",
       },
       {
         src: "/images/projects/toolshape-voice/voicebar-listening.webp",
-        fit: "contain",
         alt: "The Voice Bar while listening, showing a live waveform with cancel and accept controls",
         caption:
           "The Voice Bar while the hotkey is held. The waveform is the real microphone level, so it is visible whether the machine is actually hearing anything.",
       },
       {
         src: "/images/projects/toolshape-voice/insights-dark.webp",
-        fit: "contain",
         alt: "Insights showing total words, speed, activity streak and a per-application breakdown",
         caption:
           "Usage analytics are content-free by construction: counts and categories only, never transcript text. An automated test fails the build if a dictated canary string reaches the analytics table.",
       },
       {
         src: "/images/projects/toolshape-voice/languages-dark.webp",
-        fit: "contain",
         alt: "Language picker listing thirty languages, each shown in its own script",
         caption:
           "Thirty languages, each shown in its own script. The list is what the local model handles well rather than everything it claims, because a language it transcribes badly is worse than one not offered at all.",
       },
       {
         src: "/images/projects/toolshape-voice/settings-dark.webp",
-        fit: "contain",
         alt: "General settings showing the activation shortcut, microphone, dictation language, clipboard copy and theme",
         caption:
           "The settings that decide how a dictation behaves, in one pane: the hold shortcut, which microphone, which language, and whether every transcript is also copied to the clipboard.",
       },
       {
         src: "/images/projects/toolshape-voice/style-dark.webp",
-        fit: "contain",
         alt: "Voice styles offering built-in profiles that preview their changes before applying",
         caption:
           "Voice styles match tone to the application being dictated into. Built-in profiles preview their exact changes; custom instructions fail closed until a provider exists rather than silently doing nothing.",
       },
       {
         src: "/images/projects/toolshape-voice/transforms-dark.webp",
-        fit: "contain",
         alt: "Transform recipes bound to hotkeys, each showing its plan and protected spans before applying",
         caption:
           "Transforms rewrite a dictation after the fact. Each previews its plan, its protected placeholders and the revision it expects, so a rewrite is inspected before it is trusted.",
       },
       {
         src: "/images/projects/toolshape-voice/dictation-light.webp",
-        fit: "contain",
         alt: "The same dictation history in light mode",
         caption:
           "Light and dark follow the Windows theme.",
