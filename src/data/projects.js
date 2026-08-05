@@ -225,7 +225,38 @@ export const projects = [
     boundary:
       "Not claiming a public installer, live marketplace transactions, or a managed-agent service.",
     links: [{ type: "site", label: "chaseos.ai", url: "https://chaseos.ai" }],
-    media: [],
+    media: [
+      {
+        src: "/images/projects/toolshape-voice/dictation-dark.webp",
+        alt: "Toolshape Voice dictation history grouped by day, with per-application word counts",
+        caption:
+          "Every dictation is written to local history before insertion is attempted, which is why one is never lost when the target application cannot accept it.",
+      },
+      {
+        src: "/images/projects/toolshape-voice/voicebar-listening.webp",
+        alt: "The Voice Bar while listening, showing a live waveform with cancel and accept controls",
+        caption:
+          "The Voice Bar while the hotkey is held. The waveform is the real microphone level, so it is visible whether the machine is actually hearing anything.",
+      },
+      {
+        src: "/images/projects/toolshape-voice/insights-dark.webp",
+        alt: "Insights showing total words, speed, activity streak and a per-application breakdown",
+        caption:
+          "Usage analytics are content-free by construction: counts and categories only, never transcript text. An automated test fails the build if a dictated canary string reaches the analytics table.",
+      },
+      {
+        src: "/images/projects/toolshape-voice/languages-dark.webp",
+        alt: "Language picker listing thirty languages, each shown in its own script",
+        caption:
+          "Thirty languages, each shown in its own script. The list is what the local model handles well rather than everything it claims, because a language it transcribes badly is worse than one not offered at all.",
+      },
+      {
+        src: "/images/projects/toolshape-voice/dictation-light.webp",
+        alt: "The same dictation history in light mode",
+        caption:
+          "Light and dark follow the Windows theme.",
+      },
+    ],
     caseStudy: [
       {
         heading: "The problem",
@@ -252,7 +283,7 @@ export const projects = [
     name: "StrikeZone Crypto",
     featured: true,
     category: categories.trading,
-    status: "research",
+    status: "live",
     role: "Systems Designer and Researcher",
     summary:
       "A private trading-systems R&D workspace for indicator, market-intelligence and signal-delivery research.",
@@ -282,7 +313,44 @@ export const projects = [
         url: "https://github.com/chasedndt/Strikezone-Crypto-Pinescript-V6-Indicators",
       },
     ],
-    media: [],
+    media: [
+      {
+        src: "/images/projects/strikezone-crypto/cap_btc_1h.webp",
+        alt: "BTCUSDT 1h chart with break-of-structure, change-of-character and order-block zones drawn by the StrikeZone indicator suite",
+        caption:
+          "The Market Structure Analyzer working on BTC 1h. Every BOS, CHoCH and order block you can see also emits a JSON alert payload — the drawing and the Discord message come from the same event.",
+      },
+      {
+        src: "/images/projects/strikezone-crypto/cap_sol_1h.webp",
+        alt: "SOLUSDT 1h chart showing the same structure detection across three weeks of price",
+        caption:
+          "The same suite on SOL. Captured by the agent driving a scoped research browser over the DevTools protocol, not screenshotted by hand.",
+      },
+      {
+        src: "/images/projects/strikezone-crypto/pine-source-alertjson.webp",
+        alt: "Pine Script source open beside the chart, showing the buildAlertJson call that creates a webhook payload",
+        caption:
+          "Where a chart event becomes a message. Each structure event calls buildAlertJson() and fires once per bar close — the line that turns a drawing into a webhook.",
+      },
+      {
+        src: "/images/projects/strikezone-crypto/discord-webhook-feed.webp",
+        alt: "Discord channel receiving EMA 21/55 crossover alerts for several assets",
+        caption:
+          "The delivery side. One channel per signal per timeframe, so a member follows only the feeds they trade.",
+      },
+      {
+        src: "/images/projects/strikezone-crypto/paper-plan-multiframe.webp",
+        alt: "Four-timeframe paper trade plan with entry, stop and target levels and an evidence cutoff badge",
+        caption:
+          "A paper plan the research system rendered on its own: four timeframes, an evidence cutoff, and forming candles flagged so they are never treated as decisions.",
+      },
+      {
+        src: "/images/projects/strikezone-crypto/paper-outcome-win.webp",
+        alt: "Paper trade outcome chart showing a target hit alongside negative rolling performance windows",
+        caption:
+          "The same loop grading itself. A winning trade published above rolling windows that were still negative — the record is kept in public whichever way it goes.",
+      },
+    ],
     subProjects: [
       {
         name: "TradeSync",
@@ -540,17 +608,17 @@ body: "The source is public and running. Shipped: the unified project model, typ
     name: "Toolshape Voice",
     featured: false,
     category: categories.creative,
-    status: "development",
+    status: "live",
     role: "Architect and Engineer",
     summary:
-      "A local-first Windows dictation and writing-intelligence application, in daily personal use.",
+      "A local-first Windows dictation app that types what you say into any application, with speech recognition running entirely on your own machine.",
     outcome:
-      "System-wide dictation, Dictionary, Snippets, Voice Styles, Transforms and an agent-first Voice Hub, running locally today.",
-    technologies: ["TypeScript", "Electron", "SQLite", "Windows speech APIs"],
+      "Hold a hotkey anywhere in Windows and speak: a local Whisper model transcribes on-device and the text is typed into whatever you were focused on. Sub-second for typical dictation lengths, measured under full CPU load. No account, no subscription, no audio leaves the device.",
+    technologies: ["TypeScript", "C#", "Electron", "SQLite", "whisper.cpp", "Windows UI Automation", "WASAPI"],
     repositoryUrl: "https://github.com/chasedndt/toolshape-voice",
     liveUrl: null,
     boundary:
-      "In daily use locally. The linked public repository is currently empty, so packaged-build and distribution claims are withheld until the code is published.",
+      "The source is public and the build runs locally. Latency figures are reproducible with the benchmark script in the repository, and the screenshots below are generated by driving the running application rather than mocked. Not claimed: a code-signed production installer, GPU-accelerated recognition, and translation between two non-English languages — the local model translates into English only. Recognition accuracy is bounded by that local model, which is a deliberate trade against sending audio to a server.",
     links: [
       {
         type: "github",
@@ -566,15 +634,15 @@ body: "The source is public and running. Shipped: the unified project model, typ
       },
       {
         heading: "Architecture",
-        body: "The intended design places an SQLite-backed semantic kernel beneath a deterministic transcript pipeline and a native Voice Bar companion. Dictionary, Snippets, Voice Styles and Transforms are specified as revision-checked workflows, with previews and protected-span evidence designed to keep transformations inspectable.",
+        body: "Two local processes. An Electron hub holds the SQLite-backed application service, the transcript pipeline and the interface; a native C# companion owns what the Electron sandbox cannot reach — the system-wide keyboard hook, raw WASAPI audio capture, and UI Automation text insertion into other applications. They speak only over authenticated loopback. Recognition runs against a quantised Whisper model kept resident in memory, because loading it per dictation is the difference between usable and not.",
       },
       {
         heading: "The hard part nobody plans for",
-        body: "Windows application-control policy is a real packaging constraint for any future public launcher. The current build runs locally under development conditions; the current public repository does not yet expose the implementation or verification artifacts needed to present packaging, signing or distribution as independently proven.",
+        body: "Latency was erratic rather than merely slow, and the cause was not the model. On a four-core laptop the same request measured 3.7 seconds idle and 28 seconds while other applications saturated the CPU. Quantisation and sizing the audio context to the actual speech helped, but the decisive change was scheduling: recognition is interactive work the operator is waiting on, and had to be prioritised as such. Getting there meant building an automated benchmark first, because single manual timings were hiding an eight-fold variance.",
       },
       {
         heading: "Where it is now",
-        body: "Working and in daily personal use. The linked repository currently contains no auditable source or validation record, so the site does not claim a public packaged build, production signing, provider selection or verified integrations until the code is published.",
+        body: "In daily use, with the source public. Dictation reaches any focused Windows control rather than an application allow-list, and reports honestly when it cannot verify the text landed instead of claiming proof it does not have. Still open: a code-signed installer, GPU-accelerated recognition, and a saved-reference library."
       },
     ],
     relatedVideos: [],
