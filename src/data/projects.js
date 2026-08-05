@@ -274,7 +274,7 @@ export const projects = [
       {
         type: "discord",
         label: "Community",
-        url: "https://discord.com/invite/BjEMPs5xY9",
+        url: "https://discord.gg/SEPe7wMrnE",
       },
       {
         type: "github",
