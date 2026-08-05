@@ -225,38 +225,7 @@ export const projects = [
     boundary:
       "Not claiming a public installer, live marketplace transactions, or a managed-agent service.",
     links: [{ type: "site", label: "chaseos.ai", url: "https://chaseos.ai" }],
-    media: [
-      {
-        src: "/images/projects/toolshape-voice/dictation-dark.webp",
-        alt: "Toolshape Voice dictation history grouped by day, with per-application word counts",
-        caption:
-          "Every dictation is written to local history before insertion is attempted, which is why one is never lost when the target application cannot accept it.",
-      },
-      {
-        src: "/images/projects/toolshape-voice/voicebar-listening.webp",
-        alt: "The Voice Bar while listening, showing a live waveform with cancel and accept controls",
-        caption:
-          "The Voice Bar while the hotkey is held. The waveform is the real microphone level, so it is visible whether the machine is actually hearing anything.",
-      },
-      {
-        src: "/images/projects/toolshape-voice/insights-dark.webp",
-        alt: "Insights showing total words, speed, activity streak and a per-application breakdown",
-        caption:
-          "Usage analytics are content-free by construction: counts and categories only, never transcript text. An automated test fails the build if a dictated canary string reaches the analytics table.",
-      },
-      {
-        src: "/images/projects/toolshape-voice/languages-dark.webp",
-        alt: "Language picker listing thirty languages, each shown in its own script",
-        caption:
-          "Thirty languages, each shown in its own script. The list is what the local model handles well rather than everything it claims, because a language it transcribes badly is worse than one not offered at all.",
-      },
-      {
-        src: "/images/projects/toolshape-voice/dictation-light.webp",
-        alt: "The same dictation history in light mode",
-        caption:
-          "Light and dark follow the Windows theme.",
-      },
-    ],
+    media: [],
     caseStudy: [
       {
         heading: "The problem",
@@ -626,7 +595,38 @@ body: "The source is public and running. Shipped: the unified project model, typ
         url: "https://github.com/chasedndt/toolshape-voice",
       },
     ],
-    media: [],
+    media: [
+      {
+        src: "/images/projects/toolshape-voice/dictation-dark.webp",
+        alt: "Toolshape Voice dictation history grouped by day, with per-application word counts",
+        caption:
+          "Every dictation is written to local history before insertion is attempted, which is why one is never lost when the target application cannot accept it.",
+      },
+      {
+        src: "/images/projects/toolshape-voice/voicebar-listening.webp",
+        alt: "The Voice Bar while listening, showing a live waveform with cancel and accept controls",
+        caption:
+          "The Voice Bar while the hotkey is held. The waveform is the real microphone level, so it is visible whether the machine is actually hearing anything.",
+      },
+      {
+        src: "/images/projects/toolshape-voice/insights-dark.webp",
+        alt: "Insights showing total words, speed, activity streak and a per-application breakdown",
+        caption:
+          "Usage analytics are content-free by construction: counts and categories only, never transcript text. An automated test fails the build if a dictated canary string reaches the analytics table.",
+      },
+      {
+        src: "/images/projects/toolshape-voice/languages-dark.webp",
+        alt: "Language picker listing thirty languages, each shown in its own script",
+        caption:
+          "Thirty languages, each shown in its own script. The list is what the local model handles well rather than everything it claims, because a language it transcribes badly is worse than one not offered at all.",
+      },
+      {
+        src: "/images/projects/toolshape-voice/dictation-light.webp",
+        alt: "The same dictation history in light mode",
+        caption:
+          "Light and dark follow the Windows theme.",
+      },
+    ],
     caseStudy: [
       {
         heading: "The problem",
