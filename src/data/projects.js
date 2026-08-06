@@ -993,8 +993,8 @@ relatedBuildLogs: [],
     media: [
       {
         type: "video",
-        src: "/images/projects/toolshape-studio/demo-agent-live.mp4",
-        poster: "/images/projects/toolshape-studio/demo-agent-live-poster.webp",
+        src: "/images/projects/toolshape-studio/demo-agent-live-2026-08-06.mp4",
+        poster: "/images/projects/toolshape-studio/demo-agent-live-poster-2026-08-06.webp",
         alt: "An AI agent editing a Toolshape Studio project over MCP while the editor updates live",
         caption:
           "An agent rewrites the headline twice over MCP while the editor is open. The canvas and the history update live, and every change is attributed — agent or you — in one revision sequence. Recorded by driving the running application.",
