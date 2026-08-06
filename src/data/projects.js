@@ -56,8 +56,12 @@ export const projects = [
       "MCP and tools",
       "Projects and workflows",
     ],
+    // Re-scoped 2026-08-06: a managed public agent service now exists, so
+    // denying one was simply false. The boundary that still holds is the one
+    // that was always the point — execution stays bounded — plus the
+    // marketplace split, which is the part genuinely not finished.
     boundary:
-      "Not claiming production SaaS deployment, unbounded agent execution, or a managed public agent service.",
+      "Not claiming unbounded agent execution, completed marketplace transactions and settlement, or enterprise-scale SaaS operations. Managed runtime execution is live and metered; agent actions stay permission-scoped and approval-gated.",
     // ChaseOS carries its own presence, separate from the personal accounts.
     links: [
       { type: "site", label: "chaseos.ai", url: "https://chaseos.ai" },
@@ -295,24 +299,26 @@ export const projects = [
       {
         name: "ChaseOS Studio",
         detail:
-          "Operator surface for projects, review queues and approvals — where agent output gets accepted or rejected.",
-        status: "development",
-        url: null,
+          "The local operator surface: knowledge graph, projects, review queues, runtimes and approvals — where agent output gets accepted or rejected. V1 ships as a Certum-signed, timestamped Windows installer.",
+        status: "live",
+        url: "https://chaseos.ai/studio",
       },
       {
         name: "Control plane",
         detail:
-          "Per-project lanes carrying status receipts and human approval gates that agents cannot self-authorise.",
-        status: "development",
+          "Per-project lanes carrying status receipts and human approval gates that agents cannot self-authorise. Shipping inside Studio V1: the approvals queue, the agent bus and the read-only audit timeline are all operator-facing today.",
+        status: "live",
         url: null,
       },
       {
-        // Sourced from the ChaseOS commercial site content, which is explicit
-        // that Cloud is planned/early-access — never describe it as live.
+        // Re-verified 2026-08-06 against the product source. Cloud is no
+        // longer "planned": the managed runtime lane is what the metered
+        // credits balance bills against, and subscription checkout is live.
+        // Kept deliberately narrow — only surfaces that exist are named.
         name: "ChaseOS Cloud",
         detail:
-          "Planned managed layer over the local-first core: Providers & Tools, encrypted Sync, usage-based Compute, Managed Runtimes and Deploy. Local-first and BYOK stay viable; managed is opt-in convenience.",
-        status: "planned",
+          "Managed layer over the local-first core. Live today: accounts, subscriptions and a metered credits balance that pays for managed runtime execution and knowledge-graph compute, with top-ups outside the monthly allowance. Local-first and BYOK stay viable; managed is opt-in convenience, not a requirement.",
+        status: "live",
         url: "https://chaseos.ai/cloud",
       },
     ],
@@ -336,11 +342,21 @@ export const projects = [
       },
       {
         heading: "Trade-offs accepted",
-        body: "Everything defaults to fail-closed, read-only, or dry-run, which makes the system slower to demo than an autonomous agent stack. That is deliberate: the failure mode of a confused agent here is a rejected proposal or a blocked approval, not a live incident. Convenience is being layered on top (Forge packs, and eventually the managed Cloud lane) rather than by weakening the boundary.",
+        body: "Everything defaults to fail-closed, read-only, or dry-run, which makes the system slower to demo than an autonomous agent stack. That is deliberate: the failure mode of a confused agent here is a rejected proposal or a blocked approval, not a live incident. Convenience is layered on top — Forge packs and the managed Cloud lane, both now shipped — rather than bought by weakening the boundary.",
       },
       {
         heading: "Where it is now",
-        body: "Active framework in developer preview. The Forge workflow-pack marketplace and pricing surfaces are live on chaseos.ai; Studio and the control plane are in development; the managed Cloud lane is planned and explicitly not live. Not a production SaaS, not unbounded agent execution, and not described as either.",
+        // Rewritten 2026-08-06. The previous copy said Studio was "in
+        // development" and the Cloud lane "explicitly not live" — both were
+        // true when written and both are now wrong: V1 ships as a
+        // Certum-signed, timestamped public installer, and the managed
+        // runtime is what the credits meter bills against. Verified against
+        // the product source rather than assumed, which is also where the
+        // marketplace line comes from: discovery and workflow surfaces are
+        // in place, but purchases, licences, refunds and payment-system
+        // writes are explicitly not implemented there yet. Subscription
+        // checkout is separate and is live.
+        body: "ChaseOS V1 has shipped. There is a public, Certum-signed installer for Windows, Studio runs as the local command surface, and the managed runtime lane is live — it is what the metered credits balance bills against. Subscription checkout is live. On the marketplace the honest split is narrower than it sounds: Forge discovery, the pack catalogue and the workflow surfaces are in place, while full marketplace transactions and settlement remain in development. None of this loosens the boundary — agent execution still runs through explicit permissions, approvals and governance gates.",
       },
     ],
     relatedVideos: [],
@@ -638,7 +654,7 @@ export const projects = [
       },
       {
         heading: "Billing, live",
-        body: "Account and billing run on Stripe: real subscriptions (Community, Pro, Studio Max, Teams), a metered credits balance that powers Cloud agent runs and knowledge-graph compute, and a top-up flow for buying credits outside the monthly allowance. This isn't a pricing page describing a future state — it's the account surface an active Pro subscriber sees today.",
+        body: "Account and billing run on Stripe: real subscriptions (Community, Pro, Studio Max, Studio+), a metered credits balance that powers Cloud agent runs and knowledge-graph compute, and a top-up flow for buying credits outside the monthly allowance. This isn't a pricing page describing a future state — it's the account surface an active Pro subscriber sees today.",
       },
       {
         heading: "Where it is now",
@@ -1143,6 +1159,26 @@ body: "The source is public and running. Shipped: the unified project model, typ
 
 export const frontierProject = projects.find((p) => p.frontier);
 export const featuredProjects = projects.filter((p) => p.featured && !p.frontier);
+
+export const hasMedia = (project) =>
+  Array.isArray(project.media) && project.media.length > 0;
+
+// The homepage showcase is gated on evidence, not on the `featured` flag.
+//
+// Two things were wrong with using `featured`. It let four projects with no
+// screenshots onto a showcase whose whole premise is showing the work
+// (chaser-agent, tradesync, hypelist, greytheory-ai), so a third of the grid
+// was cards that could never expand into anything. And it excluded
+// toolshape-voice, which carries nine captured shots but was never flagged —
+// real proof, invisible on the homepage.
+//
+// Membership now follows the media, so a project appears here the moment it
+// has something to show and disappears if its media is pulled. The frontier
+// project is excluded because it already has its own feature block above.
+// Nothing is hidden by this: /projects still lists every project.
+export const showcaseProjects = projects.filter(
+  (p) => hasMedia(p) && !p.frontier,
+);
 
 export function getProject(slug) {
   return projects.find((p) => p.slug === slug);

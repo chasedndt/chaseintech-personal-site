@@ -10,7 +10,14 @@ import VideoCard from "../components/VideoCard.astro";
 import WorkWithMeCTA from "../components/WorkWithMeCTA.astro";
 import NewsletterSignup from "../components/NewsletterSignup.astro";
 import { site } from "../data/site.js";
-import { featuredProjects, frontierProject } from "../data/projects.js";
+import ProjectCardRuntime from "../components/ProjectCardRuntime.astro";
+import { showcaseProjects, frontierProject } from "../data/projects.js";
+
+// The viewer needs every media item with its caption; the cards only carry a
+// six-item preview.
+const mediaBySlug = Object.fromEntries(
+  showcaseProjects.map((p) => [p.slug, p.media ?? []]),
+);
 import { getContentFeed } from "../data/videos.js";
 import { publishedBuildLogs } from "../data/build-logs.js";
 
@@ -120,7 +127,7 @@ const { featured: featuredVideo, recent: recentVideos } = await getContentFeed()
       </div>
       <div class="project-grid">
         {
-          featuredProjects.map((project) => (
+          showcaseProjects.map((project) => (
             <div data-reveal>
               <ProjectCard project={project} />
             </div>
@@ -169,6 +176,7 @@ const { featured: featuredVideo, recent: recentVideos } = await getContentFeed()
   </section>
 
   <WorkWithMeCTA />
+  <ProjectCardRuntime mediaBySlug={mediaBySlug} />
 </Layout>
 
 <style>

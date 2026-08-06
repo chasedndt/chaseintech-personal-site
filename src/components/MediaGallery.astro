@@ -458,6 +458,9 @@ for (const item of media) {
     const img = dialog.querySelector("img") as HTMLImageElement;
     const caption = dialog.querySelector("figcaption") as HTMLElement;
     let index = 0;
+    // The tile that opened the viewer, so focus can be handed back on close
+    // rather than dumping the reader at the top of the document.
+    let opener: HTMLButtonElement | null = null;
 
     const show = (i: number) => {
       index = (i + triggers.length) % triggers.length;
@@ -469,10 +472,44 @@ for (const item of media) {
 
     triggers.forEach((trigger, i) => {
       trigger.addEventListener("click", () => {
+        opener = trigger;
         show(i);
         dialog.showModal();
+        // <dialog> blocks interaction but not scroll; without this the page
+        // behind drifts under the overlay on wheel and touch.
+        document.body.style.overflow = "hidden";
       });
     });
+
+    dialog.addEventListener("close", () => {
+      document.body.style.overflow = "";
+      opener?.focus();
+      opener = null;
+    });
+
+    // Touch: swipe through the gallery. Horizontal-dominance check so a
+    // vertical scroll gesture is never mistaken for a swipe.
+    let sx = 0;
+    let sy = 0;
+    dialog.addEventListener(
+      "touchstart",
+      (event) => {
+        sx = event.changedTouches[0].clientX;
+        sy = event.changedTouches[0].clientY;
+      },
+      { passive: true },
+    );
+    dialog.addEventListener(
+      "touchend",
+      (event) => {
+        const dx = event.changedTouches[0].clientX - sx;
+        const dy = event.changedTouches[0].clientY - sy;
+        if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+          show(index + (dx < 0 ? 1 : -1));
+        }
+      },
+      { passive: true },
+    );
 
     dialog
       .querySelector("[data-lightbox-close]")

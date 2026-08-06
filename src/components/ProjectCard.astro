@@ -1,30 +1,113 @@
 ---
 import StatusBadge from "./StatusBadge.astro";
 
+// A project card is now three things at once, and the layering matters:
+//
+//  1. A whole-card link. The body used to be inert — only the title and the
+//     "Case study" link navigated — so most of a card was dead to the click.
+//     A stretched overlay anchor now covers the card and sits *below* the
+//     interactive controls in stacking order, which handles propagation
+//     structurally instead of with JS guards that have to be kept in sync.
+//  2. A media preview that opens on hover/focus and cycles that project's
+//     real screenshots.
+//  3. A participant in the travelling breathing sequence (see BreathingCards).
+//
+// Cards for projects without media degrade to the original static card.
 const { project } = Astro.props;
+
+const media = Array.isArray(project.media) ? project.media : [];
+// Six is enough to show range without asking a browser to hold every asset of
+// every card in memory on a page that may render a dozen of them.
+const preview = media.slice(0, 6);
+const href = `/projects/${project.slug}/`;
 ---
 
-<article class="card">
+<article
+  class:list={["card", preview.length > 0 && "has-media"]}
+  data-project-card
+  data-slug={project.slug}
+>
+  {/* Stretched link: covers the card, sits under the controls. */}
+  <a
+    class="card-hit"
+    href={href}
+    tabindex="-1"
+    aria-hidden="true"
+    data-analytics="project_open"></a>
+
   <div class="card-head">
     <p class="section-label">{project.category}</p>
     <StatusBadge status={project.status} />
   </div>
 
   <h3>
-    <a href={`/projects/${project.slug}/`} data-analytics="project_open">
-      {project.name}
-    </a>
+    <a href={href} data-analytics="project_open">{project.name}</a>
   </h3>
 
   <p class="outcome">{project.outcome}</p>
   <p class="role">{project.role}</p>
+
+  {
+    preview.length > 0 && (
+      <div class="preview" data-preview>
+        {/* Single collapsing child: `grid-template-rows: 0fr` only collapses
+            the first row, so stage and controls must share one row or the
+            controls keep their height and leave a gap in every closed card. */}
+        <div class="preview-inner">
+        <div class="stage" data-stage>
+          {preview.map((item, i) => (
+            <figure class="frame" data-frame data-index={i} aria-hidden={i !== 0}>
+              {item.type === "video" ? (
+                <img
+                  src={item.poster}
+                  alt={item.alt}
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : (
+                <img
+                  src={item.src}
+                  alt={item.alt}
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
+            </figure>
+          ))}
+        </div>
+
+        <div class="controls">
+          <button type="button" class="ctl" data-prev aria-label="Previous image">
+            ‹
+          </button>
+          <div class="dots" data-dots>
+            {preview.map((_, i) => (
+              <span class="dot" data-dot data-index={i} />
+            ))}
+          </div>
+          <button type="button" class="ctl" data-next aria-label="Next image">
+            ›
+          </button>
+          <button
+            type="button"
+            class="ctl expand"
+            data-card-expand
+            aria-label={`View ${project.name} media full size`}
+          >
+            ⤢
+          </button>
+        </div>
+        </div>
+      </div>
+    )
+  }
 
   <ul class="tech">
     {project.technologies.slice(0, 4).map((tech) => <li>{tech}</li>)}
   </ul>
 
   <div class="card-actions">
-    <a class="text-link" href={`/projects/${project.slug}/`}>Case study →</a>
+    <a class="text-link" href={href}>Case study →</a>
     {
       project.repositoryUrl && (
         <a
@@ -57,6 +140,8 @@ const { project } = Astro.props;
 <style>
   /* Solid surface, not glass — glass is reserved for identity/feature (§18.3) */
   .card {
+    position: relative;
+    isolation: isolate;
     border: 1px solid var(--cit-border);
     background: var(--cit-bg-surface);
     border-radius: var(--cit-radius);
@@ -64,19 +149,44 @@ const { project } = Astro.props;
     display: flex;
     flex-direction: column;
     gap: 0.7rem;
-    transition: border-color 0.2s ease, transform 0.2s ease;
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.45s ease;
   }
   .card:hover {
     border-color: var(--cit-border-strong);
     transform: translateY(-2px);
   }
-  .card-head {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.5rem;
+
+  /* The stretched hit area. z-index 0 keeps it beneath every control, which
+     all sit at z-index 1, so a click on an arrow never reaches the link. */
+  .card-hit {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
   }
+  .card > *:not(.card-hit) {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* The travelling breathing pulse. Driven by a class from BreathingCards so
+     the order follows the real rendered grid rather than source order. Only
+     border and shadow move: no transform, so it cannot disturb layout or
+     fight the hover lift. */
+  .card.is-breathing {
+    border-color: color-mix(
+      in srgb,
+      var(--cit-accent-teal) 55%,
+      var(--cit-border)
+    );
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--cit-accent-teal) 18%, transparent),
+      0 0 26px -6px color-mix(in srgb, var(--cit-accent-teal) 30%, transparent);
+  }
+
   h3 {
     font-size: 1.2rem;
     overflow-wrap: anywhere;
@@ -87,6 +197,13 @@ const { project } = Astro.props;
   h3 a:hover {
     color: var(--cit-accent-teal);
   }
+  .card-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
   .outcome {
     color: var(--cit-text-secondary);
     font-size: 0.92rem;
@@ -96,6 +213,97 @@ const { project } = Astro.props;
     font-family: var(--cit-font-mono);
     font-size: 0.75rem;
   }
+
+  /* ---- Media preview -------------------------------------------------- */
+  /* Collapsed by grid-template-rows rather than max-height: it animates to
+     the content's real height, so no magic number has to be guessed per card
+     and nothing clips when a caption wraps. */
+  .preview {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition:
+      grid-template-rows 0.42s cubic-bezier(0.2, 0.7, 0.3, 1),
+      opacity 0.3s ease;
+  }
+  .card.is-open .preview {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+  .preview > .preview-inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .stage {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border: 1px solid var(--cit-border);
+    border-radius: calc(var(--cit-radius) - 4px);
+    overflow: hidden;
+    background: var(--cit-bg);
+    margin-top: 0.2rem;
+  }
+  .frame {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .frame.is-active {
+    opacity: 1;
+  }
+  .frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.45rem;
+  }
+  .ctl {
+    width: 26px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--cit-border);
+    border-radius: 6px;
+    background: var(--cit-bg-surface);
+    color: var(--cit-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+  }
+  .ctl:hover,
+  .ctl:focus-visible {
+    border-color: var(--cit-accent-teal);
+    color: var(--cit-accent-teal);
+  }
+  .expand {
+    margin-left: auto;
+  }
+  .dots {
+    display: flex;
+    gap: 0.3rem;
+  }
+  .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--cit-border-strong);
+    transition: background 0.3s ease;
+  }
+  .dot.is-active {
+    background: var(--cit-accent-teal);
+  }
+
   .tech {
     list-style: none;
     display: flex;
@@ -124,5 +332,30 @@ const { project } = Astro.props;
   }
   .muted:hover {
     color: var(--cit-accent-teal);
+  }
+
+  /* Touch devices have no hover. Rather than emulate it badly, the preview is
+     simply always open there, so the proof is visible without a gesture and
+     the card height stays stable while scrolling. */
+  @media (hover: none) {
+    .card.has-media .preview {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card,
+    .preview,
+    .frame,
+    .dot {
+      transition: none;
+    }
+    .card:hover {
+      transform: none;
+    }
+    .card.is-breathing {
+      box-shadow: none;
+    }
   }
 </style>

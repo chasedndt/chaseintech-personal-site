@@ -1,0 +1,348 @@
+---
+// Behaviour for project cards: the travelling breathing pulse, hover/focus
+// expansion, media cycling, and the full-size viewer.
+//
+// Include once on any page that renders ProjectCard. It is inert when no
+// cards are present, so it is safe to drop onto a layout.
+//
+// `media` is passed through from the page because the card markup only
+// carries a six-item preview — the viewer shows the full set with captions.
+const { mediaBySlug = {} } = Astro.props;
+---
+
+<div
+  class="pc-viewer"
+  data-pc-viewer
+  role="dialog"
+  aria-modal="true"
+  aria-label="Project media viewer"
+  hidden
+>
+  <button type="button" class="pcv-close" data-pcv-close aria-label="Close">×</button>
+  <button type="button" class="pcv-nav prev" data-pcv-prev aria-label="Previous">‹</button>
+  <figure class="pcv-figure" data-pcv-figure>
+    <img src="" alt="" data-pcv-img />
+    <figcaption data-pcv-cap></figcaption>
+  </figure>
+  <button type="button" class="pcv-nav next" data-pcv-next aria-label="Next">›</button>
+</div>
+
+<script is:inline define:vars={{ mediaBySlug }}>
+  (() => {
+    const cards = Array.from(document.querySelectorAll("[data-project-card]"));
+    if (!cards.length) return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const coarse = window.matchMedia("(hover: none)");
+
+    /* ---------------- Travelling breathing pulse ---------------- */
+    // Order is read from the rendered geometry, not the DOM, so the sequence
+    // follows the visual grid: left-to-right along each row, then down. That
+    // keeps it correct for free when the column count changes at a breakpoint
+    // or the showcase is filtered.
+    let order = [];
+    const measure = () => {
+      order = cards
+        .map((el) => {
+          const r = el.getBoundingClientRect();
+          return { el, top: Math.round(r.top + window.scrollY), left: Math.round(r.left) };
+        })
+        // Rows are banded to 24px so cards of unequal height still group into
+        // the row a reader perceives.
+        .sort((a, b) => {
+          const rowA = Math.round(a.top / 24);
+          const rowB = Math.round(b.top / 24);
+          return rowA === rowB ? a.left - b.left : rowA - rowB;
+        })
+        .map((x) => x.el);
+    };
+
+    let cursor = 0;
+    let timer = null;
+    const STEP = 1600; // slow enough to read as breathing, not as a chase
+    const HOLD = 2100; // > STEP, so consecutive cards overlap and it flows
+
+    const pulse = () => {
+      if (!order.length) return;
+      const el = order[cursor % order.length];
+      cursor += 1;
+      el.classList.add("is-breathing");
+      setTimeout(() => el.classList.remove("is-breathing"), HOLD);
+    };
+
+    const startBreathing = () => {
+      if (timer || reduced.matches) return;
+      measure();
+      pulse();
+      timer = setInterval(pulse, STEP);
+    };
+    const stopBreathing = () => {
+      if (!timer) return;
+      clearInterval(timer);
+      timer = null;
+      cards.forEach((c) => c.classList.remove("is-breathing"));
+    };
+
+    // Only animate while the showcase is actually on screen, and never while
+    // the tab is hidden — an interval that paints offscreen is pure cost.
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.some((e) => e.isIntersecting);
+        if (visible && !document.hidden) startBreathing();
+        else stopBreathing();
+      },
+      { rootMargin: "0px 0px -10% 0px" },
+    );
+    cards.forEach((c) => io.observe(c));
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stopBreathing();
+    });
+    let resizeT;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeT);
+      resizeT = setTimeout(measure, 180);
+    });
+    reduced.addEventListener?.("change", () => {
+      if (reduced.matches) stopBreathing();
+      else startBreathing();
+    });
+
+    /* ---------------- Per-card media cycling ---------------- */
+    const controllers = new Map();
+
+    cards.forEach((card) => {
+      const frames = Array.from(card.querySelectorAll("[data-frame]"));
+      if (!frames.length) return;
+      const dots = Array.from(card.querySelectorAll("[data-dot]"));
+      let index = 0;
+      let cycle = null;
+
+      const show = (i) => {
+        index = (i + frames.length) % frames.length;
+        frames.forEach((f, n) => {
+          f.classList.toggle("is-active", n === index);
+          f.setAttribute("aria-hidden", n === index ? "false" : "true");
+        });
+        dots.forEach((d, n) => d.classList.toggle("is-active", n === index));
+      };
+      show(0);
+
+      const startCycle = () => {
+        if (cycle || reduced.matches || frames.length < 2) return;
+        cycle = setInterval(() => show(index + 1), 2600);
+      };
+      const stopCycle = () => {
+        clearInterval(cycle);
+        cycle = null;
+      };
+
+      const open = () => {
+        card.classList.add("is-open");
+        startCycle();
+      };
+      const close = () => {
+        // On touch the preview is always open, so only the cycling stops.
+        if (!coarse.matches) card.classList.remove("is-open");
+        stopCycle();
+      };
+
+      card.addEventListener("mouseenter", open);
+      card.addEventListener("mouseleave", close);
+      card.addEventListener("focusin", open);
+      card.addEventListener("focusout", (e) => {
+        if (!card.contains(e.relatedTarget)) close();
+      });
+
+      card.querySelector("[data-prev]")?.addEventListener("click", (e) => {
+        e.preventDefault();
+        stopCycle();
+        show(index - 1);
+      });
+      card.querySelector("[data-next]")?.addEventListener("click", (e) => {
+        e.preventDefault();
+        stopCycle();
+        show(index + 1);
+      });
+      card.querySelector("[data-card-expand]")?.addEventListener("click", (e) => {
+        e.preventDefault();
+        openViewer(card.dataset.slug, index, e.currentTarget);
+      });
+
+      // Touch: horizontal swipe moves through the media. The threshold and
+      // the axis check keep a vertical scroll from being read as a swipe.
+      let sx = 0;
+      let sy = 0;
+      const stage = card.querySelector("[data-stage]");
+      stage?.addEventListener(
+        "touchstart",
+        (e) => {
+          sx = e.changedTouches[0].clientX;
+          sy = e.changedTouches[0].clientY;
+        },
+        { passive: true },
+      );
+      stage?.addEventListener(
+        "touchend",
+        (e) => {
+          const dx = e.changedTouches[0].clientX - sx;
+          const dy = e.changedTouches[0].clientY - sy;
+          if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+            stopCycle();
+            show(index + (dx < 0 ? 1 : -1));
+          }
+        },
+        { passive: true },
+      );
+
+      controllers.set(card.dataset.slug, { show });
+    });
+
+    /* ---------------- Full-size viewer ---------------- */
+    const viewer = document.querySelector("[data-pc-viewer]");
+    const vImg = viewer?.querySelector("[data-pcv-img]");
+    const vCap = viewer?.querySelector("[data-pcv-cap]");
+    let vItems = [];
+    let vIndex = 0;
+    let restoreFocus = null;
+
+    function paint() {
+      const item = vItems[vIndex];
+      if (!item) return;
+      vImg.src = item.poster || item.src;
+      vImg.alt = item.alt || "";
+      vCap.textContent = item.caption || item.alt || "";
+    }
+
+    function openViewer(slug, startIndex, trigger) {
+      vItems = mediaBySlug[slug] || [];
+      if (!vItems.length) return;
+      vIndex = Math.min(startIndex, vItems.length - 1);
+      restoreFocus = trigger || null;
+      paint();
+      viewer.hidden = false;
+      document.body.style.overflow = "hidden";
+      viewer.querySelector("[data-pcv-close]")?.focus();
+    }
+
+    function closeViewer() {
+      viewer.hidden = true;
+      document.body.style.overflow = "";
+      // Focus returns to the control that opened it, so keyboard users are
+      // not dropped back at the top of the document.
+      restoreFocus?.focus();
+      restoreFocus = null;
+    }
+
+    const stepViewer = (d) => {
+      vIndex = (vIndex + d + vItems.length) % vItems.length;
+      paint();
+    };
+
+    viewer?.querySelector("[data-pcv-close]")?.addEventListener("click", closeViewer);
+    viewer?.querySelector("[data-pcv-prev]")?.addEventListener("click", () => stepViewer(-1));
+    viewer?.querySelector("[data-pcv-next]")?.addEventListener("click", () => stepViewer(1));
+    viewer?.addEventListener("click", (e) => {
+      if (e.target === viewer) closeViewer();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (viewer?.hidden) return;
+      if (e.key === "Escape") closeViewer();
+      else if (e.key === "ArrowRight") stepViewer(1);
+      else if (e.key === "ArrowLeft") stepViewer(-1);
+    });
+
+    let vsx = 0;
+    viewer?.addEventListener(
+      "touchstart",
+      (e) => (vsx = e.changedTouches[0].clientX),
+      { passive: true },
+    );
+    viewer?.addEventListener(
+      "touchend",
+      (e) => {
+        const dx = e.changedTouches[0].clientX - vsx;
+        if (Math.abs(dx) > 50) stepViewer(dx < 0 ? 1 : -1);
+      },
+      { passive: true },
+    );
+  })();
+</script>
+
+<style is:global>
+  .pc-viewer[hidden] {
+    display: none;
+  }
+  .pc-viewer {
+    position: fixed;
+    inset: 0;
+    /* Above the sticky header (50/60) and the command palette (100), so the
+       overlay is genuinely modal rather than having site chrome punch
+       through the top of it. */
+    z-index: 500;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.6rem;
+    padding: clamp(1rem, 4vw, 3rem);
+    /* Opaque. A translucent backdrop left project titles legible behind the
+       image, which read as a rendering fault rather than as depth. */
+    background: var(--cit-bg);
+  }
+  .pcv-figure {
+    margin: 0;
+    display: grid;
+    gap: 0.9rem;
+    justify-items: center;
+    min-width: 0;
+  }
+  .pcv-figure img {
+    max-width: 100%;
+    max-height: 76vh;
+    object-fit: contain;
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius);
+    background: var(--cit-bg-surface);
+  }
+  .pcv-figure figcaption {
+    max-width: 78ch;
+    text-align: center;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--cit-text-secondary);
+  }
+  .pcv-close,
+  .pcv-nav {
+    border: 1px solid var(--cit-border);
+    background: var(--cit-bg-surface);
+    color: var(--cit-text);
+    border-radius: 999px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .pcv-close {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+  .pcv-nav {
+    width: 44px;
+    height: 44px;
+    font-size: 1.7rem;
+  }
+  .pcv-close:hover,
+  .pcv-nav:hover {
+    border-color: var(--cit-accent-teal);
+    color: var(--cit-accent-teal);
+  }
+  @media (max-width: 640px) {
+    .pcv-nav {
+      width: 34px;
+      height: 34px;
+      font-size: 1.3rem;
+    }
+  }
+</style>

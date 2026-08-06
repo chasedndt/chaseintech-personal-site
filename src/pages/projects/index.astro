@@ -1,8 +1,13 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
+import ProjectCardRuntime from "../../components/ProjectCardRuntime.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
 import { projects, frontierProject, categories, statusLabels } from "../../data/projects.js";
+
+const mediaBySlug = Object.fromEntries(
+  projects.map((p) => [p.slug, p.media ?? []]),
+);
 import { site } from "../../data/site.js";
 
 const grouped = Object.values(categories)
@@ -98,6 +103,7 @@ const grouped = Object.values(categories)
     initFilter();
     document.addEventListener("astro:page-load", initFilter);
   </script>
+  <ProjectCardRuntime mediaBySlug={mediaBySlug} />
 </Layout>
 
 <style>
