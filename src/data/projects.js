@@ -654,7 +654,7 @@ export const projects = [
       },
       {
         heading: "Billing, live",
-        body: "Account and billing run on Stripe: real subscriptions (Community, Pro, Studio Max, Studio+), a metered credits balance that powers Cloud agent runs and knowledge-graph compute, and a top-up flow for buying credits outside the monthly allowance. This isn't a pricing page describing a future state — it's the account surface an active Pro subscriber sees today.",
+        body: "Account and billing run on Stripe: real subscriptions (Community, Pro, Studio Max, Studio Plus), a metered credits balance that powers Cloud agent runs and knowledge-graph compute, and a top-up flow for buying credits outside the monthly allowance. This isn't a pricing page describing a future state — it's the account surface an active Pro subscriber sees today.",
       },
       {
         heading: "Where it is now",
