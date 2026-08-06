@@ -5,6 +5,17 @@ import { buildLogsForProject } from "../data/build-logs.js";
 
 const p = frontierProject;
 const logs = buildLogsForProject(p.slug);
+
+// The frontier block carried no media at all — the most-argued project on
+// the site had nothing to look at. It pulls from the same media array the
+// case study uses, so this never drifts from the gallery.
+const media = Array.isArray(p.media) ? p.media : [];
+const video = media.find((m) => m.type === "video");
+// Four stills is a strip, not a second gallery: enough to signal there is
+// depth behind the link without competing with the case study itself.
+const stills = media.filter((m) => m.type !== "video").slice(0, 4);
+// Index within the full media array, so the viewer opens on the right item.
+const indexOf = (item) => media.indexOf(item);
 ---
 
 <section class="frontier" aria-labelledby="frontier-title">
@@ -57,6 +68,45 @@ const logs = buildLogsForProject(p.slug);
         </p>
       </div>
     </div>
+
+      {
+        (video || stills.length > 0) && (
+          <div class="frontier-media">
+            {video && (
+              <figure class="fm-video">
+                <video
+                  src={video.src}
+                  poster={video.poster}
+                  muted
+                  loop
+                  playsinline
+                  autoplay
+                  preload="metadata"
+                />
+                <figcaption>{video.caption ?? video.alt}</figcaption>
+              </figure>
+            )}
+            {stills.length > 0 && (
+              <ul class="fm-strip">
+                {stills.map((item) => (
+                  <li>
+                    <button
+                      type="button"
+                      class="fm-thumb"
+                      data-open-media
+                      data-slug={p.slug}
+                      data-index={indexOf(item)}
+                      aria-label={`Enlarge: ${item.alt}`}
+                    >
+                      <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )
+      }
   </div>
 </section>
 
@@ -92,6 +142,69 @@ const logs = buildLogsForProject(p.slug);
     gap: 2.5rem;
     align-items: start;
     margin-top: 0.75rem;
+  }
+  /* The proof band. Sits below the argument rather than beside it: at this
+     width a video in a column would be too small to read, and the point of
+     showing it is that the detail is legible. */
+  .frontier-media {
+    margin-top: 2.4rem;
+    display: grid;
+    gap: 1rem;
+  }
+  .fm-video {
+    margin: 0;
+    border: 1px solid var(--cit-border);
+    border-radius: var(--cit-radius);
+    overflow: hidden;
+    background: var(--cit-bg-surface);
+  }
+  .fm-video video {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .fm-video figcaption {
+    padding: 0.7rem 0.9rem;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: var(--cit-text-muted);
+    border-top: 1px solid var(--cit-border);
+  }
+  .fm-strip {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(160px, 45%), 1fr));
+    gap: 0.7rem;
+  }
+  .fm-thumb {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 1px solid var(--cit-border);
+    border-radius: calc(var(--cit-radius) - 4px);
+    overflow: hidden;
+    background: var(--cit-bg-surface);
+    cursor: zoom-in;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .fm-thumb:hover,
+  .fm-thumb:focus-visible {
+    border-color: var(--cit-accent-teal);
+    transform: translateY(-2px);
+  }
+  .fm-thumb img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top center;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fm-thumb { transition: none; }
+    .fm-thumb:hover, .fm-thumb:focus-visible { transform: none; }
   }
   h2 {
     font-size: clamp(2.1rem, 5vw, 3.2rem);

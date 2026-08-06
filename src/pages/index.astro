@@ -15,8 +15,10 @@ import { showcaseProjects, frontierProject } from "../data/projects.js";
 
 // The viewer needs every media item with its caption; the cards only carry a
 // six-item preview.
+// Includes the frontier project: its feature block has its own media strip,
+// and those thumbnails open the same viewer.
 const mediaBySlug = Object.fromEntries(
-  showcaseProjects.map((p) => [p.slug, p.media ?? []]),
+  [...showcaseProjects, frontierProject].map((p) => [p.slug, p.media ?? []]),
 );
 import { getContentFeed } from "../data/videos.js";
 import { publishedBuildLogs } from "../data/build-logs.js";

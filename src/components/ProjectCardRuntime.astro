@@ -252,6 +252,14 @@ const { mediaBySlug = {} } = Astro.props;
       else if (e.key === "ArrowLeft") stepViewer(-1);
     });
 
+    // Triggers outside a project card — the frontier feature strip uses these.
+    document.querySelectorAll("[data-open-media]").forEach((el) => {
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        openViewer(el.dataset.slug, Number(el.dataset.index || 0), el);
+      });
+    });
+
     let vsx = 0;
     viewer?.addEventListener(
       "touchstart",
